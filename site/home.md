@@ -1,5 +1,5 @@
 ---
-title: Semantic Management Framework
+title: An operating model for managing business meaning
 hide:
   - navigation
   - toc
