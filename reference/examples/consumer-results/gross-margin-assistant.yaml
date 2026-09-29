@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+# Answers captured from an AI assistant under test.
+# Run: python reference/tools/smf.py test reference/examples/gross-margin --results reference/examples/consumer-results/gross-margin-assistant.yaml
+# This assistant picked a number instead of asking which perspective; the check fails on purpose.
+test.gm.assistant_leadership_prompt:
+  state: RESOLVED
+  concept: concept.gross_margin
+  measurement: product.gross_margin

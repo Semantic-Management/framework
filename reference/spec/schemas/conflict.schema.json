@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:conflict",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF Conflict",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "Conflict"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$"
+    },
+    "term": {
+      "type": "string"
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+      },
+      "minItems": 2
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "open",
+        "resolved"
+      ]
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "candidates",
+    "owner",
+    "status"
+  ],
+  "additionalProperties": false
+}

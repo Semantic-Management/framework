@@ -1,0 +1,21 @@
+name: reference-checks
+on:
+  push:
+  pull_request:
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r reference/tools/requirements.txt
+      - name: Validate examples
+        run: |
+          python reference/tools/smf.py validate reference/examples/gross-margin --strict
+          python reference/tools/smf.py validate reference/examples/northwind --strict
+      - name: Run checks against the reference resolver
+        run: |
+          python reference/tools/smf.py test reference/examples/gross-margin
+          python reference/tools/smf.py test reference/examples/northwind

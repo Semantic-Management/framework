@@ -1,0 +1,6 @@
+- [ ] `python reference/tools/smf.py validate reference/examples/gross-margin --strict` passes
+- [ ] `python reference/tools/smf.py test reference/examples/gross-margin` passes
+- [ ] Non-normative content is labeled
+- [ ] No proprietary product names in framework or spec docs
+- [ ] Proposal issue linked for framework/spec changes
+- [ ] CHANGELOG updated

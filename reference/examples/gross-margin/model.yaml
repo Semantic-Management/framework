@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: Concept
+id: concept.gross_margin
+name: Gross Margin
+definition: The share of revenue remaining after the direct cost of delivering what was sold.
+status: standard
+---
+smf: "0.1"
+kind: Perspective
+id: perspective.gross_margin.product
+concept_ref: concept.gross_margin
+name: Product Gross Margin
+description: Margin on physical goods sold. Direct cost is the landed cost of goods.
+owner: Product Line Lead
+applies_when: { domain: product }
+status: standard
+---
+smf: "0.1"
+kind: Perspective
+id: perspective.gross_margin.service
+concept_ref: concept.gross_margin
+name: Service Gross Margin
+description: Margin on installation and maintenance work. Direct cost is delivery labor, subcontractors and parts used.
+owner: Services Lead
+applies_when: { domain: services }
+status: standard
+---
+smf: "0.1"
+kind: Perspective
+id: perspective.gross_margin.consolidated
+concept_ref: concept.gross_margin
+name: Consolidated Gross Margin
+description: Company-wide margin as reported in the financial statements.
+owner: Controller
+applies_when: { audience: board }
+enterprise_default: true
+status: standard
+---
+smf: "0.1"
+kind: Term
+term: gross margin
+maps_to: concept.gross_margin
+preferred: true
+---
+smf: "0.1"
+kind: Term
+term: gm
+maps_to: concept.gross_margin
+---
+smf: "0.1"
+kind: Term
+term: gross margin %
+maps_to: concept.gross_margin
+---
+smf: "0.1"
+kind: Ownership
+subject: concept.gross_margin
+owner: Controller
+steward: Finance Analyst
+scope: { layer: enterprise }
+---
+smf: "0.1"
+kind: Context
+id: context.product_review
+conditions: { domain: product }
+---
+smf: "0.1"
+kind: Context
+id: context.services_review
+conditions: { domain: services }
+---
+smf: "0.1"
+kind: Context
+id: context.board
+conditions: { audience: board }
+---
+smf: "0.1"
+kind: Context
+id: context.leadership
+description: Cross-functional leadership meeting; no single perspective applies.
+conditions: { audience: leadership }

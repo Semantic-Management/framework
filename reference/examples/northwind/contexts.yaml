@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: Context
+id: context.finance
+conditions: { domain: finance }
+---
+smf: "0.1"
+kind: Context
+id: context.operations
+conditions: { domain: operations }
+---
+smf: "0.1"
+kind: Context
+id: context.sales
+conditions: { domain: sales }
+---
+smf: "0.1"
+kind: Context
+id: context.support
+conditions: { domain: support }
+---
+smf: "0.1"
+kind: Context
+id: context.executive
+conditions: { audience: executive }

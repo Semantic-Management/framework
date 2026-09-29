@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: ClaimTrace
+id: claim.2026_09_28.0012
+statement: "Q3 FY2026 net revenue was $39.8M"
+value: 39800000
+unit: USD
+measurement: finance.net_revenue@v3
+concept: concept.revenue
+context: { audience: executive, period: FY2026-Q3 }
+execution:
+  binding: "dbt:metrics.net_revenue"
+  query_hash: "sha256:3f1c9a…"
+  executed_at: "2026-09-28T13:02:00Z"
+sources:
+  - { system: erp, snapshot: "2026-09-28T06:00:00Z" }
+provenance: { format: openlineage, ref: "run/7d2e4b10" }
+verification: { status: verified, method: re-execution, verified_at: "2026-09-28T13:05:00Z" }

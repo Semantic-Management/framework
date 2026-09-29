@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:ownership",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF Ownership",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "Ownership"
+    },
+    "subject": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steward": {
+      "type": "string"
+    },
+    "technical_custodian": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "subject",
+    "owner",
+    "scope"
+  ],
+  "additionalProperties": false
+}

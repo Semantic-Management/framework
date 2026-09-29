@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:resolution-result",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF ResolutionResult",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "ResolutionResult"
+    },
+    "query": {
+      "type": "object",
+      "properties": {
+        "term": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "term"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "enum": [
+        "RESOLVED",
+        "RESOLVED_VIA_REPLACEMENT",
+        "NEEDS_CLARIFICATION",
+        "CONFLICT",
+        "UNGOVERNED"
+      ]
+    },
+    "concept": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "measurement": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "perspective": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+    },
+    "basis": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+        "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+      },
+      "minItems": 2
+    },
+    "conflict_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "conflict_owner": {
+      "type": "string"
+    },
+    "replaces": {
+      "type": "string",
+      "description": "Deprecated term or ID that was substituted."
+    },
+    "constraints": {
+      "type": "object"
+    },
+    "trust": {
+      "type": "object",
+      "properties": {
+        "registration_status": {
+          "type": "string",
+          "enum": [
+            "incomplete",
+            "candidate",
+            "recorded",
+            "qualified",
+            "standard",
+            "preferred_standard",
+            "superseded",
+            "retired",
+            "historical",
+            "application"
+          ],
+          "description": "Registration status, adopted from ISO/IEC 11179-6."
+        },
+        "certified_for": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_verified": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "query",
+    "state"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "RESOLVED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "concept",
+          "basis"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "RESOLVED_VIA_REPLACEMENT"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "concept",
+          "replaces"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "NEEDS_CLARIFICATION"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "options"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "CONFLICT"
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "conflict_ref"
+            ]
+          },
+          {
+            "required": [
+              "conflict_owner"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

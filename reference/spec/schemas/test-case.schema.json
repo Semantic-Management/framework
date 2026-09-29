@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:test-case",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF TestCase",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "TestCase"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "type": {
+      "enum": [
+        "resolution",
+        "selection",
+        "constraint",
+        "ambiguity",
+        "conflict",
+        "ungoverned",
+        "deprecation",
+        "conformance"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string"
+        },
+        "term": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "prompt"
+          ]
+        },
+        {
+          "required": [
+            "term"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "RESOLVED",
+            "RESOLVED_VIA_REPLACEMENT",
+            "NEEDS_CLARIFICATION",
+            "CONFLICT",
+            "UNGOVERNED"
+          ]
+        },
+        "concept": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        },
+        "measurement": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        },
+        "perspective": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+            "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+          }
+        },
+        "must_apply": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "must_not": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+            "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+          }
+        },
+        "value": {
+          "type": "number"
+        },
+        "tolerance": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "type",
+    "input",
+    "expected"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:classification-rule",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF ClassificationRule",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "ClassificationRule"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "concept_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "criteria": {
+      "type": "string",
+      "minLength": 1
+    },
+    "structured": {
+      "type": "object",
+      "description": "Optional machine-evaluable form. Format is implementation-defined."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "incomplete",
+        "candidate",
+        "recorded",
+        "qualified",
+        "standard",
+        "preferred_standard",
+        "superseded",
+        "retired",
+        "historical",
+        "application"
+      ],
+      "description": "Registration status, adopted from ISO/IEC 11179-6."
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "effective_to": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "concept_ref",
+    "criteria"
+  ],
+  "additionalProperties": false
+}

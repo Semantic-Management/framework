@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:resolution-rule",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF ResolutionRule",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "ResolutionRule"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "term": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default": {
+      "type": "object",
+      "properties": {
+        "concept": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        },
+        "measurement": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        },
+        "state": {
+          "enum": [
+            "NEEDS_CLARIFICATION",
+            "UNGOVERNED"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+            "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+          },
+          "minItems": 2
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "contextual": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "when": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "resolve_to": {
+            "type": "object",
+            "properties": {
+              "concept": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+                "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+              },
+              "measurement": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+                "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+              }
+            },
+            "minProperties": 1,
+            "additionalProperties": false
+          },
+          "state": {
+            "enum": [
+              "NEEDS_CLARIFICATION",
+              "CONFLICT",
+              "UNGOVERNED"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+              "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+            },
+            "minItems": 2
+          },
+          "conflict_ref": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+            "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+          },
+          "prompt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "when"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "resolve_to"
+            ]
+          },
+          {
+            "required": [
+              "state"
+            ]
+          }
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "NEEDS_CLARIFICATION"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "required": [
+                "options"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "deprecated": {
+      "type": "object",
+      "properties": {
+        "replacement_term": {
+          "type": "string"
+        },
+        "replacement": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        },
+        "since": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "replacement"
+      ],
+      "additionalProperties": false
+    },
+    "owner_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "term",
+    "default"
+  ],
+  "additionalProperties": false
+}

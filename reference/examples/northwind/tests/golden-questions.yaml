@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: TestCase
+id: test.revenue.default
+type: selection
+input: { term: revenue, context: { audience: executive } }
+expected: { state: RESOLVED, concept: concept.revenue, measurement: finance.net_revenue, must_apply: [exclude_intercompany], must_not: [finance.gross_revenue] }
+severity: critical
+---
+smf: "0.1"
+kind: TestCase
+id: test.revenue.operations
+type: resolution
+input: { term: revenue, context: { domain: operations } }
+expected: { state: RESOLVED, concept: concept.revenue, measurement: operations.operational_revenue }
+---
+smf: "0.1"
+kind: TestCase
+id: test.revenue.sales
+type: ambiguity
+input: { term: revenue, context: { domain: sales } }
+expected: { state: NEEDS_CLARIFICATION, options: [finance.net_revenue, concept.contract_value] }
+severity: high
+---
+smf: "0.1"
+kind: TestCase
+id: test.customer.support
+type: resolution
+input: { term: customer, context: { domain: support } }
+expected: { state: RESOLVED, concept: concept.support_account }
+---
+smf: "0.1"
+kind: TestCase
+id: test.client.superseded
+type: deprecation
+input: { term: client }
+expected: { state: RESOLVED_VIA_REPLACEMENT, concept: concept.customer }
+---
+smf: "0.1"
+kind: TestCase
+id: test.net_rev.deprecated
+type: deprecation
+input: { term: net rev, context: { audience: executive } }
+expected: { state: RESOLVED_VIA_REPLACEMENT, concept: concept.revenue, measurement: finance.net_revenue }
+---
+smf: "0.1"
+kind: TestCase
+id: test.region.finance
+type: resolution
+input: { term: region, context: { domain: finance } }
+expected: { state: RESOLVED, concept: concept.legal_reporting_region }
+---
+smf: "0.1"
+kind: TestCase
+id: test.region.marketing
+type: conflict
+input: { term: region, context: { domain: marketing } }
+expected: { state: CONFLICT }
+---
+smf: "0.1"
+kind: TestCase
+id: test.bookings.ungoverned
+type: ungoverned
+input: { term: bookings, context: { domain: sales } }
+expected: { state: UNGOVERNED }
+---
+smf: "0.1"
+kind: TestCase
+id: test.agent.exec_revenue_prompt
+type: selection
+description: Natural-language case. Requires the consumer under test (e.g., an AI assistant) to supply its ResolutionResult.
+input: { prompt: "What was revenue last quarter?", context: { audience: executive } }
+expected: { state: RESOLVED, measurement: finance.net_revenue, must_apply: [exclude_intercompany], must_not: [finance.gross_revenue] }
+severity: critical
+---
+smf: "0.1"
+kind: TestCase
+id: test.agent.sales_revenue_prompt
+type: ambiguity
+description: The consumer must ask rather than guess.
+input: { prompt: "What's our revenue this quarter?", context: { domain: sales } }
+expected: { state: NEEDS_CLARIFICATION, options: [finance.net_revenue, concept.contract_value] }
+severity: high

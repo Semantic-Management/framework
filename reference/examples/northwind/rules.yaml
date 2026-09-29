@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: ClassificationRule
+id: rule.active_customer.enterprise
+concept_ref: concept.active_customer
+criteria: At least one paid order in the trailing 365 days, as of the evaluation date.
+structured:
+  entity: concept.customer
+  condition: "count(paid_orders, trailing_days=365) >= 1"
+status: standard
+---
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.revenue
+term: revenue
+owner_ref: concept.revenue
+default: { concept: concept.revenue, measurement: finance.net_revenue }
+contextual:
+  - when: { domain: operations }
+    resolve_to: { measurement: operations.operational_revenue }
+  - when: { domain: sales }
+    state: NEEDS_CLARIFICATION
+    options: [finance.net_revenue, concept.contract_value]
+    prompt: "Do you mean net revenue (finance) or contract value at signing?"
+---
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.customer
+term: customer
+default: { concept: concept.customer }
+contextual:
+  - when: { domain: support }
+    resolve_to: { concept: concept.support_account }
+---
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.client
+term: client
+default: { concept: concept.client }
+---
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.net_rev
+term: net rev
+default: { measurement: finance.net_revenue }
+deprecated:
+  replacement: finance.net_revenue
+  replacement_term: revenue
+  since: 2026-06-01
+---
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.region
+term: region
+default: { concept: concept.sales_region }
+contextual:
+  - when: { domain: finance }
+    resolve_to: { concept: concept.legal_reporting_region }
+  - when: { domain: operations }
+    resolve_to: { concept: concept.service_region }
+  - when: { domain: marketing }
+    state: CONFLICT
+    conflict_ref: conflict.region.marketing
+---
+smf: "0.1"
+kind: Conflict
+id: conflict.region.marketing
+term: region
+candidates: [concept.sales_region, concept.service_region]
+owner: Enterprise Semantic Authority
+status: open
+target_date: 2026-10-31
+notes: Marketing campaigns use both definitions; decision pending.

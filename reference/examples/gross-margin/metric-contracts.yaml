@@ -1,0 +1,85 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: MetricContract
+id: product.gross_margin
+version: 1
+name: Product Gross Margin
+measures: { concept_ref: concept.gross_margin }
+perspective: perspective.gross_margin.product
+formula: (product_revenue - landed_cost_of_goods) / product_revenue
+grain: order_line
+valid_dimensions: [fiscal_month, product_category, store]
+filters: [line_type = product]
+exclusions: [installation_labor, warranty_reserves]
+time_semantics: { calendar: fiscal, basis: ship_date }
+additivity: non_additive
+built_on: [odcs:sales_order_lines, odcs:landed_cost]
+owner: Product Line Lead
+certified_for: [product_reviews, pricing_decisions]
+comparability:
+  not_comparable_with: [services.gross_margin]
+  can_be_combined: false
+  notes: Cost includes freight-in and duties; service margin cost is labor-based. Do not average the two.
+status: standard
+---
+smf: "0.1"
+kind: MetricContract
+id: services.gross_margin
+version: 1
+name: Service Gross Margin
+measures: { concept_ref: concept.gross_margin }
+perspective: perspective.gross_margin.service
+formula: (service_revenue - (technician_labor + subcontractor_cost + parts_used)) / service_revenue
+grain: work_order
+valid_dimensions: [fiscal_month, service_type, technician_team]
+filters: [line_type = service]
+exclusions: [product_sales]
+time_semantics: { calendar: fiscal, basis: work_order_completed_date }
+additivity: non_additive
+built_on: [odcs:work_orders, odcs:job_costing]
+owner: Services Lead
+certified_for: [services_reviews, staffing_decisions]
+comparability:
+  not_comparable_with: [product.gross_margin]
+  can_be_combined: false
+  notes: Labor-based cost. Compare over time within services, not against product margin.
+status: standard
+---
+smf: "0.1"
+kind: MetricContract
+id: finance.consolidated_gross_margin
+version: 2
+name: Consolidated Gross Margin
+measures: { concept_ref: concept.gross_margin }
+perspective: perspective.gross_margin.consolidated
+formula: (total_revenue - total_cost_of_revenue) / total_revenue
+grain: general_ledger_period
+valid_dimensions: [fiscal_period]
+time_semantics: { calendar: fiscal, basis: recognized_date }
+additivity: non_additive
+built_on: [odcs:general_ledger]
+owner: Controller
+certified_for: [board_reporting, external_reporting]
+comparability:
+  comparable_with: []
+  can_be_combined: false
+  notes: Not the average of product and service margins; it is computed from totals.
+status: standard
+---
+smf: "0.1"
+kind: Binding
+subject: finance.consolidated_gross_margin@v2
+implementation: { platform: power_bi, ref: "Finance Model / [Gross Margin %]" }
+conformance_status: conformant
+---
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation: { platform: dbt, ref: "metrics.product_gross_margin" }
+conformance_status: conformant
+---
+smf: "0.1"
+kind: Binding
+subject: services.gross_margin@v1
+implementation: { platform: spreadsheet, ref: "Services KPI workbook / GM tab" }
+conformance_status: untested

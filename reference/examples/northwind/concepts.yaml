@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: Concept
+id: concept.revenue
+name: Revenue
+definition: Income from the organization's ordinary business activities.
+status: standard
+effective_from: 2026-01-01
+---
+smf: "0.1"
+kind: Concept
+id: concept.contract_value
+name: Contract Value
+definition: Total value of a signed customer contract at the time of signing. Not revenue.
+status: standard
+---
+smf: "0.1"
+kind: Concept
+id: concept.customer
+name: Customer
+definition: A party with an established commercial relationship with the organization.
+status: standard
+---
+smf: "0.1"
+kind: Concept
+id: concept.support_account
+name: Support Account
+definition: An organization entitled to receive customer support.
+status: standard
+relationships:
+  - { predicate: variant_of, object: concept.customer }
+---
+smf: "0.1"
+kind: Concept
+id: concept.active_customer
+name: Active Customer
+definition: A customer that meets the enterprise activity rule as of the evaluation date.
+status: standard
+relationships:
+  - { predicate: is_a, object: concept.customer }
+---
+smf: "0.1"
+kind: Concept
+id: concept.sales_region
+name: Sales Region
+definition: Territory used to assign and measure sales coverage.
+status: standard
+---
+smf: "0.1"
+kind: Concept
+id: concept.service_region
+name: Service Region
+definition: Geographic area served by an operations team.
+status: standard
+---
+smf: "0.1"
+kind: Concept
+id: concept.legal_reporting_region
+name: Legal Reporting Region
+definition: Region defined for statutory and external financial reporting.
+status: standard
+---
+smf: "0.1"
+kind: Concept
+id: concept.client
+name: Client (legacy)
+definition: Former sales-only customer concept, replaced by Customer.
+status: superseded
+effective_to: 2025-12-31
+replaced_by: concept.customer

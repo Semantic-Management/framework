@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: MetricContract
+id: finance.net_revenue
+version: 3
+name: Net Revenue
+measures: { concept_ref: concept.revenue }
+formula: gross_revenue - returns - discounts
+grain: order_line
+valid_dimensions: [fiscal_period, legal_reporting_region, product_line]
+exclusions: [intercompany]
+time_semantics: { calendar: fiscal, basis: recognized_date }
+owner: Corporate Controller
+certified_for: [executive_reporting, external_reporting]
+status: standard
+---
+smf: "0.1"
+kind: MetricContract
+id: finance.gross_revenue
+version: 1
+name: Gross Revenue
+measures: { concept_ref: concept.revenue }
+formula: sum(invoice_line_amount)
+grain: order_line
+exclusions: [intercompany]
+time_semantics: { calendar: fiscal, basis: recognized_date }
+owner: Corporate Controller
+status: standard
+---
+smf: "0.1"
+kind: MetricContract
+id: operations.operational_revenue
+version: 1
+name: Operational Revenue
+measures: { concept_ref: concept.revenue }
+formula: sum(closed_delivery_qty * contract_price)
+grain: delivery
+valid_dimensions: [calendar_month, service_region]
+time_semantics: { calendar: gregorian, basis: delivery_date }
+owner: VP Operations
+certified_for: [operational_reporting]
+status: standard
+---
+smf: "0.1"
+kind: MetricContract
+id: customer.active_customer_count
+version: 1
+name: Active Customer Count
+measures: { concept_ref: concept.active_customer }
+classification_rules: [rule.active_customer.enterprise]
+formula: count_distinct(customer_id)
+grain: customer
+valid_dimensions: [fiscal_period, sales_region]
+time_semantics: { basis: evaluation_date }
+owner: Customer Operations
+status: standard

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: ClaimTrace
+id: claim.2026_q3.board_gm
+statement: "Q3 consolidated gross margin was 31.4%"
+value: 0.314
+unit: ratio
+measurement: finance.consolidated_gross_margin@v2
+concept: concept.gross_margin
+context: { audience: board, period: FY2026-Q3 }
+execution:
+  binding: "power_bi:Finance Model / [Gross Margin %]"
+  executed_at: "2026-10-05T14:00:00Z"
+sources:
+  - { system: accounting, snapshot: "2026-10-04T23:00:00Z" }
+verification: { status: verified, method: reconciled to trial balance }

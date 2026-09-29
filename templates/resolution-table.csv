@@ -1,0 +1,7 @@
+term,context_key,context_value,concept,measurement,state,options,definition,owner
+gross margin,,,,,NEEDS_CLARIFICATION,finance.consolidated_gross_margin|product.gross_margin|services.gross_margin,Share of revenue left after the direct cost of delivering what was sold.,Controller
+gross margin,domain,product,concept.gross_margin,product.gross_margin,,,,
+gross margin,domain,services,concept.gross_margin,services.gross_margin,,,,
+gross margin,audience,board,concept.gross_margin,finance.consolidated_gross_margin,,,,
+customer,,,concept.customer,,,,A party with an established commercial relationship.,Customer Operations
+customer,domain,support,concept.support_account,,,,An organization entitled to support.,VP Support

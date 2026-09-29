@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:claim-trace",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF ClaimTrace",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "ClaimTrace"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "statement": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "measurement": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "concept": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "context": {
+      "type": "object"
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "binding": {
+          "type": "string"
+        },
+        "query_hash": {
+          "type": "string"
+        },
+        "executed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "executed_at"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "system": {
+            "type": "string"
+          },
+          "snapshot": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "system"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "enum": [
+            "w3c_prov",
+            "openlineage",
+            "other"
+          ]
+        },
+        "ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "verified",
+            "failed",
+            "unverified"
+          ]
+        },
+        "method": {
+          "type": "string"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "statement",
+    "value",
+    "measurement",
+    "execution"
+  ],
+  "additionalProperties": false
+}

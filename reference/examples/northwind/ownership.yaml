@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: Ownership
+subject: concept.revenue
+owner: Corporate Controller
+steward: Finance Data Steward
+scope: { layer: enterprise }
+---
+smf: "0.1"
+kind: Ownership
+subject: concept.customer
+owner: Customer Operations
+steward: Data Governance
+scope: { layer: enterprise }
+---
+smf: "0.1"
+kind: Ownership
+subject: concept.support_account
+owner: VP Customer Support
+scope: { layer: domain, domain: support }

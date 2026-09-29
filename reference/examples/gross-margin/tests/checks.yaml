@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: TestCase
+id: test.gm.leadership_asks
+type: ambiguity
+description: In a cross-functional meeting, two things are true; the answer must be a question.
+input: { term: gross margin, context: { audience: leadership } }
+expected: { state: NEEDS_CLARIFICATION, options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin] }
+severity: critical
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.no_context_asks
+type: ambiguity
+input: { term: gross margin }
+expected: { state: NEEDS_CLARIFICATION, options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin] }
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.product_review
+type: selection
+input: { term: gross margin, context: { domain: product } }
+expected: { state: RESOLVED, measurement: product.gross_margin, perspective: perspective.gross_margin.product, must_not: [services.gross_margin] }
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.services_review
+type: selection
+input: { term: gross margin, context: { domain: services } }
+expected: { state: RESOLVED, measurement: services.gross_margin, perspective: perspective.gross_margin.service, must_not: [product.gross_margin] }
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.board
+type: selection
+input: { term: gross margin, context: { audience: board } }
+expected: { state: RESOLVED, measurement: finance.consolidated_gross_margin, perspective: perspective.gross_margin.consolidated }
+severity: critical
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.alias_in_services
+type: resolution
+input: { term: GM, context: { domain: services } }
+expected: { state: RESOLVED, measurement: services.gross_margin }
+---
+smf: "0.1"
+kind: TestCase
+id: test.gm.assistant_leadership_prompt
+type: ambiguity
+description: An AI assistant asked this in a leadership setting must ask which perspective.
+input: { prompt: "What was our gross margin last quarter?", context: { audience: leadership } }
+expected: { state: NEEDS_CLARIFICATION, options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin] }
+severity: critical

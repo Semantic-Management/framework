@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:metric-contract",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF MetricContract",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "MetricContract"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "measures": {
+      "type": "object",
+      "properties": {
+        "concept_ref": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+          "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+        }
+      },
+      "required": [
+        "concept_ref"
+      ],
+      "additionalProperties": false
+    },
+    "perspective": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "The Perspective this contract belongs to (e.g., perspective.gross_margin.service)."
+    },
+    "classification_rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+        "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+      }
+    },
+    "formula": {
+      "type": "string"
+    },
+    "grain": {
+      "type": "string"
+    },
+    "valid_dimensions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "time_semantics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "additivity": {
+      "enum": [
+        "additive",
+        "semi_additive",
+        "non_additive"
+      ],
+      "description": "Whether values can be summed across dimensions/time. Ratios such as margin are non_additive."
+    },
+    "owner": {
+      "type": "string"
+    },
+    "certified_for": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variant_of": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "incomplete",
+        "candidate",
+        "recorded",
+        "qualified",
+        "standard",
+        "preferred_standard",
+        "superseded",
+        "retired",
+        "historical",
+        "application"
+      ],
+      "description": "Registration status, adopted from ISO/IEC 11179-6."
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "comparability": {
+      "type": "object",
+      "description": "Whether results can be compared with, or combined with, other metrics.",
+      "properties": {
+        "comparable_with": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+          }
+        },
+        "not_comparable_with": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+          }
+        },
+        "can_be_combined": {
+          "type": "boolean",
+          "description": "Whether values may be summed/averaged with the metrics it is comparable with."
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "built_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Data contracts (e.g., ODCS contract IDs or URLs) this metric is built on."
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "version",
+    "measures",
+    "formula",
+    "grain"
+  ],
+  "additionalProperties": false
+}

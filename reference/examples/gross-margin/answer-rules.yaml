@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: ResolutionRule
+id: rule.term.gross_margin
+term: gross margin
+owner_ref: concept.gross_margin
+default:
+  state: NEEDS_CLARIFICATION
+  options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin]
+contextual:
+  - when: { domain: product }
+    resolve_to: { measurement: product.gross_margin }
+  - when: { domain: services }
+    resolve_to: { measurement: services.gross_margin }
+  - when: { audience: board }
+    resolve_to: { measurement: finance.consolidated_gross_margin }
+  - when: { audience: leadership }
+    state: NEEDS_CLARIFICATION
+    options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin]
+    prompt: "Which gross margin: consolidated, product, or service?"

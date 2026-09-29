@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:context",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF Context",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "Context"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "description": {
+      "type": "string"
+    },
+    "conditions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean"
+        ]
+      },
+      "description": "Attributes such as domain, business_unit, geography, process, audience, application, regulatory_regime, user_intent, effective_period."
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "conditions"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:semantic-management-framework:0.1:schema:concept",
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "title": "SMF Concept",
+  "type": "object",
+  "properties": {
+    "smf": {
+      "const": "0.1"
+    },
+    "kind": {
+      "const": "Concept"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "description": "Stable, namespaced identifier. Never derived from a label alone."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "incomplete",
+        "candidate",
+        "recorded",
+        "qualified",
+        "standard",
+        "preferred_standard",
+        "superseded",
+        "retired",
+        "historical",
+        "application"
+      ],
+      "description": "Registration status, adopted from ISO/IEC 11179-6."
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "effective_to": {
+      "type": "string",
+      "format": "date"
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "predicate": {
+            "enum": [
+              "is_a",
+              "part_of",
+              "variant_of",
+              "associated_with",
+              "split_into",
+              "merged_into",
+              "deprecated_by",
+              "maps_to"
+            ]
+          },
+          "object": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+            "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+          }
+        },
+        "required": [
+          "predicate",
+          "object"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "replaced_by": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$",
+      "description": "Reference to an ID, optionally pinned to a version (id@vN)."
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "smf",
+    "kind",
+    "id",
+    "name",
+    "definition"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+smf: "0.1"
+kind: Binding
+subject: finance.net_revenue@v3
+implementation: { platform: power_bi, ref: "Finance Model / [Net Revenue]" }
+baseline: baseline.net_revenue.2026q2
+conformance_status: conformant
+---
+smf: "0.1"
+kind: Binding
+subject: finance.net_revenue@v3
+implementation: { platform: dbt, ref: "metrics.net_revenue" }
+baseline: baseline.net_revenue.2026q2
+conformance_status: conformant
+---
+smf: "0.1"
+kind: Binding
+subject: finance.net_revenue@v3
+implementation: { platform: sql, ref: "adhoc/net_rev.sql" }
+conformance_status: legacy
