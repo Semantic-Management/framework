@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.6 (2026-09-29): Wrap-up
+
+### Changed
+- `docs/semantic-authority.md`: the sample API block moved to `reference/examples/semantic-authority-examples.md` ("Sample API shape (optional)"), replaced by one plain sentence and a link.
+- `docs/roadmap.md`: v0.4 through v0.4.5 summarized as one "Done" line; "this version" wording removed.
+- `CLAUDE.md`: shortened. It defers to `AGENTS.md`, lists the local check commands and states the branch-and-pull-request workflow.
+
+### Added
+- `reference/tools/check-links.py`: checks that relative Markdown links and heading anchors resolve.
+
 ## v0.4.5 (2026-09-29): Plain language
 
 ### Changed

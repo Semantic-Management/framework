@@ -4,7 +4,7 @@
 - **v0.1:** initial starter: definitions, principles, practices, Semantic Authority
 - **v0.2:** practices made independently adoptable
 - **v0.3:** machine-readable reference and CLI (since moved to `reference/`)
-- **v0.4 (this version):** reframed as a discipline for business meaning; "Two things can be true" as the headline principle; Perspective as a core term; gross margin as the flagship example; Metric Contract as the signature artifact with comparability; business-first docs; technical material moved to `reference/`
+- **v0.4.x:** discipline framing, perspectives, gross margin example, Semantic Contracts, contracts in context, licensing, consistency and plain-language passes; published at github.com/Semantic-Management/framework
 
 ## Next
 - [x] License: CC BY 4.0 (framework and docs) and Apache-2.0 (reference code). See `LICENSING.md`

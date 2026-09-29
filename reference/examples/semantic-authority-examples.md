@@ -127,3 +127,24 @@ maps_to:
 
 mapping_type: contextual
 ```
+
+## Sample API shape (optional)
+
+A lightweight authority service could expose:
+
+```text
+GET /concepts/{id}
+GET /entities/{id}
+GET /terms/{term}/resolve
+GET /contexts/{id}
+GET /authority/{id}
+GET /relationships/{id}
+```
+
+Resolution:
+
+```text
+resolve(term, context) → state + concept + basis
+```
+
+This API is optional infrastructure, not a requirement for adoption.
