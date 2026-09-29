@@ -73,7 +73,7 @@ For each adjacent framework or standard, determine whether it addresses:
 | Meaning | Does it govern business concept definitions? |
 | Identity | Does meaning have stable identifiers? |
 | Authority | Does it specify who can establish meaning? |
-| Scope | Can authority vary by domain/context? |
+| Scope | Can authority vary by business area or context? |
 | Resolution | Can a term be deterministically resolved in context? |
 | Ambiguity | Is unresolved ambiguity an explicit state? |
 | Relationships | Can concepts and variants be related? |

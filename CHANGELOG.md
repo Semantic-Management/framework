@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.4.5 (2026-09-29): Plain language
+
+### Changed
+- `docs/semantic-authority.md`: the ten YAML examples moved to `reference/examples/semantic-authority-examples.md` and replaced with plain-language sentences and links. "Domain" replaced with "business area" where it was SMF's own term ("domain layer" is now "business-area layer"). The five technical state names replaced with the plain answers from the vocabulary.
+- `docs/ai-governance-evidence.md`: schema names replaced with plain terms (ownership records, conflict records, context definitions, checks, claim traces).
+- `docs/research-agenda.md`: "domain/context" reworded to "business area or context".
+- Every non-normative page now carries the same `**Type:** Non-normative` line under its title, on its own line.
+- `AGENTS.md`: added an exception under "Audience first" allowing `docs/research/` and `docs/patterns/` to name fields and schema identifiers when quoting a source or describing a technical pattern, provided they are labeled non-normative.
+
+### Added
+- `reference/examples/semantic-authority-examples.md`: illustrative YAML for each Semantic Authority object, with headings that match the practice page.
+
 ## v0.4.4 (2026-09-29): Consistency fixes
 
 ### Changed

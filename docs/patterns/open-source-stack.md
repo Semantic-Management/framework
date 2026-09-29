@@ -1,6 +1,8 @@
 # Reference Pattern: Open-Source Stack
 
-**Type:** Non-normative reference pattern. One way to implement SMF entirely on open projects. None of these components is required.
+**Type:** Non-normative
+
+This is a reference pattern: one way to implement SMF entirely on open projects. None of these components is required.
 
 ## Stack
 
