@@ -8,9 +8,9 @@ Two things are true at once:
 | --- | --- | --- |
 | Product | Product Line Lead | (Product revenue − landed cost of goods) ÷ product revenue. Cost includes materials, freight-in and duties. |
 | Service | Services Lead | (Service revenue − technician labor, subcontractors and parts used) ÷ service revenue |
-| Consolidated | Controller | (Total revenue − total cost of revenue) ÷ total revenue, as reported. Enterprise default for board and external reporting. |
+| Consolidated | Controller | (Total revenue − total cost of revenue) ÷ total revenue, as reported. Broader than Product and Service. Enterprise default for board and external reporting only. |
 
-The formulas look alike, but "cost" means different things in each. The product and service margins are **not** comparable and must not be averaged.
+The formulas look alike, but "cost" means different things in each. None of the three is comparable with another as a margin, and they must not be averaged. Consolidated is computed from totals and will not reconcile to Product and Service by arithmetic; the Controller owns the reconciliation.
 
 Resolution: context selects the perspective. When context can't (a cross-functional leadership meeting, or no context), the answer is "which perspective?"
 

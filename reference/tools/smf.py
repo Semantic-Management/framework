@@ -145,6 +145,8 @@ def refs_in(d):
         yield "concept_ref", get("concept_ref")
     elif k == "Perspective":
         yield "concept_ref", get("concept_ref")
+        for r in get("broader_than", []) or []:
+            yield "broader_than", r
     elif k == "MetricContract":
         yield "measures.concept_ref", get("measures", {}).get("concept_ref")
         if get("perspective"):

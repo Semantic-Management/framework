@@ -51,7 +51,7 @@ One rule keeps this clean: **one place computes, one place agrees.** The metric 
 | Semantic layers (dbt MetricFlow, others) | The executable version of the contract; the contract records which build implements it |
 | BI measures (e.g., Power BI) | Same: an implementation, linked from the contract |
 | Metric stores | Can host the contract's calculation; the contract adds perspective, ownership, approved uses and comparability |
-| Apache Ossie | Portable format for metric definitions; the contract carries the governance and perspective information Ossie doesn't |
+| Apache Ossie | Portable format for metric definitions; the contract carries the ownership, approval and trust information Ossie leaves out, plus perspective and comparability |
 | ODCS / ODPS data contracts | Describe the datasets the metric is built on; the Metric Contract describes the business number on top |
 | Catalogs and glossaries | Can store and display contracts |
 

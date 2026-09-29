@@ -24,7 +24,7 @@ Typical trigger: multiple BI tools, conflicting executive numbers, an AI initiat
 
 ## Enterprise (ongoing program)
 
-Typical trigger: many domains, semantic layers, regulated reporting, AI agents in production.
+Typical trigger: many business areas, semantic layers, regulated reporting, AI agents in production.
 
 - Delegated ownership by business area; a small enterprise forum for defaults and cross-functional conflicts
 - Answer rules served to semantic layers and AI agents

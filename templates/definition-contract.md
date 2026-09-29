@@ -19,7 +19,7 @@
 | [e.g., Billing] | [e.g., A party we invoice] | [e.g., Has an active billing account] | [e.g., Controller] |
 | [e.g., Support] | [e.g., An organization entitled to support] | [e.g., Has an active service agreement] | [e.g., VP Support] |
 
-**Enterprise default (if any):** [Which perspective applies when the question is enterprise-wide]
+**Enterprise default (if any):** [Which perspective the answer rules name for specific enterprise contexts, e.g., board reporting. Leave blank if none. Contexts that match no rule ask.]
 
 ## Which one applies when
 

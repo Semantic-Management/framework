@@ -64,7 +64,7 @@ For each practice:
 
 **What it involves:**
 - Name an owner for each concept and perspective.
-- Set enterprise defaults where one is needed (often Finance's consolidated view).
+- Name an enterprise default where one is needed, for specific contexts such as board reporting (often Finance's consolidated view). It is not a fallback for other questions.
 - Decide conflicts. The four outcomes:
   - **merge:** they're the same;
   - **keep both as perspectives:** both are legitimate;
@@ -73,9 +73,9 @@ For each practice:
 
 | Small | Mid-size | Enterprise |
 | --- | --- | --- |
-| The owner signs off on each definition | Named owners per perspective; a monthly decision slot | Delegated domain owners; central forum only for cross-functional conflicts |
+| The owner signs off on each definition | Named owners per perspective; a monthly decision slot | Delegated business-area owners; central forum only for cross-functional conflicts |
 
-**Works with:** existing data stewardship and governance councils, data mesh domain ownership. Detail: [semantic-authority.md](semantic-authority.md).
+**Works with:** existing data stewardship and governance councils, data mesh domain ownership (a data mesh concept). Detail: [semantic-authority.md](semantic-authority.md).
 
 ---
 
@@ -94,7 +94,7 @@ For each practice:
 | --- | --- | --- |
 | A table of terms, contexts and perspectives shared with the team and the AI assistant | Answer rules for all priority terms, built into report descriptions and AI prompts | Answer rules served to semantic layers and AI agents |
 
-**Works with:** semantic layers, AI assistant instructions and context, ODCS data contract `context` blocks, Apache Ossie `ai_context`.
+**Works with:** semantic layers, AI assistant instructions and context, the AI context that ODCS data contracts and Apache Ossie models can carry.
 
 ---
 

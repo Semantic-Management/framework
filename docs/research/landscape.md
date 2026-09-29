@@ -3,7 +3,7 @@
 **Status:** v0.2 (2026-09-28)
 **Type:** Research (non-normative)
 
-This file keeps **sourced findings** separate from SMF proposals. Each entry states what the work is, what it covers that matters to SMF, and what it leaves out. Citations are in [bibliography.md](bibliography.md). Status: v0.2 (2026-09-28).
+This file keeps **sourced findings** separate from SMF proposals. Each entry states what the work is, what it covers that matters to SMF, and what it leaves out. Citations are in [bibliography.md](bibliography.md).
 
 ---
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.4.4 (2026-09-29): Consistency fixes
+
+### Changed
+- **Enterprise default** now applies only in the contexts an answer rule names (for example board and external reporting). It is not a fallback for company-wide questions; when context doesn't match a rule, ask. Wording aligned in vocabulary, practices, Semantic Authority, the Definition Contract template and the examples.
+- **Consolidated Gross Margin** is recorded as broader than Product and Service. It is computed from totals, may define cost differently, and is reconciled by the Controller. None of the three is comparable with another as a margin. Updated in the gross margin example and its Metric Contracts.
+- **Perspective is reframed as applied prior art**, not an SMF invention. "What SMF adds" in `works-with.md` now credits DDD, SBVR, Business Semantics Management and Egeria and links to the landscape research. The Apache Ossie row in `metric-contract.md` corrected to match the research.
+- ODCS technical detail (linking example and field names) moved from `docs/` to `reference/spec/README.md`. Framework pages now describe it in plain language.
+- "Proof" replaced with "evidence" in the framework's core question. "Domain" replaced with "business area" where it was SMF's own term.
+- Non-normative type labels added to the gross margin example, research agenda and bibliography. Duplicate status line removed from the landscape research.
+- Framework overview no longer says every practice has three size forms; a few, like Interchange, are usually only needed at larger scale.
+
+### Added
+- Vocabulary entries for the seven roles, Build record and Change note.
+- Optional `broader_than` field on the Perspective schema, checked as a reference by the validator, and set on the consolidated perspective in the gross margin example.
+- `not_comparable_with` on the consolidated Metric Contract in the gross margin example.
+
 ## v0.4.3 (2026-09-29)
 - Repository moved to github.com/Semantic-Management/framework; links added to README and CONTRIBUTING.
 - CI job renamed to `checks`.

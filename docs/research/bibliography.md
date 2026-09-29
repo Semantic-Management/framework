@@ -1,6 +1,7 @@
 # Bibliography
 
 **Status:** v0.2 (2026-09-28). Accessed dates are 2026-09-28 unless noted.
+**Type:** Research (non-normative)
 
 | Key | Source |
 | --- | --- |

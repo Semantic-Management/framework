@@ -273,7 +273,7 @@ The same applies to entities such as Customer (commercial, billing, support, leg
 
 The practice should express:
 
-- default enterprise meaning;
+- enterprise defaults for named contexts;
 - domain-specific meanings;
 - explicit relationships;
 - resolution rules.
@@ -289,7 +289,7 @@ Example:
 ```text
 Term: "Region"
 
-Enterprise default:
+Enterprise reporting context:
 concept.sales_region
 
 Finance context:

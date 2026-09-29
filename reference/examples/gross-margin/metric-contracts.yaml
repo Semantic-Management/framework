@@ -61,9 +61,9 @@ built_on: [odcs:general_ledger]
 owner: Controller
 certified_for: [board_reporting, external_reporting]
 comparability:
-  comparable_with: []
+  not_comparable_with: [product.gross_margin, services.gross_margin]
   can_be_combined: false
-  notes: Not the average of product and service margins; it is computed from totals.
+  notes: Broader than product and service. Computed from totals, not the average or sum of their margins. Its cost definition can differ (for example reserves or freight), so the three do not reconcile by arithmetic. The Controller owns the reconciliation.
 status: standard
 ---
 smf: "0.1"
