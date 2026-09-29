@@ -27,21 +27,12 @@ Semantic Contract
 
 Data contracts describe datasets. SMF contracts describe the business meaning built on top of them. They link in both directions:
 
-- **From the data contract to meaning.** ODCS lets any object or column carry `authoritativeDefinitions`, links to sources that define it, including a `businessDefinition` type. A column can point to the SMF contract that gives it business meaning.
+- **From the data contract to meaning.** An ODCS data contract can link each field to the business definition it supports. A column can point to the SMF contract that gives it business meaning.
 - **From meaning to the data.** A Metric Contract lists the data contracts it's built on.
 
-Example: the `landed_cost_of_goods` column in a data contract links to the Product Gross Margin Metric Contract:
+For example, the landed cost column in a sales data contract can link to the Product Gross Margin Metric Contract. Technical details and an example are in the [reference](../reference/spec/README.md).
 
-```yaml
-# Inside an ODCS data contract (illustrative)
-properties:
-  - name: landed_cost_of_goods
-    authoritativeDefinitions:
-      - type: businessDefinition
-        url: https://example.org/semantic/metric-contracts/product-gross-margin
-```
-
-**One overlap to be clear about:** ODCS 3.2 added an AI `context` block and a `semanticType` tag (column, measure, dimension) to data contracts. These describe **one dataset**. SMF handles meaning **across** datasets: perspectives, owners, comparability, and when to ask "which one?". Use both. Don't duplicate one inside the other.
+**One overlap to be clear about:** newer versions of ODCS let a data contract carry AI guidance and tag what each field is (a column, a measure or a dimension). These describe **one dataset**. SMF handles meaning **across** datasets: perspectives, owners, comparability, and when to ask "which one?". Use both. Don't duplicate one inside the other.
 
 ## Working with metric catalogs and semantic layers
 
@@ -79,6 +70,5 @@ Metric catalogs, metric stores and semantic layers (for example dbt MetricFlow, 
 SMF does not claim to have invented the metric contract. Its contribution is making **perspective, approved use and comparability** part of it.
 
 ## Sources
-- ODCS v3.2 schema (`authoritativeDefinitions`): https://bitol-io.github.io/open-data-contract-standard/v3.2.0/schema/
-- ODCS v3.2 / ODPS v1.1 release notes (AI `context`, `semanticType`): https://www.entropy-data.com/news/2026-09-08-odcs-3-2-odps-1-1
+- ODCS and ODPS sources: see the [reference](../reference/spec/README.md).
 - Generic use of "metric contract": https://weaveos.com/glossary/metric-contract ; https://datalakehousehub.com/blog/metric-contracts-code-multi-agent/

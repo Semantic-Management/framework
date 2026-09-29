@@ -1,5 +1,7 @@
 # Example: Gross Margin, Three Perspectives
 
+**Type:** Non-normative
+
 **Fictional company:** Lakeview Supply & Service sells appliances (**products**) and installs and maintains them (**services**). The situation is common in businesses of every size.
 
 ---
@@ -34,10 +36,11 @@ The formulas look alike, which is exactly why nobody questions the difference. *
 
 **Authority.**
 - Each perspective gets its owner.
-- The Controller's consolidated view is the enterprise default for board and external reporting.
+- The Controller's consolidated view is the enterprise default for board and external reporting only. Anywhere else the answer rule decides, or asks.
+- Record the relationship as **broader/narrower**. Consolidated is broader: it covers all revenue and all cost of revenue. Product and Service are narrower, operational perspectives. Consolidated is computed from totals, not averaged and not a simple sum of the two margins. Its cost definition can differ (for example reserves or freight treatment), so the three won't reconcile by arithmetic. The Controller owns the reconciliation.
 - The averaged spreadsheet is retired. Averaging the two perspectives has no agreed meaning.
 
-**Measurement.** Write a [Metric Contract](../metric-contract.md) for each perspective. Each states it is **not comparable** with the other operating perspective and must not be averaged.
+**Measurement.** Write a [Metric Contract](../metric-contract.md) for each perspective. None of the three is comparable with another as a margin, and each contract says so. None may be averaged. The consolidated contract adds that the Controller owns the reconciliation.
 
 **Resolution.** Write the answer rule:
 

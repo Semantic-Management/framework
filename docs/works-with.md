@@ -24,7 +24,7 @@ SMF is designed to plug gaps. It can run **together** with your existing framewo
 | BI semantic models (e.g., Power BI) | Implementation |
 | Knowledge graphs and ontologies | Modeling, Resolution |
 | Open metadata (Egeria) | Modeling, Authority, Implementation |
-| Data contracts (ODCS / ODPS) | The datasets beneath Metric Contracts; link both ways via ODCS `authoritativeDefinitions`. See [contracts-in-context.md](contracts-in-context.md) |
+| Data contracts (ODCS / ODPS) | The datasets beneath Metric Contracts; an ODCS data contract can link each field to the business definition it supports, and SMF contracts link back to the data contracts they're built on. See [contracts-in-context.md](contracts-in-context.md) |
 | Interchange formats (Apache Ossie) | Interchange of metric definitions |
 | Lineage (OpenLineage / Marquez) | Implementation and claim traces |
 | AI tracing (e.g., Monocle) and AI assistant instructions | Resolution and Assurance for AI consumers |
@@ -32,9 +32,13 @@ SMF is designed to plug gaps. It can run **together** with your existing framewo
 
 An all-open-source reference setup is described in [patterns/open-source-stack.md](patterns/open-source-stack.md).
 
-## What SMF adds that these don't
+## What SMF adds
 
-- **Perspectives:** two things can be true, each with an owner
-- **The answer rule:** context selects the perspective; when it can't, ask
+Meaning that depends on context is established work, not an SMF invention. Domain-driven design's bounded contexts, SBVR, Business Semantics Management and Egeria's context-specific glossary terms all handle it. See the [landscape research](research/landscape.md).
+
+SMF's contribution is applying that idea to business metrics and AI answers:
+
+- **Perspectives with named owners**, plus approved and not-approved uses, for each legitimate meaning of a metric
+- **Ask when context can't decide:** expected behavior for people and AI, not a guess
 - **Comparability:** what can and can't be compared or combined
 - **Checks** that people and AI actually used the intended meaning

@@ -10,7 +10,7 @@
 
 ## The core question
 
-> How does an organization intentionally manage business meaning, from definition and authority through measurement, implementation, machine interpretation and proof?
+> How does an organization intentionally manage business meaning, from definition and authority through measurement, implementation, machine interpretation and evidence?
 
 ## The operating model at a glance
 
@@ -46,7 +46,7 @@ Context ──────────────────┴──► Answe
 
 - **Technology-independent.** Catalogs, semantic layers, metric stores, knowledge graphs, ontologies and governance platforms are ways to implement SMF, not competitors.
 - **Framework-friendly.** SMF works together with other frameworks, separately from them, or as individual functions inside them.
-- **Any size.** Every practice has a small, mid-size and enterprise form.
+- **Any size.** Every practice scales from small teams to enterprises; a few, like Interchange, are usually only needed at larger scale.
 - **Adopt in pieces.** No practice requires another, a fixed sequence or a central system.
 - **Business-first.** The framework is written for business and analytics leaders. Technical material lives in [reference/](../reference/README.md).
 

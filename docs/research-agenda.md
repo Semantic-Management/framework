@@ -2,6 +2,8 @@
 
 The framework should be developed with explicit comparison to adjacent disciplines rather than assuming novelty.
 
+**Type:** Non-normative
+
 ## Primary research question
 
 > Does an established framework already provide a comparable operating model for managing organizational meaning across authority, contextual resolution, measurement, implementation, machine consumption, assurance and lifecycle, as independently adoptable practices?

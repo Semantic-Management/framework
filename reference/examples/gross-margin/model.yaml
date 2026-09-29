@@ -31,10 +31,11 @@ kind: Perspective
 id: perspective.gross_margin.consolidated
 concept_ref: concept.gross_margin
 name: Consolidated Gross Margin
-description: Company-wide margin as reported in the financial statements.
+description: Company-wide margin as reported in the financial statements. Covers all revenue and all cost of revenue.
 owner: Controller
 applies_when: { audience: board }
 enterprise_default: true
+broader_than: [perspective.gross_margin.product, perspective.gross_margin.service]
 status: standard
 ---
 smf: "0.1"

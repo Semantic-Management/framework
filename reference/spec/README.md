@@ -40,7 +40,27 @@ Schemas use JSON Schema draft 2020-12. Schema IDs are URNs (`urn:semantic-manage
 
 - A **Metric Contract** is the `MetricContract` document (plus `Binding` documents for where it's implemented). Field names align with those commonly used for metric contracts: expression (`formula`), `grain`, `valid_dimensions`, `filters`, `time_semantics`, `additivity`, `owner`, certification (`certified_for`), `version`. SMF adds `perspective`, approved uses, `comparability` and `built_on` (links to data contracts).
 - A **Definition Contract** is a set of documents: `Concept`, its `Perspective`s, `Term`s, `Ownership`, any `ClassificationRule`s and the `ResolutionRule` for the term.
-- To link from an ODCS data contract to an SMF contract, use ODCS `authoritativeDefinitions` with type `businessDefinition`. See [docs/contracts-in-context.md](../../docs/contracts-in-context.md).
+- To link from an ODCS data contract to an SMF contract, use ODCS `authoritativeDefinitions` with type `businessDefinition`. In the other direction, a `MetricContract` lists the data contracts it is built on in `built_on`. For the business-level picture, see [docs/contracts-in-context.md](../../docs/contracts-in-context.md).
+- A `Perspective` may set `broader_than` (a list of perspective references) when it contains other perspectives, as Consolidated Gross Margin contains Product and Service. It records containment only. Comparability stays on the `MetricContract`.
+
+#### Linking an ODCS data contract to an SMF contract (illustrative)
+
+```yaml
+# Inside an ODCS data contract
+properties:
+  - name: landed_cost_of_goods
+    authoritativeDefinitions:
+      - type: businessDefinition
+        url: https://example.org/semantic/metric-contracts/product-gross-margin
+```
+
+#### Overlap with ODCS 3.2 `context` and `semanticType`
+
+ODCS 3.2 added an AI `context` block and a `semanticType` tag (column, measure, dimension) to data contracts. They describe **one dataset**. SMF documents describe meaning **across** datasets: perspectives, owners, comparability and the five resolution states. Use both, and do not duplicate one inside the other.
+
+Sources:
+- ODCS v3.2 schema (`authoritativeDefinitions`): https://bitol-io.github.io/open-data-contract-standard/v3.2.0/schema/
+- ODCS v3.2 / ODPS v1.1 release notes (AI `context`, `semanticType`): https://www.entropy-data.com/news/2026-09-08-odcs-3-2-odps-1-1
 
 ## 2. Identifiers
 

@@ -43,7 +43,16 @@
       "description": "Context conditions that normally select this perspective."
     },
     "enterprise_default": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "The perspective an answer rule names for specific enterprise contexts (e.g., board reporting). Not a fallback for other questions."
+    },
+    "broader_than": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+(@v[0-9]+)?$"
+      },
+      "description": "Perspectives this one contains (it is the broader of the pair)."
     },
     "status": {
       "type": "string",

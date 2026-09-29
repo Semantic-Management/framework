@@ -47,13 +47,22 @@ Guessing is never one of the answers.
 | **Definition Contract** | The agreed meaning of a business term, with its perspectives, classification rules and owners (template: [definition-contract.md](../templates/definition-contract.md)) |
 | **Data Contract** | Not an SMF artifact: a promise about a dataset (e.g., ODCS). SMF contracts link to data contracts |
 | **Owner** | The person accountable for a concept, perspective or Metric Contract within a scope |
-| **Enterprise default** | The perspective used when a question is enterprise-wide, if one has been set (often Finance's consolidated view) |
+| **Enterprise default** | The perspective an answer rule names for specific enterprise contexts, such as board and external reporting. It is not a fallback for every company-wide question; when context doesn't match a rule, ask |
 | **Classification rule** | What counts as an instance, e.g., what makes a customer "active". Part of meaning, not measurement |
 | **Comparability** | Whether two metrics can be compared or combined. Part of every Metric Contract |
 | **Answer rule** | The written rule for which perspective a term resolves to in which context |
 | **Conflict** | A declared, owned disagreement that hasn't been decided yet |
 | **Check** | A test that a report or AI tool used the intended meaning |
 | **Claim trace** | The record that backs up a specific reported number |
+| **Meaning owner** | The person accountable for what a concept or perspective means within a scope |
+| **Metric owner** | The person who approves a Metric Contract and its changes |
+| **Steward** | The person who writes and maintains definitions, answer rules and checks |
+| **Enterprise authority** | The person or small forum that sets enterprise defaults and decides cross-functional conflicts |
+| **Builder** | The person who implements definitions in reports, semantic layers and AI tools |
+| **Consumer owner** | The person accountable for how a report suite or AI assistant uses meaning |
+| **Checker** | The person who runs checks and keeps the evidence |
+| **Build record** | Where a contract is implemented, and whether that build matches the contract |
+| **Change note** | What changed in a definition, why, and from when |
 
 ## Words SMF avoids
 
