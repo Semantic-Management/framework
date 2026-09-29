@@ -10,6 +10,7 @@
 ### Changed
 - `reference/tools/check-links.py`: skips `site/` and the website build folders.
 - `docs/roles-and-artifacts.md` and `reference/README.md`: two folder links now point to a page (or to GitHub) so they work on the website.
+- Home page browser-tab title no longer repeats the site name.
 
 ## v0.4.6 (2026-09-29): Wrap-up
 
