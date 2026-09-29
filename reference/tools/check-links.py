@@ -10,7 +10,9 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-SKIP_DIRS = {".git", ".venv", "node_modules"}
+# site/ holds the website home page, whose links are relative to the built site;
+# `mkdocs build --strict` checks those. _site_src/ and _site/ are build output.
+SKIP_DIRS = {".git", ".venv", "node_modules", "site", "_site_src", "_site"}
 
 
 def slug(heading: str) -> str:

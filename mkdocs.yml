@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: Apache-2.0
+# Website configuration. Build with:  python site/build.py && mkdocs build
+site_name: Semantic Management Framework
+site_description: An open, technology-independent operating model for managing business meaning across people, data, analytics and AI.
+site_url: https://semantic-management.github.io/framework/
+repo_url: https://github.com/Semantic-Management/framework
+repo_name: Semantic-Management/framework
+edit_uri: edit/main/
+copyright: Framework CC BY 4.0 · Reference code Apache-2.0
+
+docs_dir: _site_src
+site_dir: _site
+
+# MkDocs hides a folder named templates/ by default; SMF publishes its templates.
+exclude_docs: |
+  !/templates/
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - assets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+
+validation:
+  links:
+    not_found: warn
+    anchors: warn
+    unrecognized_links: info
+
+nav:
+  - Home: index.md
+  - Start here:
+      - The missing discipline: docs/discipline.md
+      - "Example: gross margin": docs/examples/gross-margin.md
+      - Getting started: docs/getting-started.md
+  - Framework:
+      - Overview: docs/framework.md
+      - Principles: docs/principles.md
+      - Vocabulary: docs/vocabulary.md
+      - Lifecycle: docs/lifecycle.md
+      - Practices: docs/practices.md
+      - Semantic Authority: docs/semantic-authority.md
+      - Roles and artifacts: docs/roles-and-artifacts.md
+  - Semantic Contracts:
+      - Metric Contract: docs/metric-contract.md
+      - Contracts in context: docs/contracts-in-context.md
+      - Templates:
+          - templates/README.md
+          - Metric Contract template: templates/metric-contract.md
+          - Definition Contract template: templates/definition-contract.md
+  - Works with:
+      - Frameworks and tools: docs/works-with.md
+      - AI governance evidence: docs/ai-governance-evidence.md
+      - Open-source reference stack: docs/patterns/open-source-stack.md
+  - Research:
+      - Landscape: docs/research/landscape.md
+      - Research agenda: docs/research-agenda.md
+      - Bibliography: docs/research/bibliography.md
+      - Roadmap: docs/roadmap.md
+  - Reference:
+      - reference/README.md
+      - Specification: reference/spec/README.md
+      - "Example: gross margin (machine form)": reference/examples/gross-margin/README.md
+      - "Example: Northwind": reference/examples/northwind/README.md
+      - Semantic Authority examples: reference/examples/semantic-authority-examples.md
+  - Project:
+      - Contributing: CONTRIBUTING.md
+      - Governance: GOVERNANCE.md
+      - Licensing: LICENSING.md
+      - Code of conduct: CODE_OF_CONDUCT.md
+      - Changelog: CHANGELOG.md

@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.4.7 (2026-09-29): Website
+
+### Added
+- A browsable website built with MkDocs Material and published to GitHub Pages: `mkdocs.yml`, `site/` (home page, styles, build script, requirements) and `.github/workflows/pages.yml`.
+- `.github/ISSUE_TEMPLATE/config.yml`: a "Questions and ideas → Discussions" link on the new-issue page.
+- `site/build.py` assembles the website source so every relative link that works on GitHub also works on the site, and adjusts GitHub-style lists so they render the same.
+
+### Changed
+- `reference/tools/check-links.py`: skips `site/` and the website build folders.
+- `docs/roles-and-artifacts.md` and `reference/README.md`: two folder links now point to a page (or to GitHub) so they work on the website.
+
 ## v0.4.6 (2026-09-29): Wrap-up
 
 ### Changed

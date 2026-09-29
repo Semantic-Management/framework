@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: CC-BY-4.0 */
+:root {
+  --smf-accent: #2f5d8a;
+}
+.smf-hero {
+  padding: 1.5rem 0 0.5rem;
+}
+.smf-hero h1 {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.smf-hero .smf-tagline {
+  font-size: 1.15rem;
+  opacity: 0.85;
+  max-width: 44rem;
+}
+.smf-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 1.6rem;
+}
+.smf-card {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.6rem;
+  padding: 1rem 1.1rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.smf-card:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: var(--md-shadow-z2);
+}
+.smf-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+.smf-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.smf-quote {
+  border-left: 4px solid var(--md-accent-fg-color);
+  padding: 0.4rem 1rem;
+  margin: 1.2rem 0;
+  font-size: 1.05rem;
+}
