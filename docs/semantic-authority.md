@@ -537,24 +537,7 @@ Governance includes authority, context, conflict and resolution behavior that go
 
 ## 19. API shape
 
-A lightweight authority service could expose:
-
-```text
-GET /concepts/{id}
-GET /entities/{id}
-GET /terms/{term}/resolve
-GET /contexts/{id}
-GET /authority/{id}
-GET /relationships/{id}
-```
-
-Resolution:
-
-```text
-resolve(term, context) → state + concept + basis
-```
-
-This API is optional infrastructure, not a requirement for adoption.
+A lightweight service could expose concepts, perspectives, owners and answer rules to tools and AI; see the [reference](../reference/examples/semantic-authority-examples.md#sample-api-shape-optional) for an illustrative API shape. It is optional, not required to adopt SMF.
 
 ---
 
