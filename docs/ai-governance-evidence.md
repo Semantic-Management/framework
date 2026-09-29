@@ -1,6 +1,8 @@
 # SMF Outputs as AI Governance Evidence
 
-**Type:** Non-normative mapping. Not legal or audit advice; confirm with your own governance and audit functions.
+**Type:** Non-normative
+
+This is a mapping, not legal or audit advice. Confirm it with your own governance and audit functions.
 
 AI governance frameworks ask organizations to show that AI systems are tested, monitored and controlled. SMF's Assurance outputs are concrete evidence that an AI consumer handles business meaning as intended.
 
@@ -10,10 +12,10 @@ The AI RMF organizes activities into four functions: Govern, Map, Measure, Manag
 
 | AI RMF function | SMF evidence |
 | --- | --- |
-| **Govern**: accountability, policies, roles | `Ownership` documents; `Conflict` records with owners; resolution rules approved by named owners |
-| **Map**: context and intended use | `Context` definitions; resolution rules stating which meaning applies where; certification scopes on metric contracts |
-| **Measure**: testing and evaluation | `TestCase` suites and pass/fail results per consumer and release; clarification and ungoverned-term rates |
-| **Manage**: responding to and tracking risks | Failed tests and failed `ClaimTrace` verifications routed to existing incident and change processes; versioned, effective-dated contracts |
+| **Govern**: accountability, policies, roles | Ownership records; conflict records with owners; resolution rules approved by named owners |
+| **Map**: context and intended use | Context definitions; resolution rules stating which meaning applies where; certification scopes on metric contracts |
+| **Measure**: testing and evaluation | Suites of checks and pass/fail results per consumer and release; clarification and ungoverned-term rates |
+| **Manage**: responding to and tracking risks | Failed checks and failed claim trace verifications routed to existing incident and change processes; versioned, effective-dated contracts |
 
 ## ISO/IEC 42001 (AI management system)
 

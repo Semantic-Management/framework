@@ -4,7 +4,7 @@
 **Type:** Practice detail, adoptable on its own
 **Purpose:** Define how an organization establishes, scopes and resolves authoritative business meaning
 
-> This is the most detailed practice page. Sections with YAML examples are illustrations for technical teams; the practice itself needs only named owners, written perspectives and recorded decisions.
+> This is the most detailed practice page. YAML examples now live in [reference/](../reference/examples/semantic-authority-examples.md) for technical teams; the practice itself needs only named owners, written perspectives and recorded decisions.
 
 ---
 
@@ -109,7 +109,7 @@ subscriber
 
 Meaning may depend on:
 
-- domain;
+- business area;
 - business unit;
 - geography;
 - audience;
@@ -173,24 +173,13 @@ A minimal practice needs six objects. Concept, Term and Context are defined in t
 
 A stable identity for a business meaning.
 
-```yaml
-id: concept.customer
-name: Customer
-definition: >
-  A party with an established commercial relationship
-  with the organization.
-```
+For example, Customer is given a stable ID and a one-sentence definition: a party with an established commercial relationship with the organization. See the [example](../reference/examples/semantic-authority-examples.md#61-concept).
 
 ### 6.2 Entity
 
 A concept with identity/key semantics.
 
-```yaml
-id: entity.customer
-concept_ref: concept.customer
-identity_description: >
-  Canonical organizational customer identity.
-```
+For example, the Customer entity is tied to the Customer concept and describes the canonical organizational customer identity. See the [example](../reference/examples/semantic-authority-examples.md#62-entity).
 
 Semantic Authority does not need to own the actual MDM records.
 
@@ -198,59 +187,31 @@ Semantic Authority does not need to own the actual MDM records.
 
 A label or alias used by people/systems.
 
-```yaml
-term: client
-maps_to: concept.customer
-context: sales
-```
+For example, "client" is recorded as a word that means Customer in a sales context. See the [example](../reference/examples/semantic-authority-examples.md#63-term).
 
 ### 6.4 Context
 
 A named condition under which meaning or resolution may differ.
 
-```yaml
-id: context.external_reporting
-```
+For example, external reporting is recorded as a named context. See the [example](../reference/examples/semantic-authority-examples.md#64-context).
 
 ### 6.5 Authority Assignment
 
 Who can establish or approve meaning within a scope.
 
-```yaml
-subject: concept.customer
-authority:
-  owner: Customer Operations
-  steward: Data Governance
-scope:
-  domain: enterprise
-```
+For example, Customer is owned by Customer Operations and stewarded by Data Governance, across the whole enterprise. See the [example](../reference/examples/semantic-authority-examples.md#65-authority-assignment).
 
 ### 6.6 Resolution Rule
 
 How ambiguity is resolved.
 
-```yaml
-term: customer
-
-default: concept.customer
-
-contextual:
-  - when:
-      domain: support
-    resolve_to: concept.support_account
-```
+For example, "customer" means Customer by default, but means the support account when the question comes from support. See the [example](../reference/examples/semantic-authority-examples.md#66-resolution-rule).
 
 ### 6.7 Classification Rule
 
 What counts as an instance of a concept.
 
-```yaml
-id: rule.active_customer.enterprise
-concept_ref: concept.active_customer
-criteria: >
-  At least one paid order in the trailing 365 days,
-  as of the evaluation date.
-```
+For example, an Active Customer is one with at least one paid order in the trailing 365 days, as of the evaluation date. See the [example](../reference/examples/semantic-authority-examples.md#67-classification-rule).
 
 ---
 
@@ -274,11 +235,11 @@ The same applies to entities such as Customer (commercial, billing, support, leg
 The practice should express:
 
 - enterprise defaults for named contexts;
-- domain-specific meanings;
+- business-area meanings;
 - explicit relationships;
 - resolution rules.
 
-This is better than forcing every domain into one overloaded object.
+This is better than forcing every business area into one overloaded object.
 
 ---
 
@@ -328,7 +289,7 @@ Uses the meaning but does not control it.
 Authority can be scoped by:
 
 - enterprise;
-- domain;
+- business area;
 - geography;
 - business process;
 - effective period.
@@ -347,27 +308,11 @@ Given:
 term + context
 ```
 
-return one of the [five answers](vocabulary.md#the-five-answers): `RESOLVED`, `RESOLVED_VIA_REPLACEMENT`, `NEEDS_CLARIFICATION`, `CONFLICT` or `UNGOVERNED`.
+return one of the [five answers](vocabulary.md#the-five-answers): use it, use the replacement, ask, flag the conflict or not governed.
 
-Possible result:
+For example, asked for "revenue" in an executive context, the answer is "use it": Revenue, with the rule that decided it. See the [example](../reference/examples/semantic-authority-examples.md#10-resolution).
 
-```yaml
-query:
-  term: revenue
-  context:
-    audience: executive
-
-result:
-  state: RESOLVED
-  concept: concept.revenue
-  basis: rule.revenue.exec_default
-```
-
-If two meanings are equally valid and no rule exists:
-
-```text
-NEEDS_CLARIFICATION
-```
+If two meanings are equally valid and no rule exists, the answer is **ask**.
 
 The practice should prefer explicit ambiguity over silent guessing.
 
@@ -392,12 +337,7 @@ Semantic Authority defines the concept identity, context and classification rule
 
 Measurement Management defines how that concept is measured.
 
-```yaml
-metric:
-  id: finance.net_revenue
-  measures:
-    concept_ref: concept.revenue
-```
+For example, the Net Revenue measure points to Revenue as the concept it measures. See the [example](../reference/examples/semantic-authority-examples.md#11-relationship-to-measurement-management).
 
 A measurement contract does not redefine Revenue as a concept.
 
@@ -487,7 +427,7 @@ Effective dates are especially important for:
 - reorganizations;
 - regulatory definitions;
 - acquisitions;
-- domain migrations;
+- business-area migrations;
 - renamed or split concepts.
 
 Detailed versioning practice is the Semantic Lifecycle Management practice.
@@ -509,18 +449,7 @@ Support "Organization"
 concept.customer
 ```
 
-Semantic Authority may record and approve mappings:
-
-```yaml
-source:
-  system: crm
-  object: Account
-
-maps_to:
-  concept: concept.customer
-
-mapping_type: contextual
-```
+Semantic Authority may record and approve mappings. For example, the CRM's "Account" is mapped to Customer as a contextual match, not an exact one. See the [example](../reference/examples/semantic-authority-examples.md#15-semantic-mapping).
 
 It should not automatically claim perfect equivalence.
 
@@ -566,13 +495,7 @@ Record relationship.
 
 Do not fake consensus.
 
-State:
-
-```text
-CONFLICT
-```
-
-and assign an owner.
+Flag the conflict, and assign an owner.
 
 ---
 
@@ -657,7 +580,7 @@ Keep the workflow lightweight. Where an organization already has a governance co
 
 The practice should not require a governance board for every semantic change.
 
-Use delegated domain authority.
+Use delegated business-area authority.
 
 ---
 
@@ -672,20 +595,20 @@ Defines:
 - shared concepts;
 - global identifiers;
 - default resolution;
-- cross-domain relationships.
+- relationships across business areas.
 
-### Domain layer
+### Business-area layer
 
 Defines:
 
-- domain-specific concepts;
+- business-area concepts;
 - local aliases;
 - contextual meaning;
 - proposed mappings.
 
 ### Escalation
 
-Only cross-domain conflicts or enterprise defaults need centralized resolution.
+Only conflicts across business areas, or enterprise defaults, need centralized resolution.
 
 This avoids turning Semantic Authority into centralized bureaucracy. It fits naturally with domain-oriented models such as data mesh.
 
@@ -724,7 +647,7 @@ Use the catalog as a host/integration when possible.
 
 Mitigation:
 
-Delegate authority by domain/context.
+Delegate authority by business area or context.
 
 ### It absorbs measurement
 

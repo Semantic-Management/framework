@@ -6,6 +6,8 @@ Develop the **Semantic Management Framework (SMF)**: the discipline and open ope
 ## Audience first
 The primary audience is **business and analytics leaders**. Framework documents (`docs/`, `README.md`) must stay in plain business language. Technical material (schemas, YAML, CLI, identifiers) belongs in `reference/`. If a framework page needs a technical detail, link to `reference/` rather than inlining it.
 
+Exception: files in `docs/research/` and `docs/patterns/` may name fields and schema identifiers when quoting a source or describing a technical pattern, and must be labeled non-normative.
+
 ## Canonical ideas (do not dilute)
 - **Two things can be true.** A term can legitimately mean different things to different parts of the business. Each legitimate meaning is a **perspective** with an owner.
 - **Context selects the perspective. When context can't, ask.**
