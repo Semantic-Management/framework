@@ -2,7 +2,7 @@
 
 **An open, technology-independent operating model for managing business meaning across people, data, analytics and AI.**
 
-Status: v0.4 working draft · [github.com/Semantic-Management/framework](https://github.com/Semantic-Management/framework) · License: [CC BY 4.0](LICENSE-docs) for the framework, [Apache-2.0](LICENSE) for the reference code ([details](LICENSING.md))
+Status: v0.4 working draft · Website: [semantic-management.github.io/framework](https://semantic-management.github.io/framework/) · [github.com/Semantic-Management/framework](https://github.com/Semantic-Management/framework) · License: [CC BY 4.0](LICENSE-docs) for the framework, [Apache-2.0](LICENSE) for the reference code ([details](LICENSING.md))
 
 ---
 

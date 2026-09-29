@@ -27,4 +27,4 @@ Roles are responsibilities, not job titles. In a small business, one person may 
 | Claim trace | The record that backs up a specific reported number | Assurance |
 | Change note | What changed, why, and from when | Lifecycle Management |
 
-Templates: [templates/](../templates/). Machine-readable forms: [reference/spec](../reference/spec/README.md).
+Templates: [templates/](../templates/README.md). Machine-readable forms: [reference/spec](../reference/spec/README.md).

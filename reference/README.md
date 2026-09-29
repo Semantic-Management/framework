@@ -9,7 +9,7 @@ This folder is for technical teams that want to put SMF artifacts into tools, se
 | [`spec/`](spec/README.md) | File format for SMF artifacts: JSON Schemas, identifier rules, the five answers, the reference answer algorithm |
 | [`examples/gross-margin/`](examples/gross-margin/README.md) | Flagship example: Gross Margin with product, service and consolidated perspectives |
 | [`examples/northwind/`](examples/northwind/README.md) | Broader example: deprecated terms, a declared conflict, an ungoverned term |
-| [`examples/consumer-results/`](examples/consumer-results/) | Sample AI assistant answers for testing (each fails one check on purpose) |
+| [`examples/consumer-results/`](https://github.com/Semantic-Management/framework/tree/main/reference/examples/consumer-results) | Sample AI assistant answers for testing (each fails one check on purpose) |
 | [`tools/`](tools/smf.py) | Reference CLI: `validate`, `resolve`, `test`, `import-csv` |
 
 ```bash
