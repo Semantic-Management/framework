@@ -11,14 +11,26 @@ SMF is early and open. Contributions that improve evidence, clarity and real-wor
 - **Field cases:** anonymized examples where a practice boundary held or broke.
 - **Golden questions:** realistic `TestCase` documents for common business terms.
 - **Interop mappings:** how SMF documents map to Egeria, ODCS, OpenLineage, Ossie or a semantic layer.
-- **Boundary cases:** questions that map to zero or two practices.
+- **Boundary cases:** questions that map to zero or multiple practices.
 
 ## Before opening a pull request
 ```bash
 pip install -r reference/tools/requirements.txt
 python reference/tools/smf.py validate reference/examples/gross-margin --strict
+python reference/tools/smf.py validate reference/examples/northwind --strict
 python reference/tools/smf.py test reference/examples/gross-margin
+python reference/tools/smf.py test reference/examples/northwind
+python reference/tools/check-links.py
 ```
+
+If you changed `docs/`, `templates/`, `site/` or `mkdocs.yml`, also check that the website builds:
+
+```bash
+pip install -r site/requirements.txt
+python site/build.py && mkdocs build --strict
+```
+
+If you use an AI assistant on this repository, start it from [prompts/bootstrap-repo.md](https://github.com/Semantic-Management/framework/blob/main/prompts/bootstrap-repo.md) and `AGENTS.md`.
 
 ## Rules
 1. Keep practices independently adoptable. No practice may require another.

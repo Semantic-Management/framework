@@ -9,7 +9,7 @@ Typical trigger: products and services, a handful of reports, maybe an AI assist
 1. **List 5–10 terms people argue about** (gross margin, revenue, active customer…). *Discovery*
 2. **For each, write down the perspectives** that really exist, and who owns each one. *Modeling, Authority*
 3. **Write a one-page Metric Contract** for the numbers leadership looks at most ([template](../templates/metric-contract.md)), and a Definition Contract for any term people argue about that isn't a number ([template](../templates/definition-contract.md)). *Measurement, Modeling*
-4. **Write the answer table:** which perspective applies in which situation, and where the answer is "ask". Start from [templates/resolution-table.csv](../templates/resolution-table.csv). *Resolution*
+4. **Write the answer table:** which perspective applies in which situation, and where the answer is "ask". Start from the [answer table template](../templates/answer-table.md). *Resolution*
 5. **Ask your AI assistant 20 test questions** and see whether it asks when it should. *Assurance*
 
 ## Mid-size organization (a quarter)

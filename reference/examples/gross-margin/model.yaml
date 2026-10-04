@@ -13,7 +13,7 @@ concept_ref: concept.gross_margin
 name: Product Gross Margin
 description: Margin on physical goods sold. Direct cost is the landed cost of goods.
 owner: Product Line Lead
-applies_when: { domain: product }
+applies_when: { business_area: product }
 status: standard
 ---
 smf: "0.1"
@@ -23,7 +23,7 @@ concept_ref: concept.gross_margin
 name: Service Gross Margin
 description: Margin on installation and maintenance work. Direct cost is delivery labor, subcontractors and parts used.
 owner: Services Lead
-applies_when: { domain: services }
+applies_when: { business_area: services }
 status: standard
 ---
 smf: "0.1"
@@ -64,17 +64,23 @@ scope: { layer: enterprise }
 smf: "0.1"
 kind: Context
 id: context.product_review
-conditions: { domain: product }
+conditions: { business_area: product }
 ---
 smf: "0.1"
 kind: Context
 id: context.services_review
-conditions: { domain: services }
+conditions: { business_area: services }
 ---
 smf: "0.1"
 kind: Context
 id: context.board
 conditions: { audience: board }
+---
+smf: "0.1"
+kind: Context
+id: context.external_reporting
+description: Reporting to people outside the company, such as investors, lenders and regulators.
+conditions: { audience: external }
 ---
 smf: "0.1"
 kind: Context

@@ -6,6 +6,8 @@ SMF uses two open licenses, one for the framework and one for the code.
 | --- | --- | --- |
 | Framework and documentation: `README.md`, `docs/`, `templates/`, and other Markdown files at the root | **Creative Commons Attribution 4.0 International (CC BY 4.0)** | [LICENSE-docs](LICENSE-docs) |
 | Reference specification, schemas, examples and tools: everything under `reference/`, plus `.github/` workflows | **Apache License 2.0** | [LICENSE](LICENSE) |
+| Website build: `site/build.py`, `mkdocs.yml` and the build requirements | **Apache License 2.0** | [LICENSE](LICENSE) |
+| Website content and styling: `site/home.md`, `site/assets/`, and the assistant starter prompt in `prompts/` | **CC BY 4.0** | [LICENSE-docs](LICENSE-docs) |
 
 ## What this means in practice
 

@@ -3,7 +3,9 @@
 """Check that relative links and heading anchors in every Markdown file resolve.
 
 Run from the repository root:  python reference/tools/check-links.py
-Exits 1 if any link is broken. Links inside code blocks and external URLs are skipped.
+Exits 1 if any link is broken. Links inside code blocks and code spans and external URLs are
+skipped. Inline links (with or without a title), reference-style link definitions and HTML
+`href` attributes are checked.
 """
 import pathlib
 import re
@@ -21,14 +23,36 @@ def slug(heading: str) -> str:
     return re.sub(r"\s", "-", h)
 
 
+INLINE = re.compile(r"\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+(?:\"[^\"]*\"|'[^']*'))?\s*\)")
+REFERENCE = re.compile(r"^ {0,3}\[[^\]]+\]:\s*<?(\S+?)>?(?:\s+.*)?$", re.M)
+HREF = re.compile(r"""<a\s[^>]*href=["']([^"']+)["']""", re.I)
+
+
+def anchors(text: str) -> set:
+    """Heading anchors as GitHub makes them, including -1, -2 suffixes for repeated headings."""
+    seen, out = {}, set()
+    for h in re.findall(r"^#+\s+(.*)$", text, flags=re.M):
+        s = slug(h)
+        n = seen.get(s, 0)
+        seen[s] = n + 1
+        out.add(s if n == 0 else f"{s}-{n}")
+    return out
+
+
+def links(body: str):
+    for rx in (INLINE, REFERENCE, HREF):
+        for m in rx.finditer(body):
+            yield m.group(1)
+
+
 def main() -> int:
     checked = problems = 0
     for f in sorted(ROOT.rglob("*.md")):
         if SKIP_DIRS & set(f.relative_to(ROOT).parts):
             continue
         body = re.sub(r"```.*?```", "", f.read_text(encoding="utf-8"), flags=re.S)
-        for m in re.finditer(r"\[[^\]]*\]\(([^)\s]+)\)", body):
-            target = m.group(1)
+        body = re.sub(r"`[^`\n]*`", "", body)
+        for target in links(body):
             if re.match(r"^(https?:|mailto:)", target):
                 continue
             checked += 1
@@ -39,8 +63,7 @@ def main() -> int:
                 print(f"BROKEN      {rel} -> {target}")
                 problems += 1
             elif frag and dest.suffix == ".md":
-                heads = {slug(h) for h in re.findall(r"^#+\s+(.*)$", dest.read_text(encoding="utf-8"), flags=re.M)}
-                if frag not in heads:
+                if frag not in anchors(dest.read_text(encoding="utf-8")):
                     print(f"BAD ANCHOR  {rel} -> {target}")
                     problems += 1
     print(f"{checked} relative links checked, {problems} problems")

@@ -29,7 +29,7 @@
           "boolean"
         ]
       },
-      "description": "Attributes such as domain, business_unit, geography, process, audience, application, regulatory_regime, user_intent, effective_period."
+      "description": "Attributes such as business_area, business_unit, geography, process, audience, application, regulatory_regime, user_intent, effective_period."
     }
   },
   "required": [

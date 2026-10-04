@@ -28,12 +28,12 @@ The template is in [templates/metric-contract.md](../templates/metric-contract.m
 | **In plain words** | Of every dollar we bill for installation and maintenance, how much is left after paying for the labor, subcontractors and parts it took to deliver |
 | **Formula** | (Service revenue − (technician labor + subcontractor cost + parts used)) ÷ service revenue |
 | **Includes** | Installation and maintenance work orders |
-| **Excludes** | Product sales; warranty reserves |
+| **Excludes** | Product sales |
 | **Grain** | One completed work order |
 | **Time rules** | Fiscal month; counted when the work order is completed |
 | **Additivity** | Non-additive (a ratio). Recompute from totals; never sum or average margins |
 | **Owner** | Services Lead (maintained by Finance Analyst) |
-| **Approved for** | Services reviews, staffing and pricing decisions for services |
+| **Approved for** | Services reviews and staffing decisions |
 | **Not approved for** | Board or external reporting (use Consolidated Gross Margin) |
 | **Comparability** | **Not comparable with Product Gross Margin.** Cost is labor-based, not goods-based. Do not average the two. Compare over time within services |
 | **Built on** | Work order and job-costing data contracts |

@@ -14,8 +14,8 @@
 - **Breaking spec changes** after v1.0 will require a new major version.
 
 ## Versioning
-- The framework and the spec are versioned separately (`docs/` vs. `spec/`).
-- Spec versions appear in every document's `osc:` field.
+- The framework and the spec are versioned separately (`docs/` vs. `reference/spec/`).
+- The spec version appears in every document's `smf:` field.
 
 ## Principles for the project
 - Vendor-neutral: no document may require a commercial product.

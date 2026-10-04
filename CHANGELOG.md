@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.4.8 (2026-10-04): Review fixes
+
+### Fixed (reference tools and spec)
+- `smf.py validate`: a second `ResolutionRule` for the same term, or two `Term` documents for the same term and context that map to different concepts, is now an error. The resolver returns `CONFLICT` instead of picking one by file order.
+- `smf.py validate`: references must point at the right kind of document (a metric field must name a Metric Contract, and so on). `owner_ref` is now checked. Schema-invalid documents and YAML syntax errors are reported instead of crashing the validator.
+- `smf.py resolve`: aliases are tried preferred-term first, never in file order, and rules for deprecated terms are skipped. A replacement that is itself superseded is followed to the current concept. A YAML boolean in a `when` clause now matches `--context key=true`.
+- `smf.py test` and `resolve` stop with an error on a missing or empty path or on invalid documents.
+- `smf.py test --results`: an id that matches no `TestCase` is an error, each result must be a valid `ResolutionResult`, and `must_apply` is now checked against the result's `constraints.exclusions`. The two sample results files are now full results.
+- `smf.py import-csv`: a concept's definition and owner are now taken from the term's default row when that row names no concept. The shipped template round-trips.
+- `smf.py` loads `.json` documents in folders, as the spec says it may.
+- `resolution-rule.schema.json`: a `default` with `state: NEEDS_CLARIFICATION` now requires `options`, as `contextual` clauses already did.
+- `requirements.txt`: added `rfc3339-validator` so `date-time` values are checked; `validate` warns if it is missing.
+- `check-links.py`: skips code spans, and checks links with titles, reference-style links, HTML `href` and repeated-heading anchors.
+- `site/build.py`: nested lists keep their levels. The home page no longer shows an edit link that 404s.
+
+### Changed
+- The context key in the starter answer table and both reference examples is now `business_area`, not `domain`, to match the vocabulary. Context keys are free-form; the spec now says so.
+- Gross margin example: an `audience: external` context, answer rule and check resolve external reporting to the consolidated view, as the example page already said. The gross margin check count is now 7 passed, 0 failed, 1 skipped.
+- `docs/metric-contract.md`: the Service Gross Margin example now matches its machine form (excludes, approved for).
+- `docs/semantic-authority.md`: status is v0.4, seven objects, the seven roles from the vocabulary, the conflict outcomes from the practices page, and plain language in place of identifier blocks.
+- `.github/workflows/validate.yml` now also runs the link check and `mkdocs build --strict`, and runs the checks on Python 3.9 and 3.12, matching the "Python 3.9+" claim in `smf.py`. `CONTRIBUTING.md`, the pull request template, `AGENTS.md` and `CLAUDE.md` list the same checks.
+- `GOVERNANCE.md`: the spec version field is `smf:`, and the spec is in `reference/spec/`.
+
+### Added
+- `templates/answer-table.md`: a plain-language answer table template. `resolution-table.csv` stays as the file technical teams load into tools.
+- Spec: rules for one answer rule per term, right-kind references, text matching of context values, and how `test` checks results.
+- README repository map, `LICENSING.md` and `NOTICE` cover `site/`, `mkdocs.yml` and `prompts/`; `prompts/bootstrap-repo.md` is linked from `CONTRIBUTING.md`.
+
 ## v0.4.7 (2026-09-29): Website
 
 ### Added

@@ -31,9 +31,7 @@ Exception: files in `docs/research/` and `docs/patterns/` may name fields and sc
 4. Label non-normative content (examples, patterns, research).
 5. Evidence before novelty: claims of contribution must point to `docs/research/`.
 6. Never add invented practitioner anecdotes; keep "Practitioner notes" placeholders for the framework owner.
-7. After changing `reference/`, run:
-   `python reference/tools/smf.py validate reference/examples/gross-margin --strict` and
-   `python reference/tools/smf.py test reference/examples/gross-margin`.
+7. After changing `reference/`, run `validate --strict` and `test` for both `reference/examples/gross-margin` and `reference/examples/northwind` (for example `python reference/tools/smf.py validate reference/examples/gross-margin --strict`), then `python reference/tools/check-links.py`. The full list is in `CLAUDE.md`.
 
 ## Reading order
 README.md → docs/discipline.md → docs/principles.md → docs/vocabulary.md → docs/lifecycle.md → docs/practices.md → docs/metric-contract.md → docs/examples/gross-margin.md → docs/works-with.md → docs/research/ → reference/README.md

@@ -4,5 +4,9 @@ Copyright 2026 Alexander Nykolaiszyn and Semantic Management Framework contribut
 This product includes the SMF reference specification, schemas, examples and
 tools (reference/), licensed under the Apache License, Version 2.0 (see LICENSE).
 
-The framework documentation (README.md, docs/, templates/) is licensed under
-Creative Commons Attribution 4.0 International (see LICENSE-docs).
+The website build (site/build.py, mkdocs.yml) is also licensed under the Apache
+License, Version 2.0.
+
+The framework documentation (README.md, docs/, templates/), the website content
+(site/home.md, site/assets/) and prompts/ are licensed under Creative Commons
+Attribution 4.0 International (see LICENSE-docs).

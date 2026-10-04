@@ -16,9 +16,9 @@ term: revenue
 owner_ref: concept.revenue
 default: { concept: concept.revenue, measurement: finance.net_revenue }
 contextual:
-  - when: { domain: operations }
+  - when: { business_area: operations }
     resolve_to: { measurement: operations.operational_revenue }
-  - when: { domain: sales }
+  - when: { business_area: sales }
     state: NEEDS_CLARIFICATION
     options: [finance.net_revenue, concept.contract_value]
     prompt: "Do you mean net revenue (finance) or contract value at signing?"
@@ -29,7 +29,7 @@ id: rule.term.customer
 term: customer
 default: { concept: concept.customer }
 contextual:
-  - when: { domain: support }
+  - when: { business_area: support }
     resolve_to: { concept: concept.support_account }
 ---
 smf: "0.1"
@@ -54,11 +54,11 @@ id: rule.term.region
 term: region
 default: { concept: concept.sales_region }
 contextual:
-  - when: { domain: finance }
+  - when: { business_area: finance }
     resolve_to: { concept: concept.legal_reporting_region }
-  - when: { domain: operations }
+  - when: { business_area: operations }
     resolve_to: { concept: concept.service_region }
-  - when: { domain: marketing }
+  - when: { business_area: marketing }
     state: CONFLICT
     conflict_ref: conflict.region.marketing
 ---

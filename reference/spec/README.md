@@ -68,6 +68,8 @@ Sources:
 - Version pin: `id@vN`, e.g. `finance.net_revenue@v3`.
 - IDs are never derived from labels alone and never reused for a different meaning.
 - A document may reference an ID defined elsewhere (another repo, a catalog). Validators warn about undefined references unless run in strict mode.
+- A reference must point at the right kind of document: a metric field names a `MetricContract`, a concept field names a `Concept`, a perspective field names a `Perspective`. A reference to a document of the wrong kind is an error, in strict mode or not.
+- A term has at most one `ResolutionRule`, and one `Term` per context. A second rule for the same term, or two `Term` documents for the same term and context that map to different concepts, is a validation error. A resolver that finds more than one rule for a term returns `CONFLICT` rather than choosing one.
 
 ## 3. Resolution states (the five answers)
 
@@ -89,14 +91,14 @@ Consumers that claim SMF conformance **must not** present a guess as `RESOLVED`.
 
 Implementations may resolve however they like, as long as their results match the states. The reference algorithm (`reference/tools/smf.py resolve`) is:
 
-1. **No rule for the term** (after checking aliases) → `UNGOVERNED`.
+1. **No rule for the term** (after checking aliases) → `UNGOVERNED`. An alias is a `Term` that maps to a concept whose preferred term has a rule. Candidates are tried preferred terms first, then alphabetically, never in file order, and rules for deprecated terms are skipped.
 2. **Rule is deprecated** → `RESOLVED_VIA_REPLACEMENT` to `deprecated.replacement`.
-3. **Contextual clauses:** a clause matches when every key in `when` equals the context value.
+3. **Contextual clauses:** a clause matches when every key in `when` equals the context value. Values are compared as text and are case-sensitive; a YAML boolean compares as `true` or `false`. Context keys are free-form: the adopter chooses them (for example `business_area` or `audience`).
    - The most specific match (most keys) wins.
    - Equally specific matches with different outcomes → `CONFLICT`.
    - A clause either resolves (`resolve_to`) or returns a state (`NEEDS_CLARIFICATION`, `CONFLICT`, `UNGOVERNED`).
 4. **No clause matches** → apply `default`.
-5. **Resolved concept is superseded or retired with `replaced_by`** → `RESOLVED_VIA_REPLACEMENT`.
+5. **Resolved concept is superseded or retired with `replaced_by`** → `RESOLVED_VIA_REPLACEMENT`. If the replacement is itself superseded, follow the chain to the current concept.
 6. Attach the `perspective` of the selected metric contract, `constraints` from the metric contract (exclusions, valid dimensions, time semantics, grain) and `trust` (registration status, certification).
 
 ## 5. Conformance levels (draft)
@@ -107,6 +109,14 @@ Implementations may resolve however they like, as long as their results match th
 | **Resolver** | Produces valid `ResolutionResult` documents using the five states |
 | **Consumer** | Honors all five states: proceeds, discloses replacement, asks, discloses conflict, discloses ungoverned |
 | **Tested consumer** | Publishes passing results for a declared set of `TestCase` documents |
+
+How `smf.py test` checks a consumer's results file (a mapping of test id to `ResolutionResult`):
+
+- The file may only contain ids that match a `TestCase`; an unknown id is an error, so a misspelled id can never hide a failing case.
+- Each result must be a valid `ResolutionResult`.
+- `state` must match. `concept`, `measurement` and `perspective` must match when the case names them, and `options` must be the same set.
+- A result must not use anything listed in `must_not`.
+- Each name in `must_apply` must appear in the result's `constraints.exclusions`, which is where a result reports the exclusions of its Metric Contract.
 
 ## 6. Relationship to other specs
 

@@ -19,6 +19,6 @@ Try it from the repository root:
 ```bash
 python reference/tools/smf.py validate reference/examples/gross-margin --strict
 python reference/tools/smf.py resolve reference/examples/gross-margin --term "gross margin" --context audience=leadership
-python reference/tools/smf.py resolve reference/examples/gross-margin --term GM --context domain=services
+python reference/tools/smf.py resolve reference/examples/gross-margin --term GM --context business_area=services
 python reference/tools/smf.py test reference/examples/gross-margin
 ```

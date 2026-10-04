@@ -20,6 +20,6 @@ Try it:
 
 ```bash
 python reference/tools/smf.py validate reference/examples/northwind
-python reference/tools/smf.py resolve reference/examples/northwind --term revenue --context domain=sales
+python reference/tools/smf.py resolve reference/examples/northwind --term revenue --context business_area=sales
 python reference/tools/smf.py test reference/examples/northwind
 ```
