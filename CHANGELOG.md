@@ -13,6 +13,11 @@
 ### Changed
 - `docs/works-with.md`: the Ossie row now says how the two link, matching the ODCS row.
 
+## v0.4.9 (2026-10-04): Code of conduct contact
+
+### Changed
+- `CODE_OF_CONDUCT.md`: concerns are reported through GitHub private reporting, replacing the placeholder contact.
+
 ## v0.4.8 (2026-10-04): Review fixes
 
 ### Fixed (reference tools and spec)
