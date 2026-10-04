@@ -4,21 +4,21 @@ kind: TestCase
 id: test.revenue.default
 type: selection
 input: { term: revenue, context: { audience: executive } }
-expected: { state: RESOLVED, concept: concept.revenue, measurement: finance.net_revenue, must_apply: [exclude_intercompany], must_not: [finance.gross_revenue] }
+expected: { state: RESOLVED, concept: concept.revenue, measurement: finance.net_revenue, must_apply: [intercompany], must_not: [finance.gross_revenue] }
 severity: critical
 ---
 smf: "0.1"
 kind: TestCase
 id: test.revenue.operations
 type: resolution
-input: { term: revenue, context: { domain: operations } }
+input: { term: revenue, context: { business_area: operations } }
 expected: { state: RESOLVED, concept: concept.revenue, measurement: operations.operational_revenue }
 ---
 smf: "0.1"
 kind: TestCase
 id: test.revenue.sales
 type: ambiguity
-input: { term: revenue, context: { domain: sales } }
+input: { term: revenue, context: { business_area: sales } }
 expected: { state: NEEDS_CLARIFICATION, options: [finance.net_revenue, concept.contract_value] }
 severity: high
 ---
@@ -26,7 +26,7 @@ smf: "0.1"
 kind: TestCase
 id: test.customer.support
 type: resolution
-input: { term: customer, context: { domain: support } }
+input: { term: customer, context: { business_area: support } }
 expected: { state: RESOLVED, concept: concept.support_account }
 ---
 smf: "0.1"
@@ -47,21 +47,21 @@ smf: "0.1"
 kind: TestCase
 id: test.region.finance
 type: resolution
-input: { term: region, context: { domain: finance } }
+input: { term: region, context: { business_area: finance } }
 expected: { state: RESOLVED, concept: concept.legal_reporting_region }
 ---
 smf: "0.1"
 kind: TestCase
 id: test.region.marketing
 type: conflict
-input: { term: region, context: { domain: marketing } }
+input: { term: region, context: { business_area: marketing } }
 expected: { state: CONFLICT }
 ---
 smf: "0.1"
 kind: TestCase
 id: test.bookings.ungoverned
 type: ungoverned
-input: { term: bookings, context: { domain: sales } }
+input: { term: bookings, context: { business_area: sales } }
 expected: { state: UNGOVERNED }
 ---
 smf: "0.1"
@@ -70,7 +70,7 @@ id: test.agent.exec_revenue_prompt
 type: selection
 description: Natural-language case. Requires the consumer under test (e.g., an AI assistant) to supply its ResolutionResult.
 input: { prompt: "What was revenue last quarter?", context: { audience: executive } }
-expected: { state: RESOLVED, measurement: finance.net_revenue, must_apply: [exclude_intercompany], must_not: [finance.gross_revenue] }
+expected: { state: RESOLVED, measurement: finance.net_revenue, must_apply: [intercompany], must_not: [finance.gross_revenue] }
 severity: critical
 ---
 smf: "0.1"
@@ -78,6 +78,6 @@ kind: TestCase
 id: test.agent.sales_revenue_prompt
 type: ambiguity
 description: The consumer must ask rather than guess.
-input: { prompt: "What's our revenue this quarter?", context: { domain: sales } }
+input: { prompt: "What's our revenue this quarter?", context: { business_area: sales } }
 expected: { state: NEEDS_CLARIFICATION, options: [finance.net_revenue, concept.contract_value] }
 severity: high

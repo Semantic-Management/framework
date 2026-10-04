@@ -1,6 +1,6 @@
 # Semantic Authority (Practice 3)
 
-**Status:** v0.2 working draft (detail for Practice 3)
+**Status:** v0.4 working draft (detail for Practice 3)
 **Type:** Practice detail, adoptable on its own
 **Purpose:** Define how an organization establishes, scopes and resolves authoritative business meaning
 
@@ -134,14 +134,12 @@ How a consumer chooses among multiple legitimate meanings.
 
 How concepts relate:
 
-```text
-is_a
-part_of
-associated_with
-variant_of
-deprecated_by
-maps_to
-```
+- is a;
+- part of;
+- associated with;
+- variant of;
+- replaced by;
+- maps to.
 
 ---
 
@@ -167,7 +165,7 @@ Measurement belongs to Measurement Management. Conformance belongs to Implementa
 
 ## 6. Primary objects
 
-A minimal practice needs six objects. Concept, Term and Context are defined in the [vocabulary](vocabulary.md). Machine-readable versions are in the [reference](../reference/spec/README.md).
+A minimal practice needs seven objects, and the second one, Entity, is an optional refinement. Concept, Term and Context are defined in the [vocabulary](vocabulary.md). Machine-readable versions are in the [reference](../reference/spec/README.md).
 
 ### 6.1 Concept
 
@@ -177,7 +175,7 @@ For example, Customer is given a stable ID and a one-sentence definition: a part
 
 ### 6.2 Entity
 
-A concept with identity/key semantics.
+An optional refinement, not a separate artifact: a concept with identity/key semantics.
 
 For example, the Customer entity is tied to the Customer concept and describes the canonical organizational customer identity. See the [example](../reference/examples/semantic-authority-examples.md#62-entity).
 
@@ -197,7 +195,7 @@ For example, external reporting is recorded as a named context. See the [example
 
 ### 6.5 Authority Assignment
 
-Who can establish or approve meaning within a scope.
+Who can establish or approve meaning within a scope. In the [role and artifact list](roles-and-artifacts.md) this is the owner named for a concept or perspective.
 
 For example, Customer is owned by Customer Operations and stewarded by Data Governance, across the whole enterprise. See the [example](../reference/examples/semantic-authority-examples.md#65-authority-assignment).
 
@@ -247,18 +245,11 @@ This is better than forcing every business area into one overloaded object.
 
 Example:
 
-```text
-Term: "Region"
+The term "Region" means different things to different parts of the business:
 
-Enterprise reporting context:
-concept.sales_region
-
-Finance context:
-concept.legal_reporting_region
-
-Operations context:
-concept.service_region
-```
+- In enterprise reporting, it means **Sales Region**.
+- In Finance, it means **Legal Reporting Region**.
+- In Operations, it means **Service Region**.
 
 Semantic Authority should make these differences explicit.
 
@@ -268,23 +259,27 @@ It should not simply choose one and label the others "wrong."
 
 ## 9. Ownership model
 
-Suggested roles:
+This practice uses the seven roles defined in [roles and artifacts](roles-and-artifacts.md) and the [vocabulary](vocabulary.md). The ones that matter most here:
 
-### Accountable owner
+### Meaning owner
 
-Has authority to approve semantic meaning.
+Has authority to approve what a concept or perspective means within a scope. Older material calls this the accountable owner.
 
 ### Steward
 
 Maintains definitions, mappings, aliases and resolution metadata.
 
-### Technical custodian
+### Enterprise authority
 
-Maintains implementation metadata where relevant.
+Sets enterprise defaults and decides conflicts across business areas.
 
-### Consumer
+### Builder
 
-Uses the meaning but does not control it.
+Maintains implementation metadata where relevant. Older material calls this the technical custodian.
+
+### Consumer owner
+
+Is accountable for how a report suite or AI assistant uses the meaning, but does not control it.
 
 Authority can be scoped by:
 
@@ -322,16 +317,7 @@ The practice should prefer explicit ambiguity over silent guessing.
 
 Measurement references meaning; it does not redefine it.
 
-```text
-Semantic Authority
-concept.revenue
-      │
-      ▼
-Measurement Management
-finance.net_revenue
-finance.gross_revenue
-operations.operational_revenue
-```
+Semantic Authority owns the concept **Revenue**. Measurement Management owns the measures that point to it: **Net Revenue**, **Gross Revenue** and **Operational Revenue**.
 
 Semantic Authority defines the concept identity, context and classification rules.
 
@@ -440,14 +426,7 @@ Systems may implement local concepts.
 
 Example:
 
-```text
-CRM "Account"
-ERP "Sold-To"
-Support "Organization"
-        │
-        ▼
-concept.customer
-```
+A CRM calls it "Account", the ERP calls it "Sold-To" and Support calls it "Organization". All three are mapped to the one concept, **Customer**.
 
 Semantic Authority may record and approve mappings. For example, the CRM's "Account" is mapped to Customer as a contextual match, not an exact one. See the [example](../reference/examples/semantic-authority-examples.md#15-semantic-mapping).
 
@@ -473,29 +452,31 @@ These align with SKOS mapping relations where possible (see Semantic Interchange
 
 Conflicts can resolve in several ways.
 
-### Duplicate
+These are the same four outcomes listed under Semantic Authority in [practices](practices.md).
+
+### Merge
 
 Two definitions mean the same thing.
 
-Merge or alias.
+Merge them or record one as an alias.
 
-### Contextual distinction
+### Keep both as perspectives
 
 Both are valid in different contexts.
 
-Keep both and define resolution.
+Keep both and define the answer rule that chooses between them.
 
-### Hierarchical distinction
+### Record broader and narrower
 
-One is broader/narrower.
+One contains the other.
 
-Record relationship.
+Record the relationship.
 
-### Unresolved disagreement
+### Declare an open conflict
 
 Do not fake consensus.
 
-Flag the conflict, and assign an owner.
+Flag the conflict, and assign an owner and a date.
 
 ---
 
@@ -545,19 +526,12 @@ A lightweight service could expose concepts, perspectives, owners and answer rul
 
 Minimal workflow:
 
-```text
-DISCOVER
-   ↓
-DEFINE
-   ↓
-ASSIGN AUTHORITY
-   ↓
-RESOLVE CONFLICT
-   ↓
-CERTIFY / PUBLISH
-   ↓
-VERSION
-```
+1. Discover what the business already means by a term.
+2. Define it.
+3. Assign authority.
+4. Resolve conflicts.
+5. Certify and publish.
+6. Version it.
 
 Keep the workflow lightweight. Where an organization already has a governance council or stewardship workflow, run this inside it rather than beside it.
 

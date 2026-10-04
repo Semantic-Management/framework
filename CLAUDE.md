@@ -24,8 +24,15 @@ $PY reference/tools/smf.py test reference/examples/northwind
 $PY reference/tools/check-links.py
 ```
 
-Expected: 0 errors and 0 warnings; gross-margin 6 passed / 0 failed / 1 skipped; northwind 9 / 0 / 2; 0 broken links.
+If you changed `docs/`, `templates/`, `site/` or `mkdocs.yml`, also run the website build (the `checks` job does):
+
+```bash
+$PY -m pip install -r site/requirements.txt
+$PY site/build.py && $PY -m mkdocs build --strict
+```
+
+Expected: 0 errors and 0 warnings; gross-margin 7 passed / 0 failed / 1 skipped; northwind 9 / 0 / 2; 0 broken links.
 
 ## Workflow
 
-Work on a branch, open a pull request against `main`, and merge only when the `checks` workflow passes. If it fails, stop and look at the log.
+Work on a branch, open a pull request against `main`, and merge only when the `checks` job (workflow `reference-checks`) passes. If it fails, stop and look at the log.

@@ -7,7 +7,7 @@ SMF is designed to plug gaps. It can run **together** with your existing framewo
 | Framework | How SMF fits |
 | --- | --- |
 | **DAMA / data governance programs** | Authority and Modeling run inside existing stewardship and glossary processes; SMF adds perspectives, answer rules and Metric Contracts |
-| **Data mesh / data product models** | Perspective ownership aligns with domain ownership; SMF supplies the cross-domain answer rules |
+| **Data mesh / data product models** | Perspective ownership aligns with domain ownership; SMF supplies the cross-area answer rules |
 | **MDM** | MDM manages the records; SMF manages what the entity means from each perspective |
 | **Model Risk Management** | SMF confirms that model outputs are labeled and used with the right meaning |
 | **AI governance (ISO/IEC 42001, NIST AI RMF)** | Assurance supplies evidence that AI tools interpret business meaning correctly. See [ai-governance-evidence.md](ai-governance-evidence.md) |

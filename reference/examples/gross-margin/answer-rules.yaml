@@ -8,11 +8,13 @@ default:
   state: NEEDS_CLARIFICATION
   options: [finance.consolidated_gross_margin, product.gross_margin, services.gross_margin]
 contextual:
-  - when: { domain: product }
+  - when: { business_area: product }
     resolve_to: { measurement: product.gross_margin }
-  - when: { domain: services }
+  - when: { business_area: services }
     resolve_to: { measurement: services.gross_margin }
   - when: { audience: board }
+    resolve_to: { measurement: finance.consolidated_gross_margin }
+  - when: { audience: external }
     resolve_to: { measurement: finance.consolidated_gross_margin }
   - when: { audience: leadership }
     state: NEEDS_CLARIFICATION

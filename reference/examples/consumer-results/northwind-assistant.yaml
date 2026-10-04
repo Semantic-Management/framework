@@ -1,12 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
 # Example output captured from an AI assistant under test.
 # Map each prompt-based TestCase id to the ResolutionResult the assistant produced.
+# Each entry is a full ResolutionResult, the same shape `smf.py resolve` prints.
 # Run: python reference/tools/smf.py test reference/examples/northwind --results reference/examples/consumer-results/northwind-assistant.yaml
 test.agent.exec_revenue_prompt:
+  smf: "0.1"
+  kind: ResolutionResult
+  query:
+    term: revenue
+    context: { audience: executive }
   state: RESOLVED
   concept: concept.revenue
+  basis: rule.term.revenue
   measurement: finance.net_revenue
+  constraints: { exclusions: [intercompany] }
 test.agent.sales_revenue_prompt:
+  smf: "0.1"
+  kind: ResolutionResult
+  query:
+    term: revenue
+    context: { business_area: sales }
   state: RESOLVED            # the assistant guessed instead of asking; this case should FAIL
   concept: concept.revenue
+  basis: assistant.guess
   measurement: finance.gross_revenue

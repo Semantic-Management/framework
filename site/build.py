@@ -35,15 +35,27 @@ def normalize_lists(text: str) -> str:
     two spaces. The website's Markdown engine needs a blank line first and four
     spaces per level. Only the website copy is changed; sources stay as they are.
     """
+    lines = text.splitlines()
+    # Nesting width used by this file's lists: the smallest indent of any nested item.
+    in_code, indents = False, []
+    for line in lines:
+        if line.lstrip().startswith("```"):
+            in_code = not in_code
+        m = None if in_code else LIST_ITEM.match(line)
+        if m and m.group(1):
+            indents.append(len(m.group(1).replace("\t", "    ")))
+    step = min(indents) if indents else 4
+    scale = 4 / step if 0 < step < 4 else 1  # two-space nesting becomes four-space nesting
+
     out, in_code, prev = [], False, ""
-    for line in text.splitlines():
+    for line in lines:
         if line.lstrip().startswith("```"):
             in_code = not in_code
         m = None if in_code else LIST_ITEM.match(line)
         if m:
             indent = len(m.group(1).replace("\t", "    "))
-            if 0 < indent < 4:  # GitHub-style two-space nesting
-                line = "    " + line.lstrip()
+            if indent and scale != 1:
+                line = " " * round(indent * scale) + line.lstrip()
             prev_is_text = prev.strip() and not LIST_ITEM.match(prev) and not prev.startswith((" ", "|", "#", ">"))
             if prev_is_text and not line.startswith(" "):
                 out.append("")

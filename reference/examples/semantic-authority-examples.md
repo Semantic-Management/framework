@@ -56,7 +56,7 @@ authority:
   owner: Customer Operations
   steward: Data Governance
 scope:
-  domain: enterprise
+  layer: enterprise
 ```
 
 ## 6.6 Resolution Rule
@@ -70,7 +70,7 @@ default: concept.customer
 
 contextual:
   - when:
-      domain: support
+      business_area: support
     resolve_to: concept.support_account
 ```
 

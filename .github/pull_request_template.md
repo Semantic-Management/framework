@@ -1,5 +1,7 @@
-- [ ] `python reference/tools/smf.py validate reference/examples/gross-margin --strict` passes
-- [ ] `python reference/tools/smf.py test reference/examples/gross-margin` passes
+- [ ] `validate --strict` passes for `reference/examples/gross-margin` and `reference/examples/northwind` (see CONTRIBUTING.md for the commands)
+- [ ] `test` passes for both examples
+- [ ] `python reference/tools/check-links.py` reports 0 problems
+- [ ] If `docs/`, `templates/`, `site/` or `mkdocs.yml` changed: `python site/build.py && mkdocs build --strict` passes
 - [ ] Non-normative content is labeled
 - [ ] No proprietary product names in framework or spec docs
 - [ ] Proposal issue linked for framework/spec changes

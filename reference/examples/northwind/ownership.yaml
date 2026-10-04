@@ -17,4 +17,4 @@ smf: "0.1"
 kind: Ownership
 subject: concept.support_account
 owner: VP Customer Support
-scope: { layer: domain, domain: support }
+scope: { layer: business_area, business_area: support }

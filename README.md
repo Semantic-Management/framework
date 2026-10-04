@@ -97,10 +97,15 @@ They are **implementation technologies** for SMF practices. SMF also works **wit
 │   ├── works-with.md         tools and frameworks SMF plugs into
 │   ├── examples/gross-margin.md
 │   ├── semantic-authority.md, ai-governance-evidence.md, roadmap.md
+│   ├── research-agenda.md    open research questions
 │   ├── patterns/             reference implementation patterns
 │   └── research/             prior art and bibliography
-├── templates/                Metric Contract, Definition Contract, starter answer table
+├── templates/                Metric Contract, Definition Contract, answer table
 ├── reference/                technical: spec, schemas, examples, CLI
+├── site/ · mkdocs.yml        the website (built with MkDocs, published to GitHub Pages)
+├── prompts/                  starter prompt for AI assistants working on this repository
+├── AGENTS.md · CLAUDE.md     instructions for AI assistants and the local checks
+├── .github/                  issue templates, pull request template, workflows
 ├── LICENSE (Apache-2.0) · LICENSE-docs (CC BY 4.0) · NOTICE · LICENSING.md
 └── GOVERNANCE.md · CONTRIBUTING.md · CODE_OF_CONDUCT.md · CHANGELOG.md
 ```

@@ -2,22 +2,22 @@
 smf: "0.1"
 kind: Context
 id: context.finance
-conditions: { domain: finance }
+conditions: { business_area: finance }
 ---
 smf: "0.1"
 kind: Context
 id: context.operations
-conditions: { domain: operations }
+conditions: { business_area: operations }
 ---
 smf: "0.1"
 kind: Context
 id: context.sales
-conditions: { domain: sales }
+conditions: { business_area: sales }
 ---
 smf: "0.1"
 kind: Context
 id: context.support
-conditions: { domain: support }
+conditions: { business_area: support }
 ---
 smf: "0.1"
 kind: Context

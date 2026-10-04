@@ -94,6 +94,7 @@ nav:
           - templates/README.md
           - Metric Contract template: templates/metric-contract.md
           - Definition Contract template: templates/definition-contract.md
+          - Answer table template: templates/answer-table.md
   - Works with:
       - Frameworks and tools: docs/works-with.md
       - AI governance evidence: docs/ai-governance-evidence.md

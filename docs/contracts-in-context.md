@@ -67,7 +67,7 @@ Metric catalogs, metric stores and semantic layers (for example dbt MetricFlow, 
 | Additivity | Link to data contracts and implementations |
 | Owner, certification, version | Change note and effective date |
 
-SMF does not claim to have invented the metric contract. Its contribution is making **perspective, approved use and comparability** part of it.
+SMF does not claim to have invented the metric contract. Its contribution is making **perspective, approved use and comparability** part of it. See the [landscape research](research/landscape.md) for the prior art.
 
 ## Sources
 - ODCS and ODPS sources: see the [reference](../reference/spec/README.md).

@@ -1,8 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # Answers captured from an AI assistant under test.
+# Each entry is a full ResolutionResult, the same shape `smf.py resolve` prints.
 # Run: python reference/tools/smf.py test reference/examples/gross-margin --results reference/examples/consumer-results/gross-margin-assistant.yaml
 # This assistant picked a number instead of asking which perspective; the check fails on purpose.
 test.gm.assistant_leadership_prompt:
-  state: RESOLVED
+  smf: "0.1"
+  kind: ResolutionResult
+  query:
+    term: gross margin
+    context: { audience: leadership }
+  state: RESOLVED            # the assistant guessed instead of asking; this case should FAIL
   concept: concept.gross_margin
+  basis: assistant.guess
   measurement: product.gross_margin

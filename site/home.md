@@ -5,6 +5,8 @@ hide:
   - toc
 ---
 
+<style>.md-content__button { display: none; }</style>
+
 <div class="smf-hero" markdown>
 
 # Semantic Management Framework
@@ -92,7 +94,7 @@ The frameworks and tools SMF plugs into, not competes with.
 
 ## Use it
 
-- **Templates:** [Metric Contract](templates/metric-contract.md) · [Definition Contract](templates/definition-contract.md) · [Answer table](templates/resolution-table.csv)
+- **Templates:** [Metric Contract](templates/metric-contract.md) · [Definition Contract](templates/definition-contract.md) · [Answer table](templates/answer-table.md)
 - **For technical teams:** [Reference specification, examples and tools](reference/README.md)
 - **Join in:** [Discussions](https://github.com/Semantic-Management/framework/discussions) · [How to contribute](CONTRIBUTING.md)
 

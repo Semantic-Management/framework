@@ -19,14 +19,14 @@ smf: "0.1"
 kind: TestCase
 id: test.gm.product_review
 type: selection
-input: { term: gross margin, context: { domain: product } }
+input: { term: gross margin, context: { business_area: product } }
 expected: { state: RESOLVED, measurement: product.gross_margin, perspective: perspective.gross_margin.product, must_not: [services.gross_margin] }
 ---
 smf: "0.1"
 kind: TestCase
 id: test.gm.services_review
 type: selection
-input: { term: gross margin, context: { domain: services } }
+input: { term: gross margin, context: { business_area: services } }
 expected: { state: RESOLVED, measurement: services.gross_margin, perspective: perspective.gross_margin.service, must_not: [product.gross_margin] }
 ---
 smf: "0.1"
@@ -39,9 +39,18 @@ severity: critical
 ---
 smf: "0.1"
 kind: TestCase
+id: test.gm.external_reporting
+type: selection
+description: External reporting uses the consolidated view, the same as the board.
+input: { term: gross margin, context: { audience: external } }
+expected: { state: RESOLVED, measurement: finance.consolidated_gross_margin, perspective: perspective.gross_margin.consolidated, must_not: [product.gross_margin, services.gross_margin] }
+severity: critical
+---
+smf: "0.1"
+kind: TestCase
 id: test.gm.alias_in_services
 type: resolution
-input: { term: GM, context: { domain: services } }
+input: { term: GM, context: { business_area: services } }
 expected: { state: RESOLVED, measurement: services.gross_margin }
 ---
 smf: "0.1"

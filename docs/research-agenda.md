@@ -1,8 +1,8 @@
 # Research Agenda
 
-The framework should be developed with explicit comparison to adjacent disciplines rather than assuming novelty.
-
 **Type:** Non-normative
+
+The framework should be developed with explicit comparison to adjacent disciplines rather than assuming novelty.
 
 ## Primary research question
 
