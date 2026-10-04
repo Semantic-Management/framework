@@ -20,7 +20,7 @@
 - Gross margin example: an `audience: external` context, answer rule and check resolve external reporting to the consolidated view, as the example page already said. The gross margin check count is now 7 passed, 0 failed, 1 skipped.
 - `docs/metric-contract.md`: the Service Gross Margin example now matches its machine form (excludes, approved for).
 - `docs/semantic-authority.md`: status is v0.4, seven objects, the seven roles from the vocabulary, the conflict outcomes from the practices page, and plain language in place of identifier blocks.
-- `.github/workflows/validate.yml` now also runs the link check and `mkdocs build --strict`. `CONTRIBUTING.md`, the pull request template, `AGENTS.md` and `CLAUDE.md` list the same checks.
+- `.github/workflows/validate.yml` now also runs the link check and `mkdocs build --strict`, and runs the checks on Python 3.9 and 3.12, matching the "Python 3.9+" claim in `smf.py`. `CONTRIBUTING.md`, the pull request template, `AGENTS.md` and `CLAUDE.md` list the same checks.
 - `GOVERNANCE.md`: the spec version field is `smf:`, and the spec is in `reference/spec/`.
 
 ### Added
