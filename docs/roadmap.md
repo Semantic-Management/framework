@@ -8,11 +8,11 @@
 
 ## Next
 - [x] License: CC BY 4.0 (framework and docs) and Apache-2.0 (reference code). See `LICENSING.md`
-- [ ] Owner review of the neighbor-discipline hand-offs (`docs/discipline.md`), especially MDM and model risk management
-- [ ] Practitioner notes on each practice from real (anonymized) experience
-- [ ] Second worked example outside finance (e.g., "Active Customer" or "Region")
-- [ ] One-page executive brief and slide version of the discipline story
-- [ ] Formal name and trademark check for "Semantic Management Framework"; short naming and usage policy
+- [ ] Owner review of the neighbor-discipline hand-offs (`docs/discipline.md`), especially MDM and model risk management ([#13](https://github.com/Semantic-Management/framework/issues/13))
+- [ ] Practitioner notes on each practice from real (anonymized) experience ([#14](https://github.com/Semantic-Management/framework/issues/14))
+- [ ] Second worked example outside finance (e.g., "Active Customer" or "Region") ([#16](https://github.com/Semantic-Management/framework/issues/16))
+- [ ] One-page executive brief and slide version of the discipline story ([#17](https://github.com/Semantic-Management/framework/issues/17))
+- [ ] Formal name and trademark check for "Semantic Management Framework"; short naming and usage policy ([#15](https://github.com/Semantic-Management/framework/issues/15))
 
 ## Later
 - Maturity model assessed per practice, so partial adoption is a valid state
