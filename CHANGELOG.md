@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased: Apache Ossie alignment
+## v0.5.0 (2026-10-08): Apache Ossie alignment and a contributor backlog
+
+Minor bump because the spec gains two optional `Binding` fields. Existing documents validate unchanged. v0.4.8 and v0.4.9 were merged without tags; this release includes them.
 
 ### Added
+- Contributor backlog: fourteen scoped issues, each one deliverable, under the labels `example`, `crosswalk`, `interop`, `prior-art` and `boundary-case`; `CONTRIBUTING.md` "Where to start" points at them.
 - `docs/contracts-in-context.md`: "Working with interchange formats (Apache Ossie)", the Ossie counterpart to the ODCS section: what each side carries, two-way linking, the `ai_context` overlap, and what Ossie leaves out by design.
 - `reference/spec/README.md`: non-normative field mapping between an Ossie metric and `MetricContract`, a linking convention (Ossie `custom_extensions` with `vendor_name: SMF` pointing at the contract; an SMF `Binding` with `platform: ossie` pointing back), and the spec source.
 - `docs/research/landscape.md` and `bibliography.md`: findings sourced from the Ossie core spec (`0.2.0.dev0`, draft).

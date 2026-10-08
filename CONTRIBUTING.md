@@ -3,8 +3,18 @@
 SMF is early and open. Contributions that improve evidence, clarity and real-world fit are the most valuable.
 
 ## Where to start
+- **Pick an issue.** Every open issue labelled [`help wanted`](https://github.com/Semantic-Management/framework/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) is one deliverable with acceptance criteria written in. By kind:
+  - [`example`](https://github.com/Semantic-Management/framework/labels/example): a worked example (plain-language page plus machine-form YAML). Needs domain knowledge, not framework knowledge.
+  - [`crosswalk`](https://github.com/Semantic-Management/framework/labels/crosswalk): a mapping from one named framework or standard to SMF. Needs familiarity with that framework.
+  - [`interop`](https://github.com/Semantic-Management/framework/labels/interop): a converter or generator in `reference/tools/`. Python, stdlib plus PyYAML.
+  - [`prior-art`](https://github.com/Semantic-Management/framework/labels/prior-art): review one existing project and say what SMF should credit or defer to.
+  - [`boundary-case`](https://github.com/Semantic-Management/framework/labels/boundary-case): try to break a practice with a real case and report what happened.
+  - [`good first issue`](https://github.com/Semantic-Management/framework/labels/good%20first%20issue): finishable in an evening.
+- **Review a page.** Read one document from the reading order in `AGENTS.md` and open a Discussion saying where it is wrong or unclear. Reviewers are as valuable as authors at this stage.
 - **Questions and ideas:** [GitHub Discussions](https://github.com/Semantic-Management/framework/discussions)
 - **Specific changes or prior art:** open an issue using one of the templates
+
+Comment on an issue before starting so two people do not do the same work. Issues labelled `owner-action` need the framework owner's own input; skip those.
 
 ## Most helpful
 - **Prior art:** a framework, standard or project that already does something SMF claims. Add it to `docs/research/` with a source.
