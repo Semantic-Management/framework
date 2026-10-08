@@ -12,7 +12,7 @@ A complete, fictional example covering Revenue, Customer and Region. The company
 | `ownership.yaml` | Owners and scopes |
 | `rules.yaml` | A classification rule, resolution rules and a declared conflict |
 | `metrics.yaml` | Metric contracts |
-| `bindings.yaml` | Implementation bindings, including a legacy shadow measure |
+| `bindings.yaml` | Implementation bindings, including a legacy shadow measure and an untested Apache Ossie export |
 | `tests/golden-questions.yaml` | Assurance test cases |
 | `claims.yaml` | A quantitative claim trace |
 

@@ -41,6 +41,7 @@ Schemas use JSON Schema draft 2020-12. Schema IDs are URNs (`urn:semantic-manage
 - A **Metric Contract** is the `MetricContract` document (plus `Binding` documents for where it's implemented). Field names align with those commonly used for metric contracts: expression (`formula`), `grain`, `valid_dimensions`, `filters`, `time_semantics`, `additivity`, `owner`, certification (`certified_for`), `version`. SMF adds `perspective`, approved uses, `comparability` and `built_on` (links to data contracts).
 - A **Definition Contract** is a set of documents: `Concept`, its `Perspective`s, `Term`s, `Ownership`, any `ClassificationRule`s and the `ResolutionRule` for the term.
 - To link from an ODCS data contract to an SMF contract, use ODCS `authoritativeDefinitions` with type `businessDefinition`. In the other direction, a `MetricContract` lists the data contracts it is built on in `built_on`. For the business-level picture, see [docs/contracts-in-context.md](../../docs/contracts-in-context.md).
+- A `Binding` names one implementation of a contract (`implementation.platform` and `ref`). Two optional fields support Assurance: `implementation.derived_from` records the implementation a converter generated this one from, and `expression_snapshot` keeps the executable logic (or its SHA-256 digest) as it was when `conformance_status` was last assessed, so a tool can report drift instead of a reviewer re-reading the formula.
 - A `Perspective` may set `broader_than` (a list of perspective references) when it contains other perspectives, as Consolidated Gross Margin contains Product and Service. It records containment only. Comparability stays on the `MetricContract`.
 
 #### Linking an ODCS data contract to an SMF contract (illustrative)
@@ -61,6 +62,79 @@ ODCS 3.2 added an AI `context` block and a `semanticType` tag (column, measure, 
 Sources:
 - ODCS v3.2 schema (`authoritativeDefinitions`): https://bitol-io.github.io/open-data-contract-standard/v3.2.0/schema/
 - ODCS v3.2 / ODPS v1.1 release notes (AI `context`, `semanticType`): https://www.entropy-data.com/news/2026-09-08-odcs-3-2-odps-1-1
+
+#### Field mapping: Apache Ossie metric and `MetricContract` (non-normative)
+
+Apache Ossie is a draft interchange format (spec `0.2.0.dev0`; one model per document, no bundle or cross-model references). Its `metrics` entries carry `name`, `expression` (SQL per dialect), `description`, `datatype`, `ai_context` and `custom_extensions`. The table shows how each lines up with a `MetricContract`.
+
+| Ossie metric field | `MetricContract` field | Note |
+| --- | --- | --- |
+| `name` | `id` / `name` | Ossie names are unique within one model only. SMF ids are namespaced and stable across models; record the Ossie name in a `Binding`, not as the SMF id |
+| `expression.dialects[].expression` | `formula` | Ossie holds executable SQL; `formula` is the plain-words calculation that points at it. Ossie is "where it computes"; the contract is "where it agrees" |
+| `description` | `name`, `measures.concept_ref` | Free text in Ossie; a concept reference in SMF |
+| `datatype` | — | Not carried by SMF; stays in the implementation |
+| `ai_context.synonyms` | `Term` documents | Ossie synonyms are per metric per model; SMF terms resolve per context with a `ResolutionRule` and the five states |
+| `ai_context.instructions`, `ai_context.examples` | `ResolutionRule`, `TestCase` | Model-specific hints versus governed answer rules and checks that can be run |
+| `custom_extensions[]` (`vendor_name`, JSON `data`) | — | The slot for a pointer back to the SMF contract; see the example below |
+| — | `perspective` | Ossie has no perspective; two meanings of one metric are two unrelated metric names |
+| — | `grain`, `valid_dimensions`, `filters`, `exclusions`, `time_semantics`, `additivity` | Implicit in the Ossie SQL and relationships; explicit and reviewable in SMF |
+| — | `owner`, `certified_for`, `status`, `effective_from`, `version` | Ossie carries no ownership, approval, status or change history |
+| — | `comparability` | Not representable in Ossie |
+| — | `built_on` | Ossie datasets have a `source`; they do not reference data contracts |
+
+Ossie model- and dataset-level `ai_context` also overlaps with ODCS 3.2 `context`: both are hints for one artifact. SMF is the cross-artifact layer for both.
+
+#### Linking an Apache Ossie metric to an SMF contract (illustrative)
+
+Ossie has no equivalent of ODCS `authoritativeDefinitions`; use a `custom_extensions` entry. The `vendor_name` and the keys inside `data` are a convention proposed here, not part of the Ossie spec.
+
+```yaml
+# Inside an Apache Ossie semantic model document
+metrics:
+  - name: product_gross_margin
+    expression:
+      dialects:
+        - dialect: ANSI_SQL
+          expression: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+    description: Product Gross Margin (product perspective; see the SMF contract for approved uses and comparability)
+    ai_context:
+      instructions: "Governed by SMF contract product.gross_margin@v1. Not comparable with services.gross_margin."
+    custom_extensions:
+      - vendor_name: SMF
+        data: '{"metric_contract": "product.gross_margin@v1", "perspective": "perspective.gross_margin.product"}'
+```
+
+In the other direction, a `Binding` records the Ossie model and metric as one implementation of the contract, alongside any BI measure or semantic-layer metric:
+
+```yaml
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+expression_snapshot:
+  text: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+  sha256: eb9475197f844c6cbf36b26528111818268eab92596a2f3fab3d149152768a9b
+  captured_on: 2026-10-08
+conformance_status: untested
+```
+
+Because Ossie is a hub format, the same contract will often have one Ossie binding and several bindings that a converter produced from it. Record that with `derived_from` so Assurance can test the hub once and treat the spokes as generated:
+
+```yaml
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation:
+  platform: snowflake
+  ref: "ANALYTICS.SEMANTIC.SALES_ANALYTICS / PRODUCT_GROSS_MARGIN"
+  derived_from: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+conformance_status: untested
+```
+
+Assurance then treats drift between the Ossie `expression` and the snapshot on its binding as a finding, as it does for any other binding. Whether the Ossie `expression` still matches the contract's plain-words `formula` remains a reviewer's call; the snapshot makes the drift check mechanical, not the judgement.
+
+Sources:
+- Apache Ossie core specification (`0.2.0.dev0`, draft): https://github.com/apache/ossie/blob/main/core-spec/spec.md
 
 ## 2. Identifiers
 
@@ -143,3 +217,4 @@ python reference/tools/smf.py test reference/examples/gross-margin
 - Should `ResolutionRule` support ordered precedence in addition to specificity?
 - Should `Context` support ranges (effective periods) natively?
 - Should resolution states be proposed upstream as an ODCS extension and an OpenLineage facet?
+- Should Apache Ossie carry a native pointer to a governing definition (the equivalent of ODCS `authoritativeDefinitions`) instead of the `custom_extensions` convention above?

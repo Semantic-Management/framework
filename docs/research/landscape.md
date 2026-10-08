@@ -71,7 +71,10 @@ This file keeps **sourced findings** separate from SMF proposals. Each entry sta
 - Core building blocks: datasets, fields, relationships, metrics; `ai_context` hints; custom extensions. [Datapace]
 - Omits trust metadata: confidence, lineage, freshness, provenance, verification/approval records. [Datapace]
 - Industry commentary argues portability and governance are distinct problems: the format describes a metric but does not govern or execute it. [Strategy]
-- **Relevant:** preferred interchange target; SMF governance lives above it.
+- Spec `0.2.0.dev0` (draft): one model per document, no bundle or cross-model references; a metric is `name`, `expression` (SQL per dialect), `description`, `datatype`, `ai_context` (instructions, synonyms, examples) and `custom_extensions` (vendor name plus a JSON string). [Ossie spec]
+- No field for owner, approval, status, effective date, perspective, comparability or data-contract links; two meanings of one metric can only be two metric names. [Ossie spec]
+- **Relevant:** preferred interchange target; SMF governance lives above it. Field-level mapping and a linking convention are in the [reference](../../reference/spec/README.md).
+- **Gap:** `ai_context` hints are per model, so cross-model agreement (which perspective, when to ask) has nowhere to live inside the format; `custom_extensions` is the only slot for a pointer out.
 
 ### Open Data Contract Standard (ODCS)
 - Bitol (Linux Foundation) specification for data contracts; v3 documented. [ODCS]

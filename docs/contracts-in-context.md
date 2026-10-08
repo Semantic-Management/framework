@@ -34,6 +34,31 @@ For example, the landed cost column in a sales data contract can link to the Pro
 
 **One overlap to be clear about:** newer versions of ODCS let a data contract carry AI guidance and tag what each field is (a column, a measure or a dimension). These describe **one dataset**. SMF handles meaning **across** datasets: perspectives, owners, comparability, and when to ask "which one?". Use both. Don't duplicate one inside the other.
 
+## Working with interchange formats (Apache Ossie)
+
+Apache Ossie (incubating; formerly Open Semantic Interchange) is a portable file format for a semantic model: the datasets, how they join, the fields, and the metrics with their calculation. Its job is to move that model between BI tools, semantic layers and AI assistants without rewriting it for each one. It is still a draft and may change.
+
+An Ossie metric and a Metric Contract describe the same number from different sides:
+
+| | Ossie metric | Metric Contract |
+| --- | --- | --- |
+| Carries | The name, a description, the calculation (as SQL, in one or more dialects), and hints for AI such as synonyms and example questions | Perspective, plain-words meaning, approved and not-approved uses, comparability, owner, sign-off, status, effective date, and links to the data contracts beneath |
+| Answers | What is this metric and how is it computed? | What does it mean, from which perspective, where may it be used, and who decides? |
+| Scope | One model in one file; the format defines no links between models | Meaning across models, tools and business areas |
+
+They link in both directions:
+
+- **From the model to meaning.** An Ossie metric can carry a pointer to the Metric Contract it implements, using the format's extension slot.
+- **From meaning to the model.** A Metric Contract records the Ossie model and metric that implement it, in the same way it records a Power BI measure or a dbt metric.
+
+**One overlap to be clear about:** Ossie lets each model, dataset, field and metric carry AI hints: instructions, synonyms and example questions. Those hints describe **one model**. SMF's terms, answer rules and perspectives describe meaning **across** models, including when to ask "which one?". Put the model-specific hints in Ossie; put the cross-model agreement in SMF; let the Ossie hint point at the SMF contract rather than restate it.
+
+**What Ossie leaves out, by design:** who owns the metric, whether it is approved, for what, what it can be compared with, and when it changed. It carries one SQL expression per dialect, not the plain-words meaning. The Metric Contract supplies those. The Ossie file supplies the executable calculation. Neither replaces the other.
+
+Because Ossie is a hub that other tools' models are generated from, the contract can also note which implementations were produced from the Ossie model, and keep a copy of the calculation as it was when last checked, so drift shows up as a finding rather than being noticed by chance.
+
+Technical details and an example are in the [reference](../reference/spec/README.md).
+
 ## Working with metric catalogs and semantic layers
 
 Metric catalogs, metric stores and semantic layers (for example dbt MetricFlow, Unity Catalog metric views, Cube, LookML or a BI semantic model) hold the **executable** definition of a metric. The Metric Contract holds the **agreement**.

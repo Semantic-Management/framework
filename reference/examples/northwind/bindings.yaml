@@ -18,3 +18,13 @@ kind: Binding
 subject: finance.net_revenue@v3
 implementation: { platform: sql, ref: "adhoc/net_rev.sql" }
 conformance_status: legacy
+---
+smf: "0.1"
+kind: Binding
+subject: finance.net_revenue@v3
+implementation: { platform: ossie, ref: "northwind_sales/metrics/net_revenue" }
+expression_snapshot:
+  text: "SUM(invoice_lines.net_amount)"
+  sha256: bcd23a1714a9103f926a7a42d985be45c133622ad0e6a1ead1b7a52ac48a006d
+  captured_on: 2026-10-08
+conformance_status: untested

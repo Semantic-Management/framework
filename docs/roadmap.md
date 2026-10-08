@@ -18,7 +18,7 @@
 - Maturity model assessed per practice, so partial adoption is a valid state
 - Crosswalks to DAMA-DMBOK, ISO/IEC 42001, NIST AI RMF and COBIT
 - Reference patterns: catalog-centric, semantic-layer-centric, open-source stack (drafted)
-- Upstream conversations: ODCS (Bitol), OpenLineage and Egeria, about referencing Metric Contracts and perspectives
+- Upstream conversations: ODCS (Bitol), Apache Ossie, OpenLineage and Egeria, about referencing Metric Contracts and perspectives (for Ossie: a native pointer to a governing definition, in place of the `custom_extensions` convention)
 - Field testing with two or three organizations of different sizes
 
 ## v1.0 criteria

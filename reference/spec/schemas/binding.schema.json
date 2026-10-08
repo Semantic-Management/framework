@@ -20,15 +20,56 @@
       "type": "object",
       "properties": {
         "platform": {
-          "type": "string"
+          "type": "string",
+          "description": "Free-form platform name. Recommended values: power_bi, tableau, dbt, metricflow, cube, looker, snowflake, databricks, sql, ossie. Use the same spelling across a repository so bindings can be grouped."
         },
         "ref": {
-          "type": "string"
+          "type": "string",
+          "description": "Locator inside the platform (measure path, model and metric name, file path)."
+        },
+        "derived_from": {
+          "type": "object",
+          "description": "The implementation this one was generated from, for hub-and-spoke formats such as Apache Ossie. Lets Assurance tell a hand-built implementation from one produced by a converter.",
+          "properties": {
+            "platform": {
+              "type": "string"
+            },
+            "ref": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "platform",
+            "ref"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
         "platform",
         "ref"
+      ],
+      "additionalProperties": false
+    },
+    "expression_snapshot": {
+      "type": "object",
+      "description": "The executable logic as it was when conformance_status was last assessed. A tool that can read the platform recomputes the digest and reports drift when it differs.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "captured_on": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "sha256",
+        "captured_on"
       ],
       "additionalProperties": false
     },

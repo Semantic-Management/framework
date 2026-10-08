@@ -8,6 +8,7 @@
 | --- | --- |
 | [Ossie] | Apache Ossie (incubating): The New Name for Open Semantic Interchange. https://ossie.apache.org/updates/ossie-enters-apache-incubator/ |
 | [Ossie repo] | apache/ossie on GitHub. https://github.com/apache/ossie |
+| [Ossie spec] | Apache Ossie Core Metadata Specification, 0.2.0.dev0 (draft). Accessed 2026-10-08. https://github.com/apache/ossie/blob/main/core-spec/spec.md |
 | [Datapace] | What is Apache Ossie? What it standardizes and what it leaves out (Sep 2026). https://datapace.ai/blog/what-is-apache-ossie |
 | [Strategy] | Semantic Portability vs. Governance: Why OSI Alone Can't Secure Enterprise AI Metrics (Jun 2026). https://software.strategy.com/blog/semantic-layer-governance-vs-portability |
 | [DAMA 3.0] | DAMA-DMBOK 3.0 Project. https://dama.org/dama-dmbok-3-0-project/ |
