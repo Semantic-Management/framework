@@ -5,6 +5,7 @@
 - **v0.2:** practices made independently adoptable
 - **v0.3:** machine-readable reference and CLI (since moved to `reference/`)
 - **v0.4.x:** discipline framing, perspectives, gross margin example, Semantic Contracts, contracts in context, licensing, consistency and plain-language passes; published at github.com/Semantic-Management/framework
+- **v0.5.0:** Apache Ossie alignment, `Binding` provenance and drift fields, contributor backlog
 
 ## Next
 - [x] License: CC BY 4.0 (framework and docs) and Apache-2.0 (reference code). See `LICENSING.md`

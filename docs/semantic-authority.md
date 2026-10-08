@@ -1,6 +1,6 @@
 # Semantic Authority (Practice 3)
 
-**Status:** v0.4 working draft (detail for Practice 3)
+**Status:** v0.5 working draft (detail for Practice 3)
 **Type:** Practice detail, adoptable on its own
 **Purpose:** Define how an organization establishes, scopes and resolves authoritative business meaning
 
