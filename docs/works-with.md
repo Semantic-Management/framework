@@ -25,7 +25,7 @@ SMF is designed to plug gaps. It can run **together** with your existing framewo
 | Knowledge graphs and ontologies | Modeling, Resolution |
 | Open metadata (Egeria) | Modeling, Authority, Implementation |
 | Data contracts (ODCS / ODPS) | The datasets beneath Metric Contracts; an ODCS data contract can link each field to the business definition it supports, and SMF contracts link back to the data contracts they're built on. See [contracts-in-context.md](contracts-in-context.md) |
-| Interchange formats (Apache Ossie) | Interchange of metric definitions |
+| Interchange formats (Apache Ossie) | Exchange; the portable model carries the executable calculation and AI hints, an Ossie metric can point at the Metric Contract that governs it, and the contract records the Ossie model as one of its implementations. See [contracts-in-context.md](contracts-in-context.md) |
 | Lineage (OpenLineage / Marquez) | Implementation and claim traces |
 | AI tracing (e.g., Monocle) and AI assistant instructions | Resolution and Assurance for AI consumers |
 | Governance platforms | Workflow for approvals, conflicts and change notes |

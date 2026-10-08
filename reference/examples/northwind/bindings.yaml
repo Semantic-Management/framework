@@ -18,3 +18,9 @@ kind: Binding
 subject: finance.net_revenue@v3
 implementation: { platform: sql, ref: "adhoc/net_rev.sql" }
 conformance_status: legacy
+---
+smf: "0.1"
+kind: Binding
+subject: finance.net_revenue@v3
+implementation: { platform: ossie, ref: "northwind_sales/metrics/net_revenue" }
+conformance_status: untested

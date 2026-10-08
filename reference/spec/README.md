@@ -62,6 +62,62 @@ Sources:
 - ODCS v3.2 schema (`authoritativeDefinitions`): https://bitol-io.github.io/open-data-contract-standard/v3.2.0/schema/
 - ODCS v3.2 / ODPS v1.1 release notes (AI `context`, `semanticType`): https://www.entropy-data.com/news/2026-09-08-odcs-3-2-odps-1-1
 
+#### Field mapping: Apache Ossie metric and `MetricContract` (non-normative)
+
+Apache Ossie is a draft interchange format (spec `0.2.0.dev0`; one model per document, no bundle or cross-model references). Its `metrics` entries carry `name`, `expression` (SQL per dialect), `description`, `datatype`, `ai_context` and `custom_extensions`. The table shows how each lines up with a `MetricContract`.
+
+| Ossie metric field | `MetricContract` field | Note |
+| --- | --- | --- |
+| `name` | `id` / `name` | Ossie names are unique within one model only. SMF ids are namespaced and stable across models; record the Ossie name in a `Binding`, not as the SMF id |
+| `expression.dialects[].expression` | `formula` | Ossie holds executable SQL; `formula` is the plain-words calculation that points at it. Ossie is "where it computes"; the contract is "where it agrees" |
+| `description` | `name`, `measures.concept_ref` | Free text in Ossie; a concept reference in SMF |
+| `datatype` | — | Not carried by SMF; stays in the implementation |
+| `ai_context.synonyms` | `Term` documents | Ossie synonyms are per metric per model; SMF terms resolve per context with a `ResolutionRule` and the five states |
+| `ai_context.instructions`, `ai_context.examples` | `ResolutionRule`, `TestCase` | Model-specific hints versus governed answer rules and checks that can be run |
+| `custom_extensions[]` (`vendor_name`, JSON `data`) | — | The slot for a pointer back to the SMF contract; see the example below |
+| — | `perspective` | Ossie has no perspective; two meanings of one metric are two unrelated metric names |
+| — | `grain`, `valid_dimensions`, `filters`, `exclusions`, `time_semantics`, `additivity` | Implicit in the Ossie SQL and relationships; explicit and reviewable in SMF |
+| — | `owner`, `certified_for`, `status`, `effective_from`, `version` | Ossie carries no ownership, approval, status or change history |
+| — | `comparability` | Not representable in Ossie |
+| — | `built_on` | Ossie datasets have a `source`; they do not reference data contracts |
+
+Ossie model- and dataset-level `ai_context` also overlaps with ODCS 3.2 `context`: both are hints for one artifact. SMF is the cross-artifact layer for both.
+
+#### Linking an Apache Ossie metric to an SMF contract (illustrative)
+
+Ossie has no equivalent of ODCS `authoritativeDefinitions`; use a `custom_extensions` entry. The `vendor_name` and the keys inside `data` are a convention proposed here, not part of the Ossie spec.
+
+```yaml
+# Inside an Apache Ossie semantic model document
+metrics:
+  - name: product_gross_margin
+    expression:
+      dialects:
+        - dialect: ANSI_SQL
+          expression: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+    description: Product Gross Margin (product perspective; see the SMF contract for approved uses and comparability)
+    ai_context:
+      instructions: "Governed by SMF contract product.gross_margin@v1. Not comparable with services.gross_margin."
+    custom_extensions:
+      - vendor_name: SMF
+        data: '{"metric_contract": "product.gross_margin@v1", "perspective": "perspective.gross_margin.product"}'
+```
+
+In the other direction, a `Binding` records the Ossie model and metric as one implementation of the contract, alongside any BI measure or semantic-layer metric:
+
+```yaml
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+conformance_status: untested
+```
+
+Assurance then treats drift between the Ossie `expression` and the contract's `formula` as a finding, as it does for any other binding.
+
+Sources:
+- Apache Ossie core specification (`0.2.0.dev0`, draft): https://github.com/apache/ossie/blob/main/core-spec/spec.md
+
 ## 2. Identifiers
 
 - Pattern: lowercase, dot-namespaced, at least two segments: `concept.customer`, `finance.net_revenue`.

@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased: Apache Ossie alignment
+
+### Added
+- `docs/contracts-in-context.md`: "Working with interchange formats (Apache Ossie)", the Ossie counterpart to the ODCS section: what each side carries, two-way linking, the `ai_context` overlap, and what Ossie leaves out by design.
+- `reference/spec/README.md`: non-normative field mapping between an Ossie metric and `MetricContract`, a linking convention (Ossie `custom_extensions` with `vendor_name: SMF` pointing at the contract; an SMF `Binding` with `platform: ossie` pointing back), and the spec source.
+- `docs/research/landscape.md` and `bibliography.md`: findings sourced from the Ossie core spec (`0.2.0.dev0`, draft).
+- Northwind example: an `untested` Ossie binding for Net Revenue.
+
+### Changed
+- `docs/works-with.md`: the Ossie row now says how the two link, matching the ODCS row.
+
 ## v0.4.8 (2026-10-04): Review fixes
 
 ### Fixed (reference tools and spec)
