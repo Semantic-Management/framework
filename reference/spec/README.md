@@ -41,6 +41,7 @@ Schemas use JSON Schema draft 2020-12. Schema IDs are URNs (`urn:semantic-manage
 - A **Metric Contract** is the `MetricContract` document (plus `Binding` documents for where it's implemented). Field names align with those commonly used for metric contracts: expression (`formula`), `grain`, `valid_dimensions`, `filters`, `time_semantics`, `additivity`, `owner`, certification (`certified_for`), `version`. SMF adds `perspective`, approved uses, `comparability` and `built_on` (links to data contracts).
 - A **Definition Contract** is a set of documents: `Concept`, its `Perspective`s, `Term`s, `Ownership`, any `ClassificationRule`s and the `ResolutionRule` for the term.
 - To link from an ODCS data contract to an SMF contract, use ODCS `authoritativeDefinitions` with type `businessDefinition`. In the other direction, a `MetricContract` lists the data contracts it is built on in `built_on`. For the business-level picture, see [docs/contracts-in-context.md](../../docs/contracts-in-context.md).
+- A `Binding` names one implementation of a contract (`implementation.platform` and `ref`). Two optional fields support Assurance: `implementation.derived_from` records the implementation a converter generated this one from, and `expression_snapshot` keeps the executable logic (or its SHA-256 digest) as it was when `conformance_status` was last assessed, so a tool can report drift instead of a reviewer re-reading the formula.
 - A `Perspective` may set `broader_than` (a list of perspective references) when it contains other perspectives, as Consolidated Gross Margin contains Product and Service. It records containment only. Comparability stays on the `MetricContract`.
 
 #### Linking an ODCS data contract to an SMF contract (illustrative)
@@ -110,10 +111,27 @@ smf: "0.1"
 kind: Binding
 subject: product.gross_margin@v1
 implementation: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+expression_snapshot:
+  text: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+  sha256: eb9475197f844c6cbf36b26528111818268eab92596a2f3fab3d149152768a9b
+  captured_on: 2026-10-08
 conformance_status: untested
 ```
 
-Assurance then treats drift between the Ossie `expression` and the contract's `formula` as a finding, as it does for any other binding.
+Because Ossie is a hub format, the same contract will often have one Ossie binding and several bindings that a converter produced from it. Record that with `derived_from` so Assurance can test the hub once and treat the spokes as generated:
+
+```yaml
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation:
+  platform: snowflake
+  ref: "ANALYTICS.SEMANTIC.SALES_ANALYTICS / PRODUCT_GROSS_MARGIN"
+  derived_from: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+conformance_status: untested
+```
+
+Assurance then treats drift between the Ossie `expression` and the snapshot on its binding as a finding, as it does for any other binding. Whether the Ossie `expression` still matches the contract's plain-words `formula` remains a reviewer's call; the snapshot makes the drift check mechanical, not the judgement.
 
 Sources:
 - Apache Ossie core specification (`0.2.0.dev0`, draft): https://github.com/apache/ossie/blob/main/core-spec/spec.md
@@ -199,3 +217,4 @@ python reference/tools/smf.py test reference/examples/gross-margin
 - Should `ResolutionRule` support ordered precedence in addition to specificity?
 - Should `Context` support ranges (effective periods) natively?
 - Should resolution states be proposed upstream as an ODCS extension and an OpenLineage facet?
+- Should Apache Ossie carry a native pointer to a governing definition (the equivalent of ODCS `authoritativeDefinitions`) instead of the `custom_extensions` convention above?

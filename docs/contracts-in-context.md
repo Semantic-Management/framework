@@ -55,6 +55,8 @@ They link in both directions:
 
 **What Ossie leaves out, by design:** who owns the metric, whether it is approved, for what, what it can be compared with, and when it changed. It carries one SQL expression per dialect, not the plain-words meaning. The Metric Contract supplies those. The Ossie file supplies the executable calculation. Neither replaces the other.
 
+Because Ossie is a hub that other tools' models are generated from, the contract can also note which implementations were produced from the Ossie model, and keep a copy of the calculation as it was when last checked, so drift shows up as a finding rather than being noticed by chance.
+
 Technical details and an example are in the [reference](../reference/spec/README.md).
 
 ## Working with metric catalogs and semantic layers

@@ -6,7 +6,9 @@
 - `docs/contracts-in-context.md`: "Working with interchange formats (Apache Ossie)", the Ossie counterpart to the ODCS section: what each side carries, two-way linking, the `ai_context` overlap, and what Ossie leaves out by design.
 - `reference/spec/README.md`: non-normative field mapping between an Ossie metric and `MetricContract`, a linking convention (Ossie `custom_extensions` with `vendor_name: SMF` pointing at the contract; an SMF `Binding` with `platform: ossie` pointing back), and the spec source.
 - `docs/research/landscape.md` and `bibliography.md`: findings sourced from the Ossie core spec (`0.2.0.dev0`, draft).
-- Northwind example: an `untested` Ossie binding for Net Revenue.
+- Northwind example: an `untested` Ossie binding for Net Revenue, with an `expression_snapshot`.
+- `binding.schema.json`: optional `implementation.derived_from` (the implementation a converter generated this one from) and `expression_snapshot` (the executable logic, or its SHA-256, as it was when conformance was last assessed). Both additive; existing bindings validate unchanged. `platform` now documents recommended values.
+- Spec open question and roadmap: ask Apache Ossie for a native pointer to a governing definition, as ODCS has.
 
 ### Changed
 - `docs/works-with.md`: the Ossie row now says how the two link, matching the ODCS row.
