@@ -1,6 +1,6 @@
 # Guiding Principles
 
-**Status:** v0.4 working draft
+**Status:** v0.5 working draft
 
 These principles hold in any size organization and with any technology.
 

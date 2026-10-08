@@ -2,7 +2,7 @@
 
 **An open, technology-independent operating model for managing business meaning across people, data, analytics and AI.**
 
-Status: v0.4 working draft · Website: [semantic-management.github.io/framework](https://semantic-management.github.io/framework/) · [github.com/Semantic-Management/framework](https://github.com/Semantic-Management/framework) · License: [CC BY 4.0](LICENSE-docs) for the framework, [Apache-2.0](LICENSE) for the reference code ([details](LICENSING.md))
+Status: v0.5 working draft · **Looking for reviewers and worked examples** ([where to start](CONTRIBUTING.md#where-to-start)) · Website: [semantic-management.github.io/framework](https://semantic-management.github.io/framework/) · [github.com/Semantic-Management/framework](https://github.com/Semantic-Management/framework) · License: [CC BY 4.0](LICENSE-docs) for the framework, [Apache-2.0](LICENSE) for the reference code ([details](LICENSING.md))
 
 ---
 
@@ -113,3 +113,5 @@ They are **implementation technologies** for SMF practices. SMF also works **wit
 ## Status
 
 SMF is early working material, not an established standard. It does not claim to invent semantic governance; it builds on established work (see [research](docs/research/landscape.md)). Challenges, prior art and field experience are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+What would help most right now: someone who has lived "three gross margins" reviewing one page and saying where it is wrong, and worked examples from outside finance. The open issues labelled `help wanted` are each one scoped deliverable.
