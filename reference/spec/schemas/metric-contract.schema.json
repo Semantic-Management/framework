@@ -23,6 +23,10 @@
     "name": {
       "type": "string"
     },
+    "plain_words": {
+      "type": "string",
+      "description": "One or two sentences a non-analyst would understand. The one-pager's 'In plain words' row."
+    },
     "measures": {
       "type": "object",
       "properties": {
@@ -68,6 +72,13 @@
         "type": "string"
       }
     },
+    "inclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What counts. The counterpart of exclusions."
+    },
     "exclusions": {
       "type": "array",
       "items": {
@@ -95,7 +106,15 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Uses this number is approved for (meetings, reports, decisions)."
+    },
+    "not_certified_for": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Uses this number is not approved for, where a different perspective should be used instead. Same vocabulary as certified_for."
     },
     "variant_of": {
       "type": "string",
@@ -121,6 +140,31 @@
     "effective_from": {
       "type": "string",
       "format": "date"
+    },
+    "change_note": {
+      "type": "string",
+      "description": "What changed from the previous version, why, and from when. Expected whenever version is above 1."
+    },
+    "sign_off": {
+      "type": "object",
+      "description": "Who approved this version and when. The machine form of the one-pager's sign-off line.",
+      "properties": {
+        "by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Person or role who approved."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The day it was approved. Named 'date', not 'on': YAML 1.1 parsers read a bare 'on' key as the boolean true."
+        }
+      },
+      "required": [
+        "by",
+        "date"
+      ],
+      "additionalProperties": false
     },
     "comparability": {
       "type": "object",

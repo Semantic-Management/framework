@@ -39,6 +39,8 @@ The CLI has four subcommands (`validate`, `resolve`, `test`, `import-csv`); all 
 $PY reference/tools/smf.py resolve reference/examples/gross-margin --term "gross margin" --context audience=leadership
 ```
 
+`validate` and `test` take `--format json` for machine-readable output. The CLI reads only SMF documents: other YAML or JSON under the path is skipped and counted, and dot-folders are not walked.
+
 `test --results <file>` scores an AI assistant's answers (see `reference/examples/consumer-results/`); those sample files fail one check on purpose, so a failure there is expected.
 
 ## Architecture
