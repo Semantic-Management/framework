@@ -16,7 +16,8 @@
 - [ ] Formal name and trademark check for "Semantic Management Framework"; short naming and usage policy ([#15](https://github.com/Semantic-Management/framework/issues/15))
 
 ## Later
-- Maturity model assessed per practice, so partial adoption is a valid state
+- Maturity model assessed per practice, so partial adoption is a valid state, derived from closed gaps in the [gap catalogue](gaps.md) rather than self-assessment
+- A workbench that renders the [metamodel](metamodel.md) for an organization's own files, shows gaps as missing connections, and writes only SMF documents and patches to other standards' files (no catalog of its own)
 - Crosswalks to DAMA-DMBOK, ISO/IEC 42001, NIST AI RMF and COBIT
 - Reference patterns: catalog-centric, semantic-layer-centric, open-source stack (drafted)
 - Upstream conversations: ODCS (Bitol), Apache Ossie, OpenLineage and Egeria, about referencing Metric Contracts and perspectives (for Ossie: a native pointer to a governing definition, in place of the `custom_extensions` convention)

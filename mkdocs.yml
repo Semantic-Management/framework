@@ -97,6 +97,8 @@ nav:
           - Answer table template: templates/answer-table.md
   - Works with:
       - Frameworks and tools: docs/works-with.md
+      - The metamodel: docs/metamodel.md
+      - Gap catalogue: docs/gaps.md
       - AI governance evidence: docs/ai-governance-evidence.md
       - Open-source reference stack: docs/patterns/open-source-stack.md
   - Research:
