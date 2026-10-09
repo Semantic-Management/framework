@@ -136,6 +136,36 @@ Assurance then treats drift between the Ossie `expression` and the snapshot on i
 Sources:
 - Apache Ossie core specification (`0.2.0.dev0`, draft): https://github.com/apache/ossie/blob/main/core-spec/spec.md
 
+### Relationships across standards
+
+The framework's [metamodel](../../docs/metamodel.md) draws the connections between data contracts, SMF documents, implementations and decisions. This table gives the field that records each connection. Where two standards record the same connection from opposite ends, both rows are listed; they must agree, and neither restates the other.
+
+| Connection (plain name) | From | To | Field that records it | Owning spec |
+| --- | --- | --- | --- | --- |
+| built on | `MetricContract` | data contract | `MetricContract.built_on[]` | SMF |
+| points to its business definition (same connection, other end) | ODCS field | `MetricContract` | `properties[].authoritativeDefinitions[]` with `type: businessDefinition` | ODCS 3.x |
+| has | `Concept` | `Perspective` | `Perspective.concept_ref` | SMF |
+| contains | `Perspective` | `Perspective` | `Perspective.broader_than[]` | SMF |
+| measured by | `Perspective` | `MetricContract` | `MetricContract.perspective` (and `MetricContract.measures.concept_ref` to the concept) | SMF |
+| what counts | `Concept` | `ClassificationRule` | `ClassificationRule.concept_ref`; `MetricContract.classification_rules[]` | SMF |
+| comparable / not comparable with | `MetricContract` | `MetricContract` | `comparability.comparable_with[]`, `comparability.not_comparable_with[]`, `comparability.can_be_combined` | SMF |
+| implemented in | `MetricContract` (or `Concept`) | implementation | `Binding.subject` → `Binding.implementation {platform, ref}` | SMF |
+| generated into | implementation | implementation | `Binding.implementation.derived_from {platform, ref}` | SMF |
+| as it was when last checked | `Binding` | expression | `Binding.expression_snapshot {text?, sha256, captured_on}`; `Binding.conformance_status` | SMF |
+| points to its contract (same connection, other end) | Ossie metric | `MetricContract` | `metrics[].custom_extensions[]` with `vendor_name: SMF`, `data: {"metric_contract": "id@vN", ...}` (convention, not part of the Ossie spec) | Apache Ossie |
+| selects | context | `ResolutionRule` clause | `ResolutionRule.contextual[].when` matched against the query `context`; `Context.conditions` names the contexts | SMF |
+| applies to | `ResolutionRule` | `Concept` / `MetricContract` | `default` and `contextual[].resolve_to {concept, measurement}` | SMF |
+| one of five answers | `ResolutionRule` | consumer | `ResolutionResult.state` with `basis`, `options`, `conflict_ref`, `replaces` | SMF |
+| owned by | `Concept` / `Perspective` / `MetricContract` | person or role | `Ownership.subject` → `owner`, `steward`, `scope`; `Perspective.owner`; `MetricContract.owner` | SMF |
+| undecided | term | candidates | `Conflict.candidates[]`, `owner`, `target_date`; `ResolutionRule.contextual[].conflict_ref` | SMF |
+| replaced by | `Concept` / term | `Concept` / `MetricContract` | `Concept.replaced_by`; `ResolutionRule.deprecated.replacement` | SMF |
+| backed by | `ClaimTrace` | `MetricContract` version | `ClaimTrace.measurement` (`id@vN`), `ClaimTrace.concept` | SMF |
+| computed by | `ClaimTrace` | implementation and run | `ClaimTrace.execution {binding, query_hash, executed_at}`, `sources[]` | SMF |
+| run lineage (same connection, other end) | `ClaimTrace` | lineage run | `ClaimTrace.provenance {format: openlineage, ref}` | OpenLineage |
+| tests | `TestCase` | consumer or resolver | `TestCase.input` / `expected`; consumer results keyed by test id | SMF |
+
+The plain-language [gap catalogue](../../docs/gaps.md) lists what it means when one of these connections is missing. Most gaps can be found from the documents alone with the fields above; drift needs the implementation's current expression, and "check never run" needs a results file.
+
 ## 2. Identifiers
 
 - Pattern: lowercase, dot-namespaced, at least two segments: `concept.customer`, `finance.net_revenue`.

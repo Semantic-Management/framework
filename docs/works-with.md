@@ -32,6 +32,8 @@ SMF is designed to plug gaps. It can run **together** with your existing framewo
 
 An all-open-source reference setup is described in [patterns/open-source-stack.md](patterns/open-source-stack.md).
 
+How all of these connect, drawn once, is the [metamodel](metamodel.md). The connections that are missing in a given organization are its [gaps](gaps.md).
+
 ## What SMF adds
 
 Meaning that depends on context is established work, not an SMF invention. Domain-driven design's bounded contexts, SBVR, Business Semantics Management and Egeria's context-specific glossary terms all handle it. See the [landscape research](research/landscape.md).

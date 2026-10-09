@@ -95,6 +95,8 @@ They are **implementation technologies** for SMF practices. SMF also works **wit
 │   ├── roles-and-artifacts.md
 │   ├── getting-started.md    by size: small, mid-size, enterprise
 │   ├── works-with.md         tools and frameworks SMF plugs into
+│   ├── metamodel.md          a model of the models: how the standards connect
+│   ├── gaps.md               the connections that should exist and don't
 │   ├── examples/gross-margin.md
 │   ├── semantic-authority.md, ai-governance-evidence.md, roadmap.md
 │   ├── research-agenda.md    open research questions

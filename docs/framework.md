@@ -25,6 +25,7 @@
 | **Semantic Contracts** | Metric Contract (numbers) and Definition Contract (terms) | [metric-contract.md](metric-contract.md), [contracts-in-context.md](contracts-in-context.md) |
 | **Adoption** | Small, mid-size and enterprise starting points | [getting-started.md](getting-started.md) |
 | **Works with** | Frameworks and technologies SMF plugs into | [works-with.md](works-with.md) |
+| **Metamodel** | A model of the models: how data contracts, SMF documents, implementations and decisions connect, and the [gaps](gaps.md) when a connection is missing | [metamodel.md](metamodel.md) |
 
 ## How the pieces fit
 

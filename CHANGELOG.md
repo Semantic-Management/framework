@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- `docs/metamodel.md`: a model of the models. The four columns (data, meaning, analytics and AI, decision), a diagram of how data contracts, SMF documents, implementations and decisions connect, a table of every connection with the standard that records it, and the two ways to read it (audit trail of a decision; operating picture).
+- `docs/gaps.md`: the gap catalogue. Thirty-odd named "connection that should exist and does not" cases, each with how it shows up, the practice that owns closing it, and a weight. Stated uses: work list, observed maturity reading, tool rendering rules, AI governance evidence.
+- `reference/spec/README.md` "Relationships across standards": the field that records each connection in the metamodel, including the two recorded from the other end in ODCS (`authoritativeDefinitions`) and Apache Ossie (`custom_extensions`) and the OpenLineage run reference.
+- Roadmap: the maturity model is now described as derived from closed gaps; a metamodel workbench (reads other standards' files, writes only SMF documents and patches, keeps no catalog of its own) is listed under Later.
+
 ## v0.5.0 (2026-10-08): Apache Ossie alignment and a contributor backlog
 
 Minor bump because the spec gains two optional `Binding` fields. Existing documents validate unchanged. v0.4.8 and v0.4.9 were merged without tags; this release includes them.
