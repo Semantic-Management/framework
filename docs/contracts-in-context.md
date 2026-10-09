@@ -34,6 +34,15 @@ For example, the landed cost column in a sales data contract can link to the Pro
 
 **One overlap to be clear about:** newer versions of ODCS let a data contract carry AI guidance and tag what each field is (a column, a measure or a dimension). These describe **one dataset**. SMF handles meaning **across** datasets: perspectives, owners, comparability, and when to ask "which one?". Use both. Don't duplicate one inside the other.
 
+## Working with data products (ODPS)
+
+A data product packages one or more datasets for others to use. Its standard, ODPS, sits beside ODCS in the same family: the data product says what it offers and which version of each data contract stands behind it.
+
+- **From the data product to meaning.** A data product can point at the Metric Contracts it supports, the same way a data contract field does.
+- **From meaning to the data product.** Nothing extra to record. The Metric Contract names the data contracts it's built on, and the data product is whichever one serves those contracts.
+
+A Metric Contract is built on data contracts, not on data products. The product can be repackaged or renamed without touching the agreement about the number. A data product never says what a number means.
+
 ## Working with interchange formats (Apache Ossie)
 
 Apache Ossie (incubating; formerly Open Semantic Interchange) is a portable file format for a semantic model: the datasets, how they join, the fields, and the metrics with their calculation. Its job is to move that model between BI tools, semantic layers and AI assistants without rewriting it for each one. It is still a draft and may change.
@@ -77,6 +86,7 @@ Metric catalogs, metric stores and semantic layers (for example dbt MetricFlow, 
 - **Host the contract in the catalog** when the catalog supports extra metadata. SMF doesn't need its own tool.
 - **Let Assurance check for drift.** If the catalog's logic stops matching the contract, that's a finding to fix, not a second truth.
 - **Add only what's missing.** Where a catalog already records owner and certification, the contract adds perspective, approved uses and comparability.
+- **Point back from the metric.** Most semantic layers let a metric carry extra notes. Use that to name the Metric Contract it implements, so someone reading only the semantic layer can find the agreement.
 
 ## Common field names
 

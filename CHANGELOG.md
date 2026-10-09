@@ -13,6 +13,9 @@ Proposed in #36, #37 and #39. Spec changes are additive: every new field is opti
 - `binding.schema.json`: optional `id`. A duplicate is an error. (#39)
 - `smf.py validate`: a claim's `execution.binding` must name a build record in the set, by `Binding` id or as `<platform>:<ref>`. No match is a warning, and an error in strict mode; a match that belongs to a different Metric Contract than the claim's is an error. Both examples validate unchanged. (#39)
 
+- `reference/spec/README.md`: a crosswalk of every `MetricContract` field against Apache Ossie, dbt MetricFlow, ODCS and ODPS; a non-normative field mapping for a dbt MetricFlow metric (dbt 1.12 YAML spec) with a linking convention (`config.meta.smf` pointing at the contract; a `Binding` with `platform: dbt` pointing back); and how an ODPS data product points at a Metric Contract with `authoritativeDefinitions`. "Relationships across standards" gains the dbt and ODPS rows. No schema changes.
+- Gross margin example: Product Gross Margin is now written out in each standard it touches (a dbt metric, an Apache Ossie model, two ODCS data contracts and an ODPS data product), with an Ossie `Binding` and an `expression_snapshot` on the dbt `Binding`. The files in other standards are illustrative and are skipped by the CLI.
+
 ### Changed (reference tools)
 - `smf.py validate`: a missing path and an empty folder now end with the same summary line as any other failure.
 
@@ -20,6 +23,7 @@ Proposed in #36, #37 and #39. Spec changes are additive: every new field is opti
 - `docs/metamodel.md`: a model of the models. The four columns (data, meaning, analytics and AI, decision), a diagram of how data contracts, SMF documents, implementations and decisions connect, a table of every connection with the standard that records it, and the two ways to read it (audit trail of a decision; operating picture).
 - `docs/gaps.md`: the gap catalogue. Thirty-odd named "connection that should exist and does not" cases, each with how it shows up, the practice that owns closing it, and a weight. Stated uses: work list, observed maturity reading, tool rendering rules, AI governance evidence.
 - `reference/spec/README.md` "Relationships across standards": the field that records each connection in the metamodel, including the two recorded from the other end in ODCS (`authoritativeDefinitions`) and Apache Ossie (`custom_extensions`) and the OpenLineage run reference.
+- `docs/contracts-in-context.md`: "Working with data products (ODPS)", and a note that a semantic layer metric can point back at its Metric Contract. `docs/metric-contract.md`, `docs/works-with.md`, `docs/metamodel.md` and `docs/gaps.md` now treat ODPS data products separately from ODCS data contracts.
 - Roadmap: the maturity model is now described as derived from closed gaps; a metamodel workbench (reads other standards' files, writes only SMF documents and patches, keeps no catalog of its own) is listed under Later.
 
 ## v0.5.0 (2026-10-08): Apache Ossie alignment and a contributor backlog

@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: Apache-2.0
+# Illustrative ODCS data contract for the gross margin example. Not an SMF document:
+# the reference CLI skips it. It shows the link from a dataset up to a Metric Contract.
+apiVersion: v3.2.0
+kind: DataContract
+id: sales_order_lines
+name: Sales Order Lines
+version: 1.2.0
+status: active
+description:
+  purpose: One row per line on a shipped sales order, with the revenue and landed cost for that line.
+schema:
+  - name: order_lines
+    physicalType: table
+    dataGranularityDescription: One row per order line
+    properties:
+      - name: order_line_id
+        primaryKey: true
+        primaryKeyPosition: 1
+        logicalType: string
+      - name: ship_date
+        logicalType: date
+      - name: line_type
+        logicalType: string
+        description: product or service
+      - name: product_category
+        logicalType: string
+      - name: store
+        logicalType: string
+      - name: product_revenue
+        logicalType: number
+        authoritativeDefinitions:
+          - type: businessDefinition
+            url: https://example.org/semantic/metric-contracts/product.gross_margin
+            description: Revenue side of Product Gross Margin (SMF Metric Contract product.gross_margin@v1).
+      - name: landed_cost_of_goods
+        logicalType: number
+        description: Materials, freight-in and duties for the line, from the landed cost data contract.
+        authoritativeDefinitions:
+          - type: businessDefinition
+            url: https://example.org/semantic/metric-contracts/product.gross_margin
+            description: Cost side of Product Gross Margin (SMF Metric Contract product.gross_margin@v1).

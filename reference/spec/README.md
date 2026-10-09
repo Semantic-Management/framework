@@ -66,6 +66,117 @@ Sources:
 - ODCS v3.2 schema (`authoritativeDefinitions`): https://bitol-io.github.io/open-data-contract-standard/v3.2.0/schema/
 - ODCS v3.2 / ODPS v1.1 release notes (AI `context`, `semanticType`): https://www.entropy-data.com/news/2026-09-08-odcs-3-2-odps-1-1
 
+#### Linking an ODPS data product to an SMF contract (illustrative)
+
+An ODPS data product packages datasets behind output ports. Each port names the data contract it serves (`contractId`) and that contract's `version`. ODPS carries `authoritativeDefinitions` at the product level and on each port, so a data product points at a Metric Contract the same way an ODCS field does:
+
+```yaml
+# Inside an ODPS data product
+authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://example.org/semantic/metric-contracts/product.gross_margin
+outputPorts:
+  - name: order-lines
+    version: 1.2.0
+    contractId: sales_order_lines
+```
+
+In the other direction nothing new is needed: `MetricContract.built_on` names the data contract, and the data product is found from the port whose `contractId` matches. A `MetricContract` is built on data contracts, not on data products, so a product can be repackaged without changing the contract. ODPS describes no metrics, measures or calculations; it is a Data-column standard.
+
+Sources:
+- ODPS v1.1.0 schema: https://github.com/bitol-io/open-data-product-standard/blob/main/schema/odps-json-schema-v1.1.0.json
+
+#### Crosswalk: one Metric Contract, four standards (non-normative)
+
+Where each part of a `MetricContract` shows up in the standards around it. "—" means the standard does not carry it, which is the reason the contract exists. The worked files are in [examples/gross-margin](../examples/gross-margin/README.md#one-contract-four-standards).
+
+| `MetricContract` field | Apache Ossie metric | dbt MetricFlow metric | ODCS data contract | ODPS data product |
+| --- | --- | --- | --- | --- |
+| `id`, `version` | — (`name` is unique in one model only) | — (`name` is unique in one project only) | — | — |
+| `name` | `name`, `description` | `label`, `name` | — | — |
+| `plain_words` | `description` | `description` | — | — |
+| `measures.concept_ref`, `perspective` | — | — | — | — |
+| `formula` | `expression.dialects[].expression` (executable SQL) | `agg` + `expr`, or `expr` + `input_metrics`, or `numerator` / `denominator` (executable) | — | — |
+| `grain` | implicit in the dataset `primary_key` | implicit in the primary `entity` | `schema[].dataGranularityDescription` | — |
+| `valid_dimensions` | fields with `dimension` (everything reachable; no allow-list per metric) | `dimension` columns (everything reachable; no allow-list per metric) | — | — |
+| `filters`, `inclusions`, `exclusions` | inside the SQL | `filter` | — | — |
+| `time_semantics` | `dimension.is_time` | `agg_time_dimension`, column `granularity` | — | — |
+| `additivity` | — | `non_additive_dimension` (semi-additive only) | — | — |
+| `owner`, `sign_off` | — | `config.meta` (free-form), `config.group` | `team` (of the dataset, not the number) | `team` (of the product, not the number) |
+| `status`, `effective_from`, `change_note` | — | — | `status`, `version` (of the dataset) | `status`, `version` (of the product) |
+| `certified_for`, `not_certified_for` | — | — | — | — |
+| `comparability` | — | — | — | — |
+| `built_on` | dataset `source` (a table, not a contract) | `ref()` to a model (a table, not a contract) | the contract's own `id` and `version` | `outputPorts[].contractId` and `version` |
+| pointer back to the contract | `custom_extensions[]`, `vendor_name: SMF` (convention) | `config.meta.smf` (convention) | `authoritativeDefinitions[]`, `type: businessDefinition` | `authoritativeDefinitions[]`, `type: businessDefinition` |
+| where it is implemented (`Binding`) | `platform: ossie` | `platform: dbt` | — | — |
+
+Reading the columns: Ossie and dbt carry the **calculation** and nothing about who agreed to it. ODCS and ODPS carry **ownership, status and version of the data**, and nothing about the number. The rows where all four are "—" (concept, perspective, approved uses, comparability) are what only the Metric Contract records.
+
+#### Field mapping: dbt MetricFlow metric and `MetricContract` (non-normative)
+
+Written against the dbt 1.12 YAML spec, where simple metrics sit on the model and other metric types sit under a top-level `metrics:` key. In dbt 1.11 and earlier the same information sits in `semantic_models[].measures` and `metrics[].type_params`; `config.meta` is available in both.
+
+| dbt metric key | `MetricContract` field | Note |
+| --- | --- | --- |
+| `name` | `id` / `name` | dbt names are unique within one project. SMF ids are namespaced and stable across projects; record the dbt name in a `Binding`, not as the SMF id |
+| `label` | `name` | Display name |
+| `description` | `plain_words` | Free text in both; dbt has no concept reference |
+| `type` (`simple`, `ratio`, `derived`, `cumulative`, `conversion`) | — | How dbt builds the number. Stays in the implementation |
+| `agg`, `expr`, `input_metrics`, `numerator`, `denominator` | `formula` | dbt holds the executable definition; `formula` is the plain-words calculation that points at it |
+| `filter` | `filters`, `inclusions`, `exclusions` | One Jinja expression in dbt; three reviewable lists in SMF |
+| `agg_time_dimension`, column `granularity` | `time_semantics` | dbt names the column and its grain; the contract also says fiscal or calendar and which date counts |
+| `non_additive_dimension` | `additivity` | dbt marks semi-additive measures only. A ratio's non-additivity is implied by its `type` |
+| model `columns[].dimension` | `valid_dimensions` | dbt offers every dimension reachable through entities; the contract lists the ones that are approved |
+| model `columns[].entity` (primary) | `grain` | Implicit in dbt; stated in SMF |
+| `config.group` | `owner` | A dbt group owns code. The contract's owner is accountable for the meaning |
+| `config.meta` | — | The slot for a pointer back to the SMF contract; see the example below |
+| — | `perspective`, `measures.concept_ref` | dbt has no perspective; two meanings of one metric are two unrelated metric names |
+| — | `certified_for`, `not_certified_for`, `status`, `effective_from`, `sign_off`, `version` | dbt carries no approval, status or change history for a metric beyond git |
+| — | `comparability` | Not representable in dbt |
+| — | `built_on` | A dbt model can carry its own data contract; a metric does not reference one |
+
+#### Linking a dbt metric to an SMF contract (illustrative)
+
+Use `config.meta`. The `smf` key and the keys inside it are a convention proposed here, not part of dbt. dbt writes `meta` into `semantic_manifest.json`, so a tool can read the pointer without parsing the project's YAML.
+
+```yaml
+# Inside a dbt project (dbt 1.12 YAML spec)
+metrics:
+  - name: product_gross_margin
+    description: Product Gross Margin (product perspective; see the SMF contract for approved uses and comparability)
+    type: derived
+    label: Product Gross Margin
+    expr: (product_revenue - landed_cost_of_goods) / product_revenue
+    input_metrics:
+      - name: product_revenue
+      - name: landed_cost_of_goods
+    config:
+      meta:
+        smf:
+          metric_contract: product.gross_margin@v1
+          perspective: perspective.gross_margin.product
+```
+
+In the other direction, a `Binding` records the dbt metric as one implementation of the contract:
+
+```yaml
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation: { platform: dbt, ref: "metrics.product_gross_margin" }
+expression_snapshot:
+  text: (product_revenue - landed_cost_of_goods) / product_revenue
+  sha256: 170037c59f088976a7416c969b1617527e13fcd1dc3a81019d3106fa4a7da814
+  captured_on: 2026-10-09
+conformance_status: conformant
+```
+
+For a derived or ratio metric the snapshot holds the metric's own expression. Its input metrics have their own filters and aggregations, so a change to an input does not change this digest; snapshot the inputs too, or bind them to their own contracts, when that matters. Apache Ossie ships a dbt converter, so when a dbt metric was generated from an Ossie model (or the reverse), record that with `derived_from`.
+
+Sources:
+- dbt metrics (v1.12 spec): https://docs.getdbt.com/docs/build/metrics-overview
+- dbt semantic models (v1.12 spec): https://docs.getdbt.com/docs/build/semantic-models
+
 #### Field mapping: Apache Ossie metric and `MetricContract` (non-normative)
 
 Apache Ossie is a draft interchange format (spec `0.2.0.dev0`; one model per document, no bundle or cross-model references). Its `metrics` entries carry `name`, `expression` (SQL per dialect), `description`, `datatype`, `ai_context` and `custom_extensions`. The table shows how each lines up with a `MetricContract`.
@@ -148,6 +259,7 @@ The framework's [metamodel](../../docs/metamodel.md) draws the connections betwe
 | built on | `MetricContract` | data contract | `MetricContract.built_on[]` | SMF |
 | points to its business definition (same connection, other end) | ODCS field | `MetricContract` | `properties[].authoritativeDefinitions[]` with `type: businessDefinition` | ODCS 3.x |
 | has | `Concept` | `Perspective` | `Perspective.concept_ref` | SMF |
+| served by (same connection, from the data product) | ODPS data product or output port | `MetricContract` | `authoritativeDefinitions[]` with `type: businessDefinition`; `outputPorts[].contractId` and `version` name the data contract in `built_on` | ODPS 1.x |
 | contains | `Perspective` | `Perspective` | `Perspective.broader_than[]` | SMF |
 | measured by | `Perspective` | `MetricContract` | `MetricContract.perspective` (and `MetricContract.measures.concept_ref` to the concept) | SMF |
 | what counts | `Concept` | `ClassificationRule` | `ClassificationRule.concept_ref`; `MetricContract.classification_rules[]` | SMF |
@@ -156,6 +268,7 @@ The framework's [metamodel](../../docs/metamodel.md) draws the connections betwe
 | generated into | implementation | implementation | `Binding.implementation.derived_from {platform, ref}` | SMF |
 | as it was when last checked | `Binding` | expression | `Binding.expression_snapshot {text?, sha256, captured_on}`; `Binding.conformance_status` | SMF |
 | points to its contract (same connection, other end) | Ossie metric | `MetricContract` | `metrics[].custom_extensions[]` with `vendor_name: SMF`, `data: {"metric_contract": "id@vN", ...}` (convention, not part of the Ossie spec) | Apache Ossie |
+| points to its contract (same connection, other end) | dbt metric | `MetricContract` | `metrics[].config.meta.smf {metric_contract: "id@vN", ...}` (convention, not part of dbt) | dbt MetricFlow |
 | selects | context | `ResolutionRule` clause | `ResolutionRule.contextual[].when` matched against the query `context`; `Context.conditions` names the contexts | SMF |
 | applies to | `ResolutionRule` | `Concept` / `MetricContract` | `default` and `contextual[].resolve_to {concept, measurement}` | SMF |
 | one of five answers | `ResolutionRule` | consumer | `ResolutionResult.state` with `basis`, `options`, `conflict_ref`, `replaces` | SMF |
@@ -230,8 +343,10 @@ How `smf.py test` checks a consumer's results file (a mapping of test id to `Res
 
 SMF does not redefine what other open specs already carry. See [docs/works-with.md](../../docs/works-with.md).
 
-- Dataset-level contracts, AI `context` blocks and field synonyms: **ODCS / ODPS (Bitol)**
+- Dataset-level contracts, AI `context` blocks and field synonyms: **ODCS (Bitol)**
+- Data products, their ports and the data contract version behind each port: **ODPS (Bitol)**
 - Portable semantic models and metric expressions: **Apache Ossie**
+- Executable metric definitions: **dbt MetricFlow** and other semantic layers
 - Lineage and run provenance: **OpenLineage**; `ClaimTrace.provenance` can point to an OpenLineage run
 - Glossary and metadata type system: **Egeria**
 - Concept mapping relations: **SKOS**

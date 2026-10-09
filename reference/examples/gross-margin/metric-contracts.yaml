@@ -80,7 +80,21 @@ smf: "0.1"
 kind: Binding
 subject: product.gross_margin@v1
 implementation: { platform: dbt, ref: "metrics.product_gross_margin" }
+expression_snapshot:
+  text: (product_revenue - landed_cost_of_goods) / product_revenue
+  sha256: 170037c59f088976a7416c969b1617527e13fcd1dc3a81019d3106fa4a7da814
+  captured_on: 2026-10-09
 conformance_status: conformant
+---
+smf: "0.1"
+kind: Binding
+subject: product.gross_margin@v1
+implementation: { platform: ossie, ref: "sales_analytics/metrics/product_gross_margin" }
+expression_snapshot:
+  text: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+  sha256: eb9475197f844c6cbf36b26528111818268eab92596a2f3fab3d149152768a9b
+  captured_on: 2026-10-09
+conformance_status: untested
 ---
 smf: "0.1"
 kind: Binding

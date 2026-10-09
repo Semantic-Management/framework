@@ -52,7 +52,8 @@ One rule keeps this clean: **one place computes, one place agrees.** The metric 
 | BI measures (e.g., Power BI) | Same: an implementation, linked from the contract |
 | Metric stores | Can host the contract's calculation; the contract adds perspective, ownership, approved uses and comparability |
 | Apache Ossie | Portable format for metric definitions; the contract carries the ownership, approval and trust information Ossie leaves out, plus perspective and comparability |
-| ODCS / ODPS data contracts | Describe the datasets the metric is built on; the Metric Contract describes the business number on top |
+| ODCS data contracts | Describe the datasets the metric is built on; the Metric Contract describes the business number on top |
+| ODPS data products | Package those datasets for use and say which version of each data contract they serve; a data product can point at the Metric Contracts it supports |
 | Catalogs and glossaries | Can store and display contracts |
 
 A machine-readable form of the Metric Contract, with a schema, is available in the [reference](../reference/spec/README.md) for teams that want to automate.

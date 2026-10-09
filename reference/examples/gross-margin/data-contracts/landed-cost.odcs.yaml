@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+# Illustrative ODCS data contract for the gross margin example. Not an SMF document:
+# the reference CLI skips it.
+apiVersion: v3.2.0
+kind: DataContract
+id: landed_cost
+name: Landed Cost
+version: 1.0.0
+status: active
+description:
+  purpose: Landed cost per received item, covering materials, freight-in and duties.
+schema:
+  - name: landed_cost
+    physicalType: table
+    dataGranularityDescription: One row per received item
+    properties:
+      - name: item_id
+        primaryKey: true
+        primaryKeyPosition: 1
+        logicalType: string
+      - name: material_cost
+        logicalType: number
+      - name: freight_in
+        logicalType: number
+      - name: duties
+        logicalType: number
