@@ -5,7 +5,7 @@
 Proposed in #36, #37 and #39. Spec changes are additive: every new field is optional and existing documents validate unchanged.
 
 ### Added (reference tools and spec)
-- `smf.py`: only SMF documents are read. A YAML or JSON file with no SMF document in it (a CI workflow, a tool's configuration, a data contract in another standard) is skipped and counted in the summary line, and folders whose name starts with a dot are not walked. A document that names an SMF `kind` and omits `smf:` is still an error. SMF documents can now sit at the root of a repository or beside the data contracts they are built on. (#36)
+- `smf.py`: only SMF documents are read. A YAML or JSON file with no SMF document in it (a CI workflow, a tool's configuration, a data contract in another standard) is skipped and counted in the summary line, and folders whose name starts with a dot are not walked. A file that cannot be parsed is an error only when it has a top-level `smf:` line. A document that names an SMF `kind` and omits `smf:` is still an error. SMF documents can now sit at the root of a repository or beside the data contracts they are built on. (#36)
 - `smf.py validate` and `test`: `--format json` prints one JSON object with the errors, warnings and counts. (#36)
 - `reference/README.md`: "Where the files live", with a recommended layout. (#36)
 - `metric-contract.schema.json`: optional `plain_words`, `inclusions`, `not_certified_for`, `change_note` and `sign_off {by, date}`, so every row of the one-page Metric Contract has a field. `concept.schema.json`: optional `plain_words`, `change_note` and `sign_off`, for the Definition Contract. The spec says "Maintained by" is `Ownership.steward`. (#37)

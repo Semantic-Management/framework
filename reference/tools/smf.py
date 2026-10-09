@@ -26,6 +26,7 @@ import argparse
 import csv
 import datetime as _dt
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -72,6 +73,9 @@ def _to_jsonable(obj):
     return obj
 
 
+_SMF_LINE = re.compile(r"^smf\s*:", re.MULTILINE)
+
+
 def _looks_like_smf(doc) -> bool:
     """An SMF document carries the `smf:` envelope key. One that names an SMF kind and forgot the
     key still counts, so it is reported as an error and never skipped."""
@@ -103,6 +107,12 @@ def load_docs(path: Path, errors: list | None = None, skipped: list | None = Non
                 found = [(f, i, _to_jsonable(doc)) for i, doc in enumerate(yaml.safe_load_all(fh))
                          if doc is not None]
         except yaml.YAMLError as e:
+            # A file that cannot be parsed is reported only when it was meant to be SMF (it has a
+            # top-level `smf:` line). Other tools' YAML may use tags this loader does not know.
+            if not path.is_file() and not _SMF_LINE.search(f.read_text(encoding="utf-8", errors="replace")):
+                if skipped is not None:
+                    skipped.append(f)
+                continue
             msg = f"{f}: cannot parse: {str(e).splitlines()[0] if str(e) else type(e).__name__}"
             if errors is None:
                 sys.exit(f"ERROR {msg}")
