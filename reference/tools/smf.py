@@ -4,13 +4,18 @@
 """Semantic Management Framework (SMF) reference CLI, spec v0.1.
 
 Commands
-  validate <path>                         Schema-validate SMF YAML files and check references
+  validate <path> [--strict] [--format json]
+                                          Schema-validate SMF YAML files and check references
   resolve  <path> --term T [--context k=v ...]
                                           Resolve a term in context using the reference algorithm
   test     <path> [--results FILE]        Run TestCase documents. Term-based cases run against the
                                           reference resolver. Prompt-based cases need a consumer's
                                           results file (YAML mapping test id -> ResolutionResult).
   import-csv <csv> [--out FILE]           Convert a starter resolution table (CSV) into SMF YAML
+
+Only SMF documents are read. A file under <path> whose documents carry neither the `smf:` envelope
+key nor an SMF `kind` (a CI workflow, a tool's configuration, a data contract in another standard)
+is skipped and counted. Folders whose name starts with a dot are not walked.
 
 Requires: Python 3.9+, PyYAML, jsonschema  (pip install -r reference/tools/requirements.txt)
 This is a reference implementation for trying the spec, not a production service.
@@ -21,6 +26,7 @@ import argparse
 import csv
 import datetime as _dt
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -50,8 +56,9 @@ KIND_TO_SCHEMA = {
     "TestCase": "test-case",
     "ClaimTrace": "claim-trace",
 }
+# Binding is identified only when it carries the optional `id`.
 ID_KINDS = {"Concept", "Context", "Perspective", "ClassificationRule", "MetricContract", "ResolutionRule",
-            "Conflict", "TestCase", "ClaimTrace"}
+            "Conflict", "TestCase", "ClaimTrace", "Binding"}
 
 
 # --------------------------------------------------------------------------- loading
@@ -66,24 +73,56 @@ def _to_jsonable(obj):
     return obj
 
 
-def load_docs(path: Path, errors: list | None = None):
-    """Load every YAML or JSON document under path. YAML syntax errors are appended to
-    `errors` when a list is given; otherwise they stop the program with a clear message."""
-    files = [path] if path.is_file() else sorted(
-        p for p in path.rglob("*") if p.suffix in (".yaml", ".yml", ".json"))
+_SMF_LINE = re.compile(r"^smf\s*:", re.MULTILINE)
+
+
+def _looks_like_smf(doc) -> bool:
+    """An SMF document carries the `smf:` envelope key. One that names an SMF kind and forgot the
+    key still counts, so it is reported as an error and never skipped."""
+    return isinstance(doc, dict) and ("smf" in doc or doc.get("kind") in KIND_TO_SCHEMA)
+
+
+def _files_under(path: Path):
+    """YAML and JSON files under path, in a stable order, leaving out folders whose name starts
+    with a dot (.git, .github, .venv). A file given directly is always read."""
+    if path.is_file():
+        return [path]
+    return sorted(p for p in path.rglob("*")
+                  if p.is_file() and p.suffix in (".yaml", ".yml", ".json")
+                  and not any(part.startswith(".") for part in p.relative_to(path).parts[:-1]))
+
+
+def load_docs(path: Path, errors: list | None = None, skipped: list | None = None):
+    """Load every SMF document under path. YAML syntax errors are appended to `errors` when a
+    list is given; otherwise they stop the program with a clear message.
+
+    A file with no SMF document in it belongs to something else (a workflow, a configuration file,
+    a data contract in another standard): it is left out and appended to `skipped` when a list is
+    given. A file with at least one SMF document is read whole, so a malformed document that sits
+    beside valid ones is still reported."""
     docs = []
-    for f in files:
+    for f in _files_under(path):
         try:
             with f.open(encoding="utf-8") as fh:
-                for i, doc in enumerate(yaml.safe_load_all(fh)):
-                    if doc is None:
-                        continue
-                    docs.append((f, i, _to_jsonable(doc)))
+                found = [(f, i, _to_jsonable(doc)) for i, doc in enumerate(yaml.safe_load_all(fh))
+                         if doc is not None]
         except yaml.YAMLError as e:
+            # A file that cannot be parsed is reported only when it was meant to be SMF (it has a
+            # top-level `smf:` line). Other tools' YAML may use tags this loader does not know.
+            if not path.is_file() and not _SMF_LINE.search(f.read_text(encoding="utf-8", errors="replace")):
+                if skipped is not None:
+                    skipped.append(f)
+                continue
             msg = f"{f}: cannot parse: {str(e).splitlines()[0] if str(e) else type(e).__name__}"
             if errors is None:
                 sys.exit(f"ERROR {msg}")
             errors.append(msg)
+            continue
+        if found and not path.is_file() and not any(_looks_like_smf(d) for _, _, d in found):
+            if skipped is not None:
+                skipped.append(f)
+            continue
+        docs.extend(found)
     return docs
 
 
@@ -258,15 +297,48 @@ def _where(f, i):
     return f"{shown} #{i + 1}"
 
 
+def _binding_names(d) -> set:
+    """The names a ClaimTrace may use for a Binding: its id, and '<platform>:<ref>'."""
+    impl = d.get("implementation") or {}
+    names = {f"{impl.get('platform')}:{impl.get('ref')}"}
+    if d.get("id"):
+        names.add(d["id"])
+    return names
+
+
+def _report_validate(args, path, docs, skipped, errors, warnings) -> int:
+    """Print the outcome of `validate` as text or, with --format json, as one JSON object."""
+    kinds = {}
+    for _, _, d in docs:
+        if isinstance(d, dict):
+            kinds[str(d.get("kind"))] = kinds.get(str(d.get("kind")), 0) + 1
+    status = "FAILED" if errors else "OK"
+    if getattr(args, "format", "text") == "json":
+        print(json.dumps({"command": "validate", "path": str(path), "strict": bool(args.strict),
+                          "status": status, "documents": len(docs), "kinds": dict(sorted(kinds.items())),
+                          "skipped_files": [str(f) for f in skipped],
+                          "errors": errors, "warnings": warnings}, indent=2))
+        return 1 if errors else 0
+    for w in warnings:
+        print(f"WARN  {w}")
+    for e in errors:
+        print(f"ERROR {e}")
+    summary = ", ".join(f"{v} {k}" for k, v in sorted(kinds.items()))
+    note = f"; skipped {len(skipped)} file(s) that are not SMF documents" if skipped else ""
+    print(f"\n{status}: {len(docs)} documents ({summary}); {len(errors)} errors, {len(warnings)} warnings{note}")
+    return 1 if errors else 0
+
+
 def cmd_validate(args) -> int:
-    errors, warnings = [], []
+    errors, warnings, skipped = [], [], []
     if not Path(args.path).exists():
-        print(f"ERROR path not found: {args.path}")
-        return 1
-    docs = load_docs(Path(args.path), errors)
+        errors.append(f"path not found: {args.path}")
+        return _report_validate(args, args.path, [], skipped, errors, warnings)
+    docs = load_docs(Path(args.path), errors, skipped)
     if not docs and not errors:
-        print(f"No SMF YAML documents found under {args.path}")
-        return 1
+        note = f" ({len(skipped)} file(s) skipped: not SMF documents)" if skipped else ""
+        errors.append(f"no SMF documents found under {args.path}{note}")
+        return _report_validate(args, args.path, [], skipped, errors, warnings)
     schemas = load_schemas()
     if "date-time" not in FormatChecker().checkers:
         warnings.append("the 'date-time' format is not being checked; install rfc3339-validator "
@@ -320,18 +392,25 @@ def cmd_validate(args) -> int:
                 errors.append(f"{where} [{d.get('kind')}] {field}: '{ref}' is a {actual}, but a {want} is required")
         if d.get("kind") == "ResolutionRule" and d["term"].strip().lower() not in idx.terms:
             warnings.append(f"{where} [ResolutionRule] term '{d['term']}' has no Term document")
-    for w in warnings:
-        print(f"WARN  {w}")
-    for e in errors:
-        print(f"ERROR {e}")
-    kinds = {}
-    for _, _, d in docs:
-        if isinstance(d, dict):
-            kinds[d.get("kind")] = kinds.get(d.get("kind"), 0) + 1
-    summary = ", ".join(f"{v} {k}" for k, v in sorted(kinds.items(), key=lambda kv: str(kv[0])))
-    status = "FAILED" if errors else "OK"
-    print(f"\n{status}: {len(docs)} documents ({summary}); {len(errors)} errors, {len(warnings)} warnings")
-    return 1 if errors else 0
+    # A claim names the build record that computed it, by Binding id or as '<platform>:<ref>'.
+    bindings = [d for _, _, d in valid if d["kind"] == "Binding"]
+    for f, i, d in valid:
+        named = (d.get("execution") or {}).get("binding") if d["kind"] == "ClaimTrace" else None
+        if not named:
+            continue
+        where = f"{f.name} #{i + 1}"
+        matches = [b for b in bindings if named in _binding_names(b)]
+        if not matches:
+            msg = (f"{where} [ClaimTrace] execution.binding: '{named}' matches no Binding in this set "
+                   f"(use a Binding id or '<platform>:<ref>')")
+            (errors if args.strict else warnings).append(msg)
+        elif not any(base_id(b["subject"]) == base_id(d["measurement"])
+                     or idx.kind_of(b["subject"]) != "MetricContract" for b in matches):
+            # A build recorded against a concept (not a contract) cannot contradict the claim.
+            subjects = ", ".join(sorted({b["subject"] for b in matches}))
+            errors.append(f"{where} [ClaimTrace] execution.binding: '{named}' is a build of {subjects}, "
+                          f"but the claim is backed by {d['measurement']}")
+    return _report_validate(args, args.path, docs, skipped, errors, warnings)
 
 
 # --------------------------------------------------------------------------- resolve
@@ -526,6 +605,13 @@ def compare(expected: dict, actual: dict):
 
 
 def cmd_test(args) -> int:
+    as_json = getattr(args, "format", "text") == "json"
+    report = []
+
+    def say(line):
+        if not as_json:
+            print(line)
+
     idx = Index(load_checked(Path(args.path)))
     external = {}
     if args.results:
@@ -555,22 +641,32 @@ def cmd_test(args) -> int:
             if bad is None or bad:
                 failed += 1
                 why = "not a mapping" if bad is None else bad[0].message
-                print(f"FAIL  {c['id']:<34} [{source}] result is not a valid ResolutionResult: {why}")
+                say(f"FAIL  {c['id']:<34} [{source}] result is not a valid ResolutionResult: {why}")
+                report.append({"id": c["id"], "outcome": "failed", "source": source,
+                               "problems": [f"result is not a valid ResolutionResult: {why}"]})
                 continue
         elif c["input"].get("term"):
             actual, source = resolve(idx, c["input"]["term"], c["input"].get("context") or {}), "reference"
         else:
             skipped += 1
-            print(f"SKIP  {c['id']:<34} prompt-based; supply consumer output with --results")
+            say(f"SKIP  {c['id']:<34} prompt-based; supply consumer output with --results")
+            report.append({"id": c["id"], "outcome": "skipped", "source": None,
+                           "problems": ["prompt-based; supply consumer output with --results"]})
             continue
         probs = compare(c["expected"], actual)
         if probs:
             failed += 1
-            print(f"FAIL  {c['id']:<34} [{source}] " + "; ".join(probs))
+            say(f"FAIL  {c['id']:<34} [{source}] " + "; ".join(probs))
         else:
             passed += 1
-            print(f"PASS  {c['id']:<34} [{source}] {actual.get('state')}")
-    print(f"\n{passed} passed, {failed} failed, {skipped} skipped")
+            say(f"PASS  {c['id']:<34} [{source}] {actual.get('state')}")
+        report.append({"id": c["id"], "outcome": "failed" if probs else "passed", "source": source,
+                       "state": actual.get("state"), "problems": probs})
+    if as_json:
+        print(json.dumps({"command": "test", "path": str(args.path), "results": args.results,
+                          "passed": passed, "failed": failed, "skipped": skipped, "cases": report}, indent=2))
+    else:
+        print(f"\n{passed} passed, {failed} failed, {skipped} skipped")
     return 1 if failed else 0
 
 
@@ -658,6 +754,7 @@ def main(argv=None) -> int:
     v = sub.add_parser("validate", help="validate SMF YAML")
     v.add_argument("path")
     v.add_argument("--strict", action="store_true", help="treat undefined references as errors")
+    v.add_argument("--format", choices=["text", "json"], default="text", help="output format")
     r = sub.add_parser("resolve", help="resolve a term in context")
     r.add_argument("path")
     r.add_argument("--term", required=True)
@@ -665,6 +762,7 @@ def main(argv=None) -> int:
     t = sub.add_parser("test", help="run TestCase documents")
     t.add_argument("path")
     t.add_argument("--results", help="YAML mapping test id -> ResolutionResult from the consumer under test")
+    t.add_argument("--format", choices=["text", "json"], default="text", help="output format")
     c = sub.add_parser("import-csv", help="convert a starter resolution table")
     c.add_argument("csv")
     c.add_argument("--out")

@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+Proposed in #36, #37 and #39. Spec changes are additive: every new field is optional and existing documents validate unchanged.
+
+### Added (reference tools and spec)
+- `smf.py`: only SMF documents are read. A YAML or JSON file with no SMF document in it (a CI workflow, a tool's configuration, a data contract in another standard) is skipped and counted in the summary line, and folders whose name starts with a dot are not walked. A file that cannot be parsed is an error only when it has a top-level `smf:` line. A document that names an SMF `kind` and omits `smf:` is still an error. SMF documents can now sit at the root of a repository or beside the data contracts they are built on. (#36)
+- `smf.py validate` and `test`: `--format json` prints one JSON object with the errors, warnings and counts. (#36)
+- `reference/README.md`: "Where the files live", with a recommended layout. (#36)
+- `metric-contract.schema.json`: optional `plain_words`, `inclusions`, `not_certified_for`, `change_note` and `sign_off {by, date}`, so every row of the one-page Metric Contract has a field. `concept.schema.json`: optional `plain_words`, `change_note` and `sign_off`, for the Definition Contract. The spec says "Maintained by" is `Ownership.steward`. (#37)
+- Gross margin example: Service Gross Margin now carries its plain-words line, what it includes, what it is not approved for and its effective date, taken from `docs/metric-contract.md`. (#37)
+- `binding.schema.json`: optional `id`. A duplicate is an error. (#39)
+- `smf.py validate`: a claim's `execution.binding` must name a build record in the set, by `Binding` id or as `<platform>:<ref>`. No match is a warning, and an error in strict mode; a match that belongs to a different Metric Contract than the claim's is an error. Both examples validate unchanged. (#39)
+
+### Changed (reference tools)
+- `smf.py validate`: a missing path and an empty folder now end with the same summary line as any other failure.
+
 ### Added
 - `docs/metamodel.md`: a model of the models. The four columns (data, meaning, analytics and AI, decision), a diagram of how data contracts, SMF documents, implementations and decisions connect, a table of every connection with the standard that records it, and the two ways to read it (audit trail of a decision; operating picture).
 - `docs/gaps.md`: the gap catalogue. Thirty-odd named "connection that should exist and does not" cases, each with how it shows up, the practice that owns closing it, and a weight. Stated uses: work list, observed maturity reading, tool rendering rules, AI governance evidence.

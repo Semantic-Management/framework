@@ -27,23 +27,27 @@ kind: MetricContract
 id: services.gross_margin
 version: 1
 name: Service Gross Margin
+plain_words: "Of every dollar we bill for installation and maintenance, how much is left after paying for the labor, subcontractors and parts it took to deliver."
 measures: { concept_ref: concept.gross_margin }
 perspective: perspective.gross_margin.service
 formula: (service_revenue - (technician_labor + subcontractor_cost + parts_used)) / service_revenue
 grain: work_order
 valid_dimensions: [fiscal_month, service_type, technician_team]
 filters: [line_type = service]
+inclusions: [installation_work_orders, maintenance_work_orders]
 exclusions: [product_sales]
 time_semantics: { calendar: fiscal, basis: work_order_completed_date }
 additivity: non_additive
 built_on: [odcs:work_orders, odcs:job_costing]
 owner: Services Lead
 certified_for: [services_reviews, staffing_decisions]
+not_certified_for: [board_reporting, external_reporting]
 comparability:
   not_comparable_with: [product.gross_margin]
   can_be_combined: false
   notes: Labor-based cost. Compare over time within services, not against product margin.
 status: standard
+effective_from: 2026-01-01
 ---
 smf: "0.1"
 kind: MetricContract

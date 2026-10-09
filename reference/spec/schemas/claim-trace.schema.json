@@ -42,7 +42,8 @@
       "type": "object",
       "properties": {
         "binding": {
-          "type": "string"
+          "type": "string",
+          "description": "The build record that computed the number: a Binding id, or '<platform>:<ref>' matching a Binding in the set."
         },
         "query_hash": {
           "type": "string"

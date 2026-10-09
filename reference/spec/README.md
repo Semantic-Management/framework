@@ -18,6 +18,8 @@ kind: Concept     # document kind
 
 A file may contain several documents separated by `---`.
 
+A folder of SMF documents may hold other files. The reference CLI reads a file as SMF only when at least one of its documents carries the `smf:` key or names an SMF `kind`; any other YAML or JSON file (a CI workflow, a tool's configuration, a data contract in another standard) is skipped and counted, and folders whose name starts with a dot are not walked. A document that names an SMF `kind` and omits `smf:` is an error, never a skip. See [where the files live](../README.md#where-the-files-live).
+
 | Kind | Purpose | Module | Schema |
 | --- | --- | --- | --- |
 | `Concept` | Stable identity for a business meaning | Core / Modeling | [concept](schemas/concept.schema.json) |
@@ -39,9 +41,10 @@ Schemas use JSON Schema draft 2020-12. Schema IDs are URNs (`urn:semantic-manage
 ### Semantic Contracts in machine form
 
 - A **Metric Contract** is the `MetricContract` document (plus `Binding` documents for where it's implemented). Field names align with those commonly used for metric contracts: expression (`formula`), `grain`, `valid_dimensions`, `filters`, `time_semantics`, `additivity`, `owner`, certification (`certified_for`), `version`. SMF adds `perspective`, approved uses, `comparability` and `built_on` (links to data contracts).
+- Every row of the [one-page Metric Contract](../../templates/metric-contract.md) has a field. Beyond those above: `plain_words` ("In plain words"), `inclusions` and `exclusions` ("Includes / excludes"), `certified_for` and `not_certified_for` ("Approved for" / "Not approved for"), `effective_from`, `change_note`, and `sign_off {by, date}`. "Maintained by" is `Ownership.steward`. `Concept` carries `plain_words`, `change_note` and `sign_off` for the [Definition Contract](../../templates/definition-contract.md). All are optional.
 - A **Definition Contract** is a set of documents: `Concept`, its `Perspective`s, `Term`s, `Ownership`, any `ClassificationRule`s and the `ResolutionRule` for the term.
 - To link from an ODCS data contract to an SMF contract, use ODCS `authoritativeDefinitions` with type `businessDefinition`. In the other direction, a `MetricContract` lists the data contracts it is built on in `built_on`. For the business-level picture, see [docs/contracts-in-context.md](../../docs/contracts-in-context.md).
-- A `Binding` names one implementation of a contract (`implementation.platform` and `ref`). Two optional fields support Assurance: `implementation.derived_from` records the implementation a converter generated this one from, and `expression_snapshot` keeps the executable logic (or its SHA-256 digest) as it was when `conformance_status` was last assessed, so a tool can report drift instead of a reviewer re-reading the formula.
+- A `Binding` names one implementation of a contract (`implementation.platform` and `ref`). It may carry an `id` so a `ClaimTrace` can name it. Two optional fields support Assurance: `implementation.derived_from` records the implementation a converter generated this one from, and `expression_snapshot` keeps the executable logic (or its SHA-256 digest) as it was when `conformance_status` was last assessed, so a tool can report drift instead of a reviewer re-reading the formula.
 - A `Perspective` may set `broader_than` (a list of perspective references) when it contains other perspectives, as Consolidated Gross Margin contains Product and Service. It records containment only. Comparability stays on the `MetricContract`.
 
 #### Linking an ODCS data contract to an SMF contract (illustrative)
@@ -156,11 +159,11 @@ The framework's [metamodel](../../docs/metamodel.md) draws the connections betwe
 | selects | context | `ResolutionRule` clause | `ResolutionRule.contextual[].when` matched against the query `context`; `Context.conditions` names the contexts | SMF |
 | applies to | `ResolutionRule` | `Concept` / `MetricContract` | `default` and `contextual[].resolve_to {concept, measurement}` | SMF |
 | one of five answers | `ResolutionRule` | consumer | `ResolutionResult.state` with `basis`, `options`, `conflict_ref`, `replaces` | SMF |
-| owned by | `Concept` / `Perspective` / `MetricContract` | person or role | `Ownership.subject` → `owner`, `steward`, `scope`; `Perspective.owner`; `MetricContract.owner` | SMF |
+| owned by | `Concept` / `Perspective` / `MetricContract` | person or role | `Ownership.subject` → `owner`, `steward`, `scope`; `Perspective.owner`; `MetricContract.owner`; approval in `sign_off {by, date}` on `MetricContract` and `Concept` | SMF |
 | undecided | term | candidates | `Conflict.candidates[]`, `owner`, `target_date`; `ResolutionRule.contextual[].conflict_ref` | SMF |
 | replaced by | `Concept` / term | `Concept` / `MetricContract` | `Concept.replaced_by`; `ResolutionRule.deprecated.replacement` | SMF |
 | backed by | `ClaimTrace` | `MetricContract` version | `ClaimTrace.measurement` (`id@vN`), `ClaimTrace.concept` | SMF |
-| computed by | `ClaimTrace` | implementation and run | `ClaimTrace.execution {binding, query_hash, executed_at}`, `sources[]` | SMF |
+| computed by | `ClaimTrace` | implementation and run | `ClaimTrace.execution {binding, query_hash, executed_at}`, `sources[]`. `execution.binding` is a `Binding` id, or `<platform>:<ref>` matching a `Binding` in the set | SMF |
 | run lineage (same connection, other end) | `ClaimTrace` | lineage run | `ClaimTrace.provenance {format: openlineage, ref}` | OpenLineage |
 | tests | `TestCase` | consumer or resolver | `TestCase.input` / `expected`; consumer results keyed by test id | SMF |
 
@@ -172,6 +175,7 @@ The plain-language [gap catalogue](../../docs/gaps.md) lists what it means when 
 - Version pin: `id@vN`, e.g. `finance.net_revenue@v3`.
 - IDs are never derived from labels alone and never reused for a different meaning.
 - A document may reference an ID defined elsewhere (another repo, a catalog). Validators warn about undefined references unless run in strict mode.
+- A `ClaimTrace` names the build record that computed it in `execution.binding`, either by the `Binding`'s `id` or as `<platform>:<ref>`. A name that matches no `Binding` in the set is a warning, and an error in strict mode. A name that matches only build records of a different Metric Contract than the claim's `measurement` is an error.
 - A reference must point at the right kind of document: a metric field names a `MetricContract`, a concept field names a `Concept`, a perspective field names a `Perspective`. A reference to a document of the wrong kind is an error, in strict mode or not.
 - A term has at most one `ResolutionRule`, and one `Term` per context. A second rule for the same term, or two `Term` documents for the same term and context that map to different concepts, is a validation error. A resolver that finds more than one rule for a term returns `CONFLICT` rather than choosing one.
 
@@ -241,6 +245,8 @@ python reference/tools/smf.py validate reference/examples/gross-margin --strict
 python reference/tools/smf.py resolve reference/examples/gross-margin --term "gross margin" --context audience=leadership
 python reference/tools/smf.py test reference/examples/gross-margin
 ```
+
+`validate` and `test` print text by default. Add `--format json` for one JSON object with the same errors, warnings and counts, for use by other tools.
 
 ## 8. Open questions
 
