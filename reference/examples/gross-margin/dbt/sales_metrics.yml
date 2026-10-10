@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: Apache-2.0
+# Illustrative dbt MetricFlow definitions (dbt 1.12 YAML spec) for the gross margin
+# example. Not an SMF document: the reference CLI skips it. The `smf` key under
+# config.meta is a convention proposed by SMF, not part of dbt.
+models:
+  - name: fct_order_lines
+    description: One row per line on a shipped sales order.
+    semantic_model:
+      enabled: true
+      name: order_lines
+    agg_time_dimension: ship_date
+    columns:
+      - name: order_line_id
+        entity:
+          type: primary
+          name: order_line
+      - name: ship_date
+        granularity: day
+        dimension:
+          type: time
+      - name: line_type
+        dimension:
+          type: categorical
+      - name: product_category
+        dimension:
+          type: categorical
+      - name: store
+        dimension:
+          type: categorical
+    metrics:
+      - name: product_revenue
+        description: Revenue on product lines.
+        type: simple
+        label: Product Revenue
+        agg: sum
+        expr: product_revenue
+        filter: "{{ Dimension('order_line__line_type') }} = 'product'"
+      - name: landed_cost_of_goods
+        description: Landed cost of goods on product lines (materials, freight-in and duties).
+        type: simple
+        label: Landed Cost of Goods
+        agg: sum
+        expr: landed_cost_of_goods
+        filter: "{{ Dimension('order_line__line_type') }} = 'product'"
+
+metrics:
+  - name: product_gross_margin
+    description: Product Gross Margin (product perspective; see the SMF contract for approved uses and comparability)
+    type: derived
+    label: Product Gross Margin
+    expr: (product_revenue - landed_cost_of_goods) / product_revenue
+    input_metrics:
+      - name: product_revenue
+      - name: landed_cost_of_goods
+    config:
+      meta:
+        smf:
+          metric_contract: product.gross_margin@v1
+          perspective: perspective.gross_margin.product

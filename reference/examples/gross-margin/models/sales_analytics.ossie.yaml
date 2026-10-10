@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: Apache-2.0
+# Illustrative Apache Ossie semantic model (draft spec 0.2.0.dev0) for the gross margin
+# example. Not an SMF document: the reference CLI skips it. The custom_extensions entry
+# with vendor_name SMF is a convention proposed by SMF, not part of the Ossie spec.
+version: 0.2.0.dev0
+name: sales_analytics
+description: Order-line sales model for Lakeview Supply & Service.
+datasets:
+  - name: order_lines
+    source: analytics.sales.fct_order_lines
+    primary_key: [order_line_id]
+    description: One row per line on a shipped sales order.
+    fields:
+      - name: order_line_id
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: order_line_id
+        datatype: String
+      - name: ship_date
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: ship_date
+        dimension:
+          is_time: true
+        datatype: Date
+      - name: line_type
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: line_type
+        dimension: {}
+        datatype: String
+      - name: product_category
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: product_category
+        dimension: {}
+        datatype: String
+      - name: store
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: store
+        dimension: {}
+        datatype: String
+      - name: product_revenue
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: product_revenue
+        datatype: Decimal
+      - name: landed_cost_of_goods
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: landed_cost_of_goods
+        datatype: Decimal
+metrics:
+  - name: product_gross_margin
+    expression:
+      dialects:
+        - dialect: ANSI_SQL
+          expression: (SUM(order_lines.product_revenue) - SUM(order_lines.landed_cost_of_goods)) / SUM(order_lines.product_revenue)
+    description: Product Gross Margin (product perspective; see the SMF contract for approved uses and comparability)
+    datatype: Decimal
+    ai_context:
+      instructions: "Governed by SMF contract product.gross_margin@v1. Not comparable with services.gross_margin."
+    custom_extensions:
+      - vendor_name: SMF
+        data: '{"metric_contract": "product.gross_margin@v1", "perspective": "perspective.gross_margin.product"}'

@@ -74,6 +74,8 @@ Solid lines are connections SMF records. Dotted lines are the same connections r
 | Metric Contract | implemented in | Build record | SMF | Where the number is actually calculated, and whether it still matches |
 | Build record | names | Interchange model, semantic layer, BI measure, spreadsheet | SMF | The locator inside the tool |
 | Interchange model | points to its contract | Metric Contract | Apache Ossie (its extension slot, by convention) | The model says which agreement governs it |
+| Semantic layer metric | points to its contract | Metric Contract | The semantic layer (its notes slot, by convention; shown for dbt in the reference) | The metric says which agreement governs it |
+| Data product | serves | Metric Contract | ODPS (the product points to the business definition and names the data contract version behind each port) | Which packaged data this number is delivered from |
 | Interchange model | generated into | Semantic layer or BI measure | SMF (the build record says what it was derived from) | Test the hub once; the spokes are generated |
 | Context | selects | Answer rule | SMF | Who is asking, where, for what |
 | Answer rule | applies to | Perspective | SMF | Which meaning this situation gets |
@@ -83,7 +85,7 @@ Solid lines are connections SMF records. Dotted lines are the same connections r
 | Claim | computed by | Build record | SMF, with lineage (OpenLineage) for the run | Which build, which run, which data snapshot |
 | Check | tests | Consumer, Build record | SMF | Did it use the right meaning? Does the build still match? |
 
-Technical names for every connection, including the two recorded in other standards' files, are in the [reference](../reference/spec/README.md#relationships-across-standards).
+Technical names for every connection, including those recorded in other standards' files, are in the [reference](../reference/spec/README.md#relationships-across-standards).
 
 ## Two ways to read it
 

@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+# Illustrative ODPS data product for the gross margin example. Not an SMF document:
+# the reference CLI skips it. It shows a data product pointing at the Metric Contract
+# its output port serves, and the data contract version behind that port.
+apiVersion: v1.1.0
+kind: DataProduct
+id: sales_analytics
+name: Sales Analytics
+version: 1.0.0
+status: active
+description:
+  purpose: Order-line sales data for product reviews and pricing decisions.
+  usage: Product Gross Margin is computed from the order-lines port. See the Metric Contract for approved uses.
+authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://example.org/semantic/metric-contracts/product.gross_margin
+    description: SMF Metric Contract product.gross_margin@v1, the business number this product serves.
+inputPorts:
+  - name: landed-cost
+    version: 1.0.0
+    contractId: landed_cost
+outputPorts:
+  - name: order-lines
+    description: Shipped order lines with revenue and landed cost
+    type: tables
+    version: 1.2.0
+    contractId: sales_order_lines

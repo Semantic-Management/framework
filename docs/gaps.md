@@ -59,7 +59,7 @@ This catalogue names the gaps so tools can find them and people can talk about t
 | **Build with no snapshot** | The build was assessed, but the calculation as it was at that moment was not kept, so drift can only be noticed by chance | Implementation | medium |
 | **Build has drifted** | The calculation in the tool no longer matches the snapshot on its build record | Implementation, Assurance | critical |
 | **Generated build with no source** | A semantic-layer or BI measure was produced from an interchange model, but the build record does not say so, so it gets tested as if it were hand-built | Implementation | medium |
-| **Interchange model with no pointer back** | An Ossie metric or a data contract field is governed by a contract but does not say so in its own file, so a tool reading only that file cannot find the agreement | Interchange | medium |
+| **Interchange model with no pointer back** | An Ossie metric, a semantic layer metric, a data product or a data contract field is governed by a contract but does not say so in its own file, so a tool reading only that file cannot find the agreement | Interchange | medium |
 
 ## Consumption and assurance
 
